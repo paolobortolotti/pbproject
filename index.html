@@ -1,0 +1,922 @@
+<!DOCTYPE html>
+<html lang="it">
+	<head>
+		<meta charset="UTF-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+		<title>Studio Professionale - Layout Corretto con Animazioni Reveal</title>
+
+		<script src="https://cdn.tailwindcss.com"></script>
+		<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+		<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
+		<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollToPlugin.min.js"></script>
+		<link rel="stylesheet" type="text/css" media="all" href="assets/style.css" />
+		<link rel="preconnect" href="https://fonts.googleapis.com" />
+		<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+		<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@200;300;400;500;600;900&display=swap" rel="stylesheet" />
+	</head>
+
+	<body class="bg-white">
+		<div id="cursor-circle"></div>
+		<div id="loading-overlay" class="loading-overlay">
+			<div class="loader-text">Caricamento esperienza...</div>
+			<div class="loader-bar">
+				<div id="loader-bar-inner" class="loader-bar-inner"></div>
+			</div>
+		</div>
+
+		<header class="top-0 left-0 w-full bg-white/90 backdrop-blur-sm z-50 min-h-80 content-center">
+			<div class="max-w-8xl mx-auto flex justify-between items-center flex-col gap-y-20">
+				<nav class="main-nav">
+					<ul class="flex flex-row space-x-6 uppercase">
+						<li>
+							<a href="#section1" class="text-xs text-gray-500 hover:text-black tracking-widest active">Home</a>
+						</li>
+						<li>
+							<a href="#section2" class="text-xs text-gray-500 hover:text-black tracking-widest">Lo Studio</a>
+						</li>
+						<li>
+							<a href="#section3" class="text-xs text-gray-500 hover:text-black tracking-widest">Attività</a>
+						</li>
+						<li>
+							<a href="#footer" class="text-xs text-gray-500 hover:text-black tracking-widest">Contatti</a>
+						</li>
+					</ul>
+				</nav>
+				<div class="font-semibold text-3xl text-gray-800 tracking-wider">
+					<img src="images/Logomdf.svg" />
+				</div>
+			</div>
+		</header>
+
+		<nav class="dots-nav" id="dotsNav">
+			<ul>
+				<li data-section="section1">
+					<a href="#section1" class="dot-link"></a>
+					<span class="dot-label">Home</span>
+				</li>
+				<li data-section="section2">
+					<a href="#section2" class="dot-link"></a>
+					<span class="dot-label">Lo Studio</span>
+				</li>
+				<li data-section="attivita">
+					<a href="#section3" class="dot-link"></a>
+					<span class="dot-label">Attività</span>
+				</li>
+				<li data-section="mission">
+					<a href="#section3" class="dot-link"></a>
+					<span class="dot-label">Mission</span>
+				</li>
+				<li data-section="footer">
+					<a href="#footer" class="dot-link"></a>
+					<span class="dot-label">Contatti</span>
+				</li>
+			</ul>
+		</nav>
+
+		<main>
+			<section id="section1">
+				<div class="w-full h-full flex items-center justify-center m-auto text-white z-10 relative">
+					<div class="w-full z-10 h-full content-center">
+						<div class="ml-4 md:ml-32 mb-64 mt-64 text-left px-4 md:px-0">
+							<div class="text-black text-4xl tracking-[0.2em] uppercase">
+								<p class="font-black">Studio <span class="font-light">Michele </span> Del Fabbro</p>
+							</div>
+						</div>
+						<div class="text-center flex justify-center flex-col px-4 md:px-0">
+							<div class="text-4xl sm:text-5xl md:text-6xl font-black text-black mb-6">
+								Precisione in Movimento
+							</div>
+							<div class="w-44 h-[2px] bg-[#337C6A] mx-auto mb-8 rounded"></div>
+							<p class="text-xl sm:text-xl text-gray-600 max-w mx-auto leading-relaxed">
+								La competenza nasce dal metodo, cresce con la preparazione, si afferma con l'esperienza.
+							</p>
+						</div>
+					</div>
+				</div>
+
+				<div class="image-sequence-container">
+					<canvas id="sequence-canvas-1" class="sequence-canvas hidden md:block"></canvas>
+
+					<video class="w-full h-full object-cover absolute inset-0 -z-10 block md:hidden" autoplay loop muted playsinline>
+						<source src="mobile/video1.mp4" type="video/mp4" />
+					</video>
+				</div>
+			</section>
+
+			<section id="section2" class="h-full bg-white flex py-16 md:py-24">
+				<div class="w-full max-w-5xl mx-auto flex flex-col gap-12 md:gap-16 items-center justify-center px-6 relative">
+					<div class="max-w-4xl self-center md:self-end">
+						<h1 class="text-2xl lg:text-5xl font-light tracking-wider uppercase leading-snug text-center md:text-left text-[#337c6a]">
+							Lo Studio. <br />
+							Competenza, Decisione <br />
+							e Affidabilità <br />
+							a Servizio del Cliente
+						</h1>
+					</div>
+					<div class="md:ml-45 max-w-2xl self-center md:self-start text-gray-600 leading-[1.8] text-xl">
+						<p>
+							Lo Studio del Dott. Michele Del Fabbro offre da anni consulenza tributaria ad imprese e persone fisiche, distinguendosi per l’approccio rigoroso e personalizzato. Grazie all’esperienza maturata e alla continua collaborazione con altri professionisti, lo Studio si pone come punto di riferimento per chi cerca un supporto tecnico e affidabile in materia fiscale e tributaria.
+						</p>
+					</div>
+					<a href="project1.html" class="absolute right-0 bottom-0 link_page" aria-label="Scopri i dettagli del progetto">
+						<svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" viewBox="0 0 48 48">
+							<g transform="translate(0 48) rotate(-90)">
+								<path d="M0,24A24,24,0,1,0,24,0,24,24,0,0,0,0,24Zm45.05,0A21.025,21.025,0,1,1,24,3,21.066,21.066,0,0,1,45.05,24ZM22.48,13.48v16.9l-5.42-5.43a1.5,1.5,0,0,0-2.12,2.13l9.09,8.86,9.1-8.86A1.506,1.506,0,1,0,31,24.95l-5.52,5.52V13.48a1.5,1.5,0,0,0-3,0Z" fill="#337c6a" />
+								<path d="M0,0H48V48H0Z" fill="none" />
+							</g>
+						</svg>
+					</a>
+				</div>
+			</section>
+
+			<section id="section3" class="relative bg-white md:h-[200vh]">
+				<div id="canvas-sticky-container" class="hidden md:block h-screen w-screen top-0 left-0">
+					<canvas id="sequence-canvas-2" class="sequence-canvas"></canvas>
+				</div>
+
+				<div class="block md:hidden pt-16 pb-8 px-6">
+					<video class="w-full h-auto rounded-lg" autoplay loop muted playsinline>
+						<source src="mobile/video2.mp4" type="video/mp4" />
+					</video>
+				</div>
+
+				<div class="md:absolute top-40 left-0 w-full z-10 text-scroller-container">
+					<div id="attivita" class="w-full flex items-center py-16 md:py-0 md:h-screen">
+						<div class="w-full max-w-6xl mx-auto px-6">
+							<h2 class="md:text-5xl font-light text-[#9A4D1E]">
+								ATTIVITÀ.<br />
+								DISCIPLINA, METODO<br />
+								E PREPARAZIONE ORIENTANO<br />
+								OGNI NOSTRA AZIONE
+							</h2>
+							<div class="prose prose-lg text-gray-800 mt-8 md:ml-96 max-w-lg leading-[1.8] text-xl">
+								<p>
+									Lo Studio offre consulenza tributaria completa, ordinaria e straordinaria, rivolta a imprese e persone fisiche. Dalla gestione fiscale quotidiana alle operazioni straordinarie, fino all’assistenza nelle verifiche e nel contenzioso tributario, l’approccio è sempre rigoroso e orientato alla soluzione.
+								</p>
+							</div>
+							<div class="w-full mt-16 flex flex-col items-center md:items-stretch space-y-20">
+								<a href="consulenza.html" class="fade-up-target md:self-start flex items-center group transition gap-x-10 border-b border-[#9A4D1E] pb-2 link_page">
+									<span class="text-xl uppercase tracking-wide text-[#9A4D1E] group-hover:border-transparent">
+										Consulenza ordinaria e straordinaria
+									</span>
+									<svg xmlns="http://www.w3.org/2000/svg" width="38" height="38" viewBox="0 0 48 48">
+										<g transform="translate(0 48) rotate(-90)">
+											<path d="M0,24A24,24,0,1,0,24,0,24,24,0,0,0,0,24Zm45.05,0A21.025,21.025,0,1,1,24,3,21.066,21.066,0,0,1,45.05,24ZM22.48,13.48v16.9l-5.42-5.43a1.5,1.5,0,0,0-2.12,2.13l9.09,8.86,9.1-8.86A1.506,1.506,0,1,0,31,24.95l-5.52,5.52V13.48a1.5,1.5,0,0,0-3,0Z" fill="#9A4D1E" />
+											<path d="M0,0H48V48H0Z" fill="none" />
+										</g>
+									</svg>
+								</a>
+								<a href="#" class="fade-up-target self-center flex items-center group transition gap-x-10 border-b border-[#9A4D1E] pb-2">
+									<span class="text-xl uppercase tracking-wide text-[#9A4D1E] group-hover:border-transparent">
+										Pre-contenzioso e contenzioso tributario
+									</span>
+									<svg xmlns="http://www.w3.org/2000/svg" width="38" height="38" viewBox="0 0 48 48">
+										<g transform="translate(0 48) rotate(-90)">
+											<path d="M0,24A24,24,0,1,0,24,0,24,24,0,0,0,0,24Zm45.05,0A21.025,21.025,0,1,1,24,3,21.066,21.066,0,0,1,45.05,24ZM22.48,13.48v16.9l-5.42-5.43a1.5,1.5,0,0,0-2.12,2.13l9.09,8.86,9.1-8.86A1.506,1.506,0,1,0,31,24.95l-5.52,5.52V13.48a1.5,1.5,0,0,0-3,0Z" fill="#9A4D1E" />
+											<path d="M0,0H48V48H0Z" fill="none" />
+										</g>
+									</svg>
+								</a>
+								<a href="#" class="fade-up-target md:self-end flex items-center group transition gap-x-10 border-b border-[#9A4D1E] pb-2">
+									<span class="text-xl uppercase tracking-wide text-[#9A4D1E] group-hover:border-transparent">
+										Altre attività e incarichi
+									</span>
+									<svg xmlns="http://www.w3.org/2000/svg" width="38" height="38" viewBox="0 0 48 48">
+										<g transform="translate(0 48) rotate(-90)">
+											<path d="M0,24A24,24,0,1,0,24,0,24,24,0,0,0,0,24Zm45.05,0A21.025,21.025,0,1,1,24,3,21.066,21.066,0,0,1,45.05,24ZM22.48,13.48v16.9l-5.42-5.43a1.5,1.5,0,0,0-2.12,2.13l9.09,8.86,9.1-8.86A1.506,1.506,0,1,0,31,24.95l-5.52,5.52V13.48a1.5,1.5,0,0,0-3,0Z" fill="#9A4D1E" />
+											<path d="M0,0H48V48H0Z" fill="none" />
+										</g>
+									</svg>
+								</a>
+							</div>
+						</div>
+					</div>
+
+					<div id="mission" class="w-full flex items-center py-16 md:py-0 md:h-screen">
+						<div class="w-full max-w-6xl mx-auto px-6">
+							<div class="grid grid-cols-1 md:grid-cols-3 gap-8 md:gap-16 items-start">
+								<div class="md:col-span-1">
+									<h2 class="md:text-5xl font-light text-[#337C6A] uppercase">
+										MISSION. Quattro valori alla guida di ogni scelta
+									</h2>
+								</div>
+								<div class="md:col-span-2" id="mission-tabs">
+									<div class="border-b border-gray-200">
+										<nav class="-mb-px flex flex-wrap space-x-8 text-xl" aria-label="Tabs">
+											<button class="tab-btn whitespace-nowrap py-4 px-1 border-b-2 text-xl text-[#337C6A] border-[#337C6A]" data-tab="1">
+												Disciplina
+											</button>
+											<button class="tab-btn whitespace-nowrap py-4 px-1 border-b-2 text-xl text-gray-500 border-transparent hover:text-gray-700 hover:border-gray-300" data-tab="2">
+												Determinazione
+											</button>
+											<button class="tab-btn whitespace-nowrap py-4 px-1 border-b-2 text-xl text-gray-500 border-transparent hover:text-gray-700 hover:border-gray-300" data-tab="3">
+												Dinamicità
+											</button>
+											<button class="tab-btn whitespace-nowrap py-4 px-1 border-b-2 text-xl text-gray-500 border-transparent hover:text-gray-700 hover:border-gray-300" data-tab="4">
+												Dedizione
+											</button>
+										</nav>
+									</div>
+									<div class="prose prose-lg leading-[1.8] text-xl text-gray-800 mt-8 min-h-[150px]">
+										<div class="tab-content" data-tab-content="1">
+											<p>
+												Un impegno costante e rigoroso, capace di trasformare l’attenzione al dettaglio in risultati concreti e affidabili.
+											</p>
+										</div>
+										<div class="tab-content hidden" data-tab-content="2">
+											<p>
+												La capacità di affrontare ogni sfida con chiarezza mentale e concentrazione, senza perdere di vista gli obiettivi.
+											</p>
+										</div>
+										<div class="tab-content hidden" data-tab-content="3">
+											<p>
+												La capacità di adattarsi con prontezza ai continui cambiamenti normativi, mantenendo sempre il controllo della situazione.
+											</p>
+										</div>
+										<div class="tab-content hidden" data-tab-content="4">
+											<p>
+												L’impegno autentico e costante verso ogni cliente, basato su preparazione approfondita e cura delle esigenze specifiche.
+											</p>
+										</div>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</section>
+		</main>
+
+		<div class="ajax-overlay">
+			<div class="ajax-overlay__bg"></div>
+			<div class="ajax-overlay__content-wrapper">
+				<div class="ajax-overlay__content"></div>
+			</div>
+			<button class="ajax-overlay__close-btn" aria-label="Chiudi overlay"></button>
+		</div>
+
+		<footer id="footer" class="h-[70vh] bg-white py-16 content-center">
+			<div class="max-w-7xl mx-auto px-10 grid grid-cols-1 md:grid-cols-2 gap-y-12 md:gap-8 text-sm">
+				<div class="md:col-span-1">
+					<div class="text-gray-600 tracking-wider flex flex-col gap-y-8 pl-16">
+						<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="143.515" height="63.542" viewBox="0 0 143.515 63.542">
+							<defs>
+								<clipPath id="a">
+									<rect width="143.515" height="63.543" fill="#161615" />
+								</clipPath>
+							</defs>
+							<g transform="translate(0 0)" clip-path="url(#a)">
+								<path d="M.822,15.356v-.006l-.01-.015a.172.172,0,0,0-.132-.071H.661a.174.174,0,0,0-.166.174h0V55.994H4.848V21.673Z" transform="translate(-0.19 -5.857)" fill="#161615" />
+								<path d="M53.884,0,49.509,0,27.019,34.531,5.79.013H.9A.175.175,0,0,0,.743.26L.756.283l24.91,39.1a2.464,2.464,0,0,0,3.754-.553L50.207,6.483V50.175h3.776V3.786" transform="translate(-0.279 0)" fill="#161615" />
+								<path d="M87.071,3.787h25.076c13.371,0,18.683,10.727,18.683,21.3h0c0,10.661-5.357,21.327-18.684,21.327H93.854v3.761c5.094-.022,10.633-.052,19.306-.052,15.311,0,21.766-12.5,21.766-25.036h0c0-12.487-6.46-25.011-21.766-25.011C100.375.078,101.1.014,86.972,0" transform="translate(-33.367 -0.001)" fill="#161615" />
+								<path d="M175.087.038V50.151H179.4V27.008h27.185V23.232H179.4V3.813h31.286V.038Z" transform="translate(-67.173 -0.014)" fill="#161615" />
+								<rect width="112.638" height="3.8" transform="translate(0 59.743)" fill="#161615" />
+							</g>
+						</svg>
+
+						<span class="uppercase text-sm"> P.IVA 03116060306 </span>
+					</div>
+				</div>
+				<div class="leading-relaxed md:grid-cols-1 gap-8">
+					<div class="gap-y-4 flex flex-col">
+						<p class="text-black font-black uppercase text-3xl">Studio <span class="font-light">Michele </span> Del Fabbro</p>
+
+						<p>
+							Udine, Italia <br />
+							Piazza della Repubblica, 3 <br /><br />
+							T. +39.0432.294880 | F. +39.0432.26863 <br />
+							info@…..it
+						</p>
+					</div>
+				</div>
+			</div>
+		</footer>
+
+		<script>
+			document.addEventListener("DOMContentLoaded", function () {
+				gsap.registerPlugin(ScrollTrigger, ScrollToPlugin)
+				let tl
+
+				// --- MODIFICA MOBILE: breakpoint per distinguere mobile da desktop.
+				// Coerente con il breakpoint 'md' di Tailwind (768px).
+				const isDesktop = window.matchMedia("(min-width: 768px)").matches
+
+				const sequence1Config = {
+					canvas: "#sequence-canvas-1",
+					trigger: "#section1",
+					path: "./images/",
+					frameCount: 90,
+					fileNamePrefix: "",
+					end: "+=100%",
+					pin: true
+				}
+
+				const sequence2Config = {
+					canvas: "#sequence-canvas-2",
+					trigger: "#section3",
+					path: "./video_frames_webp/",
+					frameCount: 108,
+					fileNamePrefix: "frame_",
+					end: "bottom bottom",
+					pin: "#canvas-sticky-container",
+					scrub: 0.5
+				}
+
+				function preloadImages(baseUrl, frameCount, prefix, onProgress) {
+					return new Promise((resolve) => {
+						// --- MODIFICA MOBILE: Se il frameCount è 0 (come per mobile), risolvi subito.
+						const images = []
+						if (frameCount === 0) {
+							resolve(images)
+							return
+						}
+						let loadedCount = 0
+						for (let i = 0; i < frameCount; i++) {
+							const img = new Image()
+							const frameName = `${prefix}${(i + 1)
+								.toString()
+								.padStart(5, "0")}.webp`
+							img.src = baseUrl + frameName
+							img.onload = () => {
+								loadedCount++
+								onProgress()
+								if (loadedCount === frameCount) resolve(images)
+							}
+							img.onerror = () => {
+								loadedCount++
+								console.warn(`Immagine non trovata: ${img.src}`)
+								onProgress()
+								if (loadedCount === frameCount) resolve(images)
+							}
+							images.push(img)
+						}
+					})
+				}
+
+				function setupImageSequence(config, images) {
+					if (!isDesktop || images.length === 0) return
+
+					const canvas = document.querySelector(config.canvas)
+					if (!canvas) return
+					const context = canvas.getContext("2d")
+					let frameData = {
+						frame: 0
+					}
+
+					function getDrawDimensions(image, container) {
+						const scaleX = container.clientWidth / image.naturalWidth
+						const scaleY = container.clientHeight / image.naturalHeight
+						const scale = Math.max(scaleX, scaleY)
+						const newWidth = image.naturalWidth * scale
+						const newHeight = image.naturalHeight * scale
+						const offsetX = (container.clientWidth - newWidth) / 2
+						const offsetY = (container.clientHeight - newHeight) / 2
+						return { offsetX, offsetY, newWidth, newHeight }
+					}
+
+					function render() {
+						const frameIndex = Math.max(
+							0,
+							Math.min(images.length - 1, Math.round(frameData.frame))
+						)
+						const imageToDraw = images[frameIndex]
+						if (imageToDraw && imageToDraw.complete) {
+							const container = canvas.parentElement
+							const { offsetX, offsetY, newWidth, newHeight } =
+								getDrawDimensions(imageToDraw, container)
+							context.clearRect(
+								0,
+								0,
+								context.canvas.width,
+								context.canvas.height
+							)
+							context.drawImage(
+								imageToDraw,
+								offsetX,
+								offsetY,
+								newWidth,
+								newHeight
+							)
+						}
+					}
+
+					function resizeCanvas() {
+						const container = canvas.parentElement
+						const firstImage = images[0]
+						if (!container || !firstImage) return
+						const dpr = window.devicePixelRatio || 1
+						canvas.width = container.clientWidth * dpr
+						canvas.height = container.clientHeight * dpr
+						context.setTransform(dpr, 0, 0, dpr, 0, 0)
+						render()
+					}
+
+					let stConfig = {
+						trigger: config.trigger,
+						start: config.start || "top top",
+						end: config.end,
+						scrub: config.scrub !== undefined ? config.scrub : 2,
+						onUpdate: render
+					}
+
+					if (config.pin) {
+						stConfig.pin = config.pin
+						if (config.pinSpacing !== undefined) {
+							stConfig.pinSpacing = config.pinSpacing
+						}
+					}
+
+					gsap.to(frameData, {
+						frame: config.frameCount - 1,
+						snap: "frame",
+						ease: "none",
+						scrollTrigger: stConfig
+					})
+
+					window.addEventListener("resize", resizeCanvas)
+					resizeCanvas()
+				}
+
+				function setupMissionTabs() {
+					const tabsContainer = document.querySelector("#mission-tabs")
+					if (!tabsContainer) return
+					const tabButtons = tabsContainer.querySelectorAll(".tab-btn")
+					const tabContents = tabsContainer.querySelectorAll(".tab-content")
+
+					tabButtons.forEach((button) => {
+						button.addEventListener("click", () => {
+							const tabNumber = button.dataset.tab
+							tabButtons.forEach((btn) => {
+								btn.classList.remove("text-[#337B6A]", "border-[#337B6A]")
+								btn.classList.add(
+									"text-gray-500",
+									"border-transparent",
+									"hover:text-gray-700",
+									"hover:border-gray-300"
+								)
+							})
+							button.classList.add("text-[#337B6A]", "border-[#337B6A]")
+							button.classList.remove("text-gray-500", "border-transparent")
+							tabContents.forEach((content) => {
+								if (content.dataset.tabContent === tabNumber) {
+									content.classList.remove("hidden")
+								} else {
+									content.classList.add("hidden")
+								}
+							})
+						})
+					})
+				}
+
+				function setupDotNavigation() {
+					const mainSections = document.querySelectorAll(
+						"main section[id], footer[id]"
+					)
+					const textSlides = document.querySelectorAll(
+						".text-scroller-container > div[id]"
+					)
+					const allSections = [...mainSections, ...textSlides]
+
+					allSections.forEach((section) => {
+						if (!section.getAttribute("id")) return
+
+						ScrollTrigger.create({
+							trigger: section,
+							start: "top center",
+							end: "bottom center",
+							onToggle: (self) => {
+								let targetId = section.getAttribute("id")
+								const navLink = document.querySelector(
+									`.dots-nav li[data-section="${targetId}"]`
+								)
+								if (navLink) {
+									if (self.isActive) {
+										document
+											.querySelectorAll(".dots-nav li.active")
+											.forEach((item) => item.classList.remove("active"))
+										navLink.classList.add("active")
+									}
+								}
+							}
+						})
+					})
+
+					const navItems = document.querySelectorAll(".dots-nav li")
+					navItems.forEach((item) => {
+						item.addEventListener("click", (e) => {
+							e.preventDefault()
+							const sectionId = item.dataset.section
+							if (!sectionId) return
+
+							let targetElement = document.getElementById(sectionId)
+							if (targetElement) {
+								gsap.to(window, {
+									duration: 1.5,
+									scrollTo: {
+										y: targetElement,
+										offsetY: 1
+									}
+								})
+							}
+						})
+					})
+				}
+
+				function setupRevealAnimations() {
+					const targets = gsap.utils.toArray(
+						"#section2 h1, #section2 p, #attivita h2, #attivita .prose"
+					)
+
+					targets.forEach((target) => {
+						if (
+							target.innerText.trim() === "" ||
+							target.closest("#mission-tabs")
+						) {
+							return
+						}
+
+						const wrapper = document.createElement("div")
+						wrapper.className = "has-animation animation-ltr"
+						target.parentNode.insertBefore(wrapper, target)
+						wrapper.appendChild(target)
+
+						ScrollTrigger.create({
+							trigger: wrapper,
+							start: "top 85%",
+							toggleClass: "animate-in",
+							once: true
+						})
+					})
+				}
+
+				async function initializePage() {
+					const loaderOverlay = document.getElementById("loading-overlay")
+					const loaderBar = document.getElementById("loader-bar-inner")
+
+					// --- MODIFICA MOBILE: il numero di frame da caricare dipende dal device. 0 per mobile.
+					const s1FrameCount = isDesktop ? sequence1Config.frameCount : 0
+					const s2FrameCount = isDesktop ? sequence2Config.frameCount : 0
+					const totalFrames = s1FrameCount + s2FrameCount
+
+					let loadedFrames = 0
+
+					const updateLoader = () => {
+						loadedFrames++
+						if (totalFrames > 0) {
+							const totalProgress = loadedFrames / totalFrames
+							loaderBar.style.width = `${totalProgress * 100}%`
+						}
+					}
+
+					console.log(
+						isDesktop
+							? "Inizio precaricamento per DESKTOP..."
+							: "Skipping precaricamento per MOBILE."
+					)
+
+					const [images1, images2] = await Promise.all([
+						preloadImages(
+							sequence1Config.path,
+							s1FrameCount, // Usa il numero di frame condizionale
+							sequence1Config.fileNamePrefix,
+							updateLoader
+						),
+						preloadImages(
+							sequence2Config.path,
+							s2FrameCount, // Usa il numero di frame condizionale
+							sequence2Config.fileNamePrefix,
+							updateLoader
+						)
+					])
+
+					// --- MODIFICA MOBILE: Su mobile, la barra di caricamento si completa istantaneamente
+					if (!isDesktop) {
+						loaderBar.style.width = `100%`
+					}
+
+					console.log("Precaricamento completato.")
+
+					gsap.to(loaderOverlay, {
+						opacity: 0,
+						duration: 0.5,
+						onComplete: () => {
+							loaderOverlay.style.display = "none"
+
+							// --- MODIFICA MOBILE: Inizializza le sequenze solo su desktop.
+							if (isDesktop) {
+								setupImageSequence(sequence1Config, images1)
+								setupImageSequence(sequence2Config, images2)
+							}
+
+							// Le altre funzioni vengono eseguite su tutti i device
+							setupDotNavigation()
+							setupMissionTabs()
+							setupRevealAnimations()
+							setupAjaxOverlayAnimation()
+							ScrollTrigger.refresh(true)
+						}
+					})
+				}
+
+				function setupAjaxOverlayAnimation() {
+					const triggerLinks = document.querySelectorAll(".link_page")
+					if (triggerLinks.length === 0) return
+
+					const overlay = document.querySelector(".ajax-overlay")
+					if (!overlay) return
+
+					const overlayBg = overlay.querySelector(".ajax-overlay__bg")
+					const contentWrapper = overlay.querySelector(
+						".ajax-overlay__content-wrapper"
+					)
+					const contentArea = overlay.querySelector(".ajax-overlay__content")
+					const closeBtn = overlay.querySelector(".ajax-overlay__close-btn")
+
+					let isAnimating = false
+					let activeTrigger = null
+
+					const animateRevealsIn = (container) => {
+						const targets = gsap.utils.toArray(
+							container.querySelectorAll("h1, .prose")
+						)
+						targets.forEach((target, index) => {
+							if (target.innerText.trim() === "") return
+							const wrapper = document.createElement("div")
+							wrapper.className = "has-animation animation-ltr"
+							target.parentNode.insertBefore(wrapper, target)
+							wrapper.appendChild(target)
+							setTimeout(() => {
+								wrapper.classList.add("animate-in")
+							}, 150 * index)
+						})
+					}
+
+					const openOverlay = (e) => {
+						e.preventDefault()
+						if (isAnimating) return
+						isAnimating = true
+
+						activeTrigger = e.currentTarget
+						const destinationUrl = activeTrigger.href
+
+						document.body.classList.add("is-overlay-active")
+						gsap.set(overlay, { visibility: "visible" })
+						gsap.set(contentArea, { opacity: 0 })
+						gsap.set(closeBtn, { opacity: 0 })
+
+						const tl = gsap.timeline({
+							onComplete: () => {
+								isAnimating = false
+							}
+						})
+
+						tl.to(overlayBg, {
+							opacity: 1,
+							duration: 0.5,
+							ease: "power2.inOut"
+						})
+							.to(
+								contentWrapper,
+								{ opacity: 1, scale: 1, duration: 0.5, ease: "power2.out" },
+								"-=0.4"
+							)
+							.to(contentArea, { opacity: 1, duration: 0.3 })
+							.to(
+								closeBtn,
+								{ opacity: 1, transform: "scale(1)", duration: 0.3 },
+								"-=0.3"
+							)
+
+						loadContent(destinationUrl)
+					}
+
+					const closeOverlay = () => {
+						if (isAnimating || !activeTrigger) return
+						isAnimating = true
+
+						const triggerSvg = activeTrigger.querySelector("svg")
+						if (!triggerSvg) {
+							console.error("SVG non trovato nel link attivo.")
+							isAnimating = false
+							return
+						}
+						const triggerBounds = triggerSvg.getBoundingClientRect()
+
+						const tl = gsap.timeline({
+							onComplete: () => {
+								document.body.classList.remove("is-overlay-active")
+								overlay.classList.remove("is-active")
+								contentArea.innerHTML = ""
+								gsap.set(overlay, { visibility: "hidden" })
+
+								// <<< --- ECCO LA SOLUZIONE! --- >>>
+								// Resettiamo completamente gli stili del wrapper per prepararlo alla prossima apertura.
+								gsap.set(contentWrapper, { clearProps: "all" })
+
+								isAnimating = false
+								activeTrigger = null
+							}
+						})
+
+						tl.to([contentArea, closeBtn], { opacity: 0, duration: 0.2 })
+							.to(
+								overlayBg,
+								{ opacity: 0, duration: 0.6, ease: "power2.inOut" },
+								"+=0.1"
+							)
+							.to(
+								contentWrapper,
+								{
+									top: triggerBounds.top,
+									left: triggerBounds.left,
+									width: triggerBounds.width,
+									height: triggerBounds.height,
+									borderRadius: "50%",
+									opacity: 0,
+									duration: 0.7,
+									ease: "expo.inOut"
+								},
+								"-=0.6"
+							)
+					}
+
+					const loadContent = (url) => {
+						fetch(url)
+							.then((response) => {
+								if (!response.ok) {
+									throw new Error(
+										`Errore HTTP ${response.status}: Impossibile trovare il file ${url}`
+									)
+								}
+								return response.text()
+							})
+							.then((html) => {
+								const parser = new DOMParser()
+								const doc = parser.parseFromString(html, "text/html")
+								contentArea.innerHTML = doc.body.innerHTML
+								overlay.classList.add("is-active")
+								animateRevealsIn(contentArea)
+							})
+							.catch((error) => {
+								console.error("Errore nel caricamento del contenuto:", error)
+								contentArea.innerHTML = `<div class="p-8 text-center text-red-500">${error.message}</div>`
+								overlay.classList.add("is-active")
+							})
+					}
+
+					triggerLinks.forEach((link) => {
+						link.addEventListener("click", openOverlay)
+					})
+
+					closeBtn.addEventListener("click", closeOverlay)
+					overlayBg.addEventListener("click", closeOverlay)
+					window.addEventListener("keydown", (e) => {
+						if (e.key === "Escape" && overlay.classList.contains("is-active")) {
+							closeOverlay()
+						}
+					})
+				}
+
+				// Per farla partire, assicurati di chiamare la funzione una volta che il DOM è pronto.
+				document.addEventListener("DOMContentLoaded", setupAjaxOverlayAnimation)
+
+				initializePage()
+			})
+
+			document.addEventListener("DOMContentLoaded", () => {
+				const animatedItems = document.querySelectorAll(".fade-up-target")
+				if (animatedItems.length > 0) {
+					const observer = new IntersectionObserver(
+						(entries) => {
+							entries.forEach((entry) => {
+								if (entry.isIntersecting) {
+									animatedItems.forEach((item, index) => {
+										item.style.transitionDelay = `${index * 200}ms`
+										item.classList.add("is-visible")
+									})
+									observer.unobserve(entry.target.parentElement)
+								}
+							})
+						},
+						{ threshold: 0.2 }
+					)
+					observer.observe(animatedItems[0])
+				}
+
+				const tabButtons = document.querySelectorAll(".tab-btn")
+				const tabContents = document.querySelectorAll(".tab-content")
+
+				tabButtons.forEach((button) => {
+					button.addEventListener("click", () => {
+						const tabId = button.dataset.tab
+						tabButtons.forEach((btn) => {
+							btn.classList.remove("text-[#57b3d3]", "border-[#57b3d3]")
+							btn.classList.add(
+								"text-gray-500",
+								"border-transparent",
+								"hover:text-gray-700",
+								"hover:border-gray-300"
+							)
+						})
+						button.classList.add("text-[#57b3d3]", "border-[#57b3d3]")
+						button.classList.remove("text-gray-500", "border-transparent")
+						tabContents.forEach((content) => {
+							content.classList.remove("tab-fade-in-up")
+							if (content.dataset.tabContent === tabId) {
+								content.classList.remove("hidden")
+								content.classList.add("tab-fade-in-up")
+							} else {
+								content.classList.add("hidden")
+							}
+						})
+					})
+				})
+			})
+
+			// Seleziona l'elemento del cursore esistente
+			const cursorCircle = document.getElementById("cursor-circle")
+
+			// Crea l'elemento per il tooltip e lo aggiunge al cursore
+			const cursorTooltip = document.createElement("div")
+			cursorTooltip.id = "cursor-tooltip"
+			cursorTooltip.textContent = "Scopri di più"
+			cursorCircle.appendChild(cursorTooltip)
+
+			// Seleziona tutti gli elementi che attiveranno l'effetto calamita
+			const magneticLinks = document.querySelectorAll(
+				"div .link_page, .main-nav a, .dots-nav a, #mission-tabs button"
+			)
+
+			const coords = {
+				mouseX: 0,
+				mouseY: 0, // Posizione reale del mouse
+				circleX: 0,
+				circleY: 0, // Posizione "smussata" del cursore
+				targetX: 0,
+				targetY: 0 // Posizione a cui il cursore punta (mouse o centro del link)
+			}
+
+			let activeLink = null
+			let hasMoved = false
+
+			// Aggiorna le coordinate del mouse e inizializza la posizione del cerchio al primo movimento
+			window.addEventListener("mousemove", (e) => {
+				if (!hasMoved) {
+					// Imposta la posizione iniziale per evitare un salto all'avvio
+					coords.circleX = e.clientX
+					coords.circleY = e.clientY
+					hasMoved = true
+				}
+				coords.mouseX = e.clientX
+				coords.mouseY = e.clientY
+			})
+
+			// Aggiunge i listener per 'mouseenter' e 'mouseleave' a ogni link magnetico
+			magneticLinks.forEach((link) => {
+				link.addEventListener("mouseenter", () => {
+					activeLink = link
+					cursorCircle.classList.add("is-magnetic")
+				})
+				link.addEventListener("mouseleave", () => {
+					activeLink = null
+					cursorCircle.classList.remove("is-magnetic")
+				})
+			})
+
+			const softnessFactor = 0.1 // Fattore di "morbidezza" del movimento
+
+			const animateCircle = () => {
+				// Se un link è attivo, il cursore punta al suo centro
+				if (activeLink) {
+					const rect = activeLink.getBoundingClientRect()
+					coords.targetX = rect.left + rect.width / 2
+					coords.targetY = rect.top + rect.height / 2
+				} else {
+					// Altrimenti, punta alla posizione reale del mouse
+					coords.targetX = coords.mouseX
+					coords.targetY = coords.mouseY
+				}
+
+				// Calcola la nuova posizione del cerchio usando l'interpolazione lineare (lerp)
+				let deltaX = coords.targetX - coords.circleX
+				let deltaY = coords.targetY - coords.circleY
+				coords.circleX += deltaX * softnessFactor
+				coords.circleY += deltaY * softnessFactor
+
+				// Misura la dimensione del cursore per centrarlo correttamente durante l'animazione
+				const cursorSize = cursorCircle.getBoundingClientRect()
+				const transX = coords.circleX - cursorSize.width / 2
+				const transY = coords.circleY - cursorSize.height / 2
+
+				// Applica la trasformazione per posizionare il cursore
+				cursorCircle.style.transform = `translate(${transX}px, ${transY}px)`
+
+				// Richiede il prossimo frame per un'animazione fluida
+				requestAnimationFrame(animateCircle)
+			}
+
+			// Avvia il ciclo di animazione del cursore
+			animateCircle()
+		</script>
+	</body>
+</html>
