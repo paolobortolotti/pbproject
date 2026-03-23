@@ -1,922 +1,1384 @@
 <!DOCTYPE html>
-<html lang="it">
-	<head>
-		<meta charset="UTF-8" />
-		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
-		<title>Studio Professionale - Layout Corretto con Animazioni Reveal</title>
-
-		<script src="https://cdn.tailwindcss.com"></script>
-		<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
-		<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
-		<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollToPlugin.min.js"></script>
-		<link rel="stylesheet" type="text/css" media="all" href="assets/style.css" />
-		<link rel="preconnect" href="https://fonts.googleapis.com" />
-		<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-		<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@200;300;400;500;600;900&display=swap" rel="stylesheet" />
-	</head>
-
-	<body class="bg-white">
-		<div id="cursor-circle"></div>
-		<div id="loading-overlay" class="loading-overlay">
-			<div class="loader-text">Caricamento esperienza...</div>
-			<div class="loader-bar">
-				<div id="loader-bar-inner" class="loader-bar-inner"></div>
-			</div>
-		</div>
-
-		<header class="top-0 left-0 w-full bg-white/90 backdrop-blur-sm z-50 min-h-80 content-center">
-			<div class="max-w-8xl mx-auto flex justify-between items-center flex-col gap-y-20">
-				<nav class="main-nav">
-					<ul class="flex flex-row space-x-6 uppercase">
-						<li>
-							<a href="#section1" class="text-xs text-gray-500 hover:text-black tracking-widest active">Home</a>
-						</li>
-						<li>
-							<a href="#section2" class="text-xs text-gray-500 hover:text-black tracking-widest">Lo Studio</a>
-						</li>
-						<li>
-							<a href="#section3" class="text-xs text-gray-500 hover:text-black tracking-widest">Attività</a>
-						</li>
-						<li>
-							<a href="#footer" class="text-xs text-gray-500 hover:text-black tracking-widest">Contatti</a>
-						</li>
-					</ul>
-				</nav>
-				<div class="font-semibold text-3xl text-gray-800 tracking-wider">
-					<img src="images/Logomdf.svg" />
-				</div>
-			</div>
-		</header>
-
-		<nav class="dots-nav" id="dotsNav">
-			<ul>
-				<li data-section="section1">
-					<a href="#section1" class="dot-link"></a>
-					<span class="dot-label">Home</span>
-				</li>
-				<li data-section="section2">
-					<a href="#section2" class="dot-link"></a>
-					<span class="dot-label">Lo Studio</span>
-				</li>
-				<li data-section="attivita">
-					<a href="#section3" class="dot-link"></a>
-					<span class="dot-label">Attività</span>
-				</li>
-				<li data-section="mission">
-					<a href="#section3" class="dot-link"></a>
-					<span class="dot-label">Mission</span>
-				</li>
-				<li data-section="footer">
-					<a href="#footer" class="dot-link"></a>
-					<span class="dot-label">Contatti</span>
-				</li>
-			</ul>
-		</nav>
-
-		<main>
-			<section id="section1">
-				<div class="w-full h-full flex items-center justify-center m-auto text-white z-10 relative">
-					<div class="w-full z-10 h-full content-center">
-						<div class="ml-4 md:ml-32 mb-64 mt-64 text-left px-4 md:px-0">
-							<div class="text-black text-4xl tracking-[0.2em] uppercase">
-								<p class="font-black">Studio <span class="font-light">Michele </span> Del Fabbro</p>
-							</div>
-						</div>
-						<div class="text-center flex justify-center flex-col px-4 md:px-0">
-							<div class="text-4xl sm:text-5xl md:text-6xl font-black text-black mb-6">
-								Precisione in Movimento
-							</div>
-							<div class="w-44 h-[2px] bg-[#337C6A] mx-auto mb-8 rounded"></div>
-							<p class="text-xl sm:text-xl text-gray-600 max-w mx-auto leading-relaxed">
-								La competenza nasce dal metodo, cresce con la preparazione, si afferma con l'esperienza.
-							</p>
-						</div>
-					</div>
-				</div>
-
-				<div class="image-sequence-container">
-					<canvas id="sequence-canvas-1" class="sequence-canvas hidden md:block"></canvas>
-
-					<video class="w-full h-full object-cover absolute inset-0 -z-10 block md:hidden" autoplay loop muted playsinline>
-						<source src="mobile/video1.mp4" type="video/mp4" />
-					</video>
-				</div>
-			</section>
-
-			<section id="section2" class="h-full bg-white flex py-16 md:py-24">
-				<div class="w-full max-w-5xl mx-auto flex flex-col gap-12 md:gap-16 items-center justify-center px-6 relative">
-					<div class="max-w-4xl self-center md:self-end">
-						<h1 class="text-2xl lg:text-5xl font-light tracking-wider uppercase leading-snug text-center md:text-left text-[#337c6a]">
-							Lo Studio. <br />
-							Competenza, Decisione <br />
-							e Affidabilità <br />
-							a Servizio del Cliente
-						</h1>
-					</div>
-					<div class="md:ml-45 max-w-2xl self-center md:self-start text-gray-600 leading-[1.8] text-xl">
-						<p>
-							Lo Studio del Dott. Michele Del Fabbro offre da anni consulenza tributaria ad imprese e persone fisiche, distinguendosi per l’approccio rigoroso e personalizzato. Grazie all’esperienza maturata e alla continua collaborazione con altri professionisti, lo Studio si pone come punto di riferimento per chi cerca un supporto tecnico e affidabile in materia fiscale e tributaria.
-						</p>
-					</div>
-					<a href="project1.html" class="absolute right-0 bottom-0 link_page" aria-label="Scopri i dettagli del progetto">
-						<svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" viewBox="0 0 48 48">
-							<g transform="translate(0 48) rotate(-90)">
-								<path d="M0,24A24,24,0,1,0,24,0,24,24,0,0,0,0,24Zm45.05,0A21.025,21.025,0,1,1,24,3,21.066,21.066,0,0,1,45.05,24ZM22.48,13.48v16.9l-5.42-5.43a1.5,1.5,0,0,0-2.12,2.13l9.09,8.86,9.1-8.86A1.506,1.506,0,1,0,31,24.95l-5.52,5.52V13.48a1.5,1.5,0,0,0-3,0Z" fill="#337c6a" />
-								<path d="M0,0H48V48H0Z" fill="none" />
-							</g>
-						</svg>
-					</a>
-				</div>
-			</section>
-
-			<section id="section3" class="relative bg-white md:h-[200vh]">
-				<div id="canvas-sticky-container" class="hidden md:block h-screen w-screen top-0 left-0">
-					<canvas id="sequence-canvas-2" class="sequence-canvas"></canvas>
-				</div>
-
-				<div class="block md:hidden pt-16 pb-8 px-6">
-					<video class="w-full h-auto rounded-lg" autoplay loop muted playsinline>
-						<source src="mobile/video2.mp4" type="video/mp4" />
-					</video>
-				</div>
-
-				<div class="md:absolute top-40 left-0 w-full z-10 text-scroller-container">
-					<div id="attivita" class="w-full flex items-center py-16 md:py-0 md:h-screen">
-						<div class="w-full max-w-6xl mx-auto px-6">
-							<h2 class="md:text-5xl font-light text-[#9A4D1E]">
-								ATTIVITÀ.<br />
-								DISCIPLINA, METODO<br />
-								E PREPARAZIONE ORIENTANO<br />
-								OGNI NOSTRA AZIONE
-							</h2>
-							<div class="prose prose-lg text-gray-800 mt-8 md:ml-96 max-w-lg leading-[1.8] text-xl">
-								<p>
-									Lo Studio offre consulenza tributaria completa, ordinaria e straordinaria, rivolta a imprese e persone fisiche. Dalla gestione fiscale quotidiana alle operazioni straordinarie, fino all’assistenza nelle verifiche e nel contenzioso tributario, l’approccio è sempre rigoroso e orientato alla soluzione.
-								</p>
-							</div>
-							<div class="w-full mt-16 flex flex-col items-center md:items-stretch space-y-20">
-								<a href="consulenza.html" class="fade-up-target md:self-start flex items-center group transition gap-x-10 border-b border-[#9A4D1E] pb-2 link_page">
-									<span class="text-xl uppercase tracking-wide text-[#9A4D1E] group-hover:border-transparent">
-										Consulenza ordinaria e straordinaria
-									</span>
-									<svg xmlns="http://www.w3.org/2000/svg" width="38" height="38" viewBox="0 0 48 48">
-										<g transform="translate(0 48) rotate(-90)">
-											<path d="M0,24A24,24,0,1,0,24,0,24,24,0,0,0,0,24Zm45.05,0A21.025,21.025,0,1,1,24,3,21.066,21.066,0,0,1,45.05,24ZM22.48,13.48v16.9l-5.42-5.43a1.5,1.5,0,0,0-2.12,2.13l9.09,8.86,9.1-8.86A1.506,1.506,0,1,0,31,24.95l-5.52,5.52V13.48a1.5,1.5,0,0,0-3,0Z" fill="#9A4D1E" />
-											<path d="M0,0H48V48H0Z" fill="none" />
-										</g>
-									</svg>
-								</a>
-								<a href="#" class="fade-up-target self-center flex items-center group transition gap-x-10 border-b border-[#9A4D1E] pb-2">
-									<span class="text-xl uppercase tracking-wide text-[#9A4D1E] group-hover:border-transparent">
-										Pre-contenzioso e contenzioso tributario
-									</span>
-									<svg xmlns="http://www.w3.org/2000/svg" width="38" height="38" viewBox="0 0 48 48">
-										<g transform="translate(0 48) rotate(-90)">
-											<path d="M0,24A24,24,0,1,0,24,0,24,24,0,0,0,0,24Zm45.05,0A21.025,21.025,0,1,1,24,3,21.066,21.066,0,0,1,45.05,24ZM22.48,13.48v16.9l-5.42-5.43a1.5,1.5,0,0,0-2.12,2.13l9.09,8.86,9.1-8.86A1.506,1.506,0,1,0,31,24.95l-5.52,5.52V13.48a1.5,1.5,0,0,0-3,0Z" fill="#9A4D1E" />
-											<path d="M0,0H48V48H0Z" fill="none" />
-										</g>
-									</svg>
-								</a>
-								<a href="#" class="fade-up-target md:self-end flex items-center group transition gap-x-10 border-b border-[#9A4D1E] pb-2">
-									<span class="text-xl uppercase tracking-wide text-[#9A4D1E] group-hover:border-transparent">
-										Altre attività e incarichi
-									</span>
-									<svg xmlns="http://www.w3.org/2000/svg" width="38" height="38" viewBox="0 0 48 48">
-										<g transform="translate(0 48) rotate(-90)">
-											<path d="M0,24A24,24,0,1,0,24,0,24,24,0,0,0,0,24Zm45.05,0A21.025,21.025,0,1,1,24,3,21.066,21.066,0,0,1,45.05,24ZM22.48,13.48v16.9l-5.42-5.43a1.5,1.5,0,0,0-2.12,2.13l9.09,8.86,9.1-8.86A1.506,1.506,0,1,0,31,24.95l-5.52,5.52V13.48a1.5,1.5,0,0,0-3,0Z" fill="#9A4D1E" />
-											<path d="M0,0H48V48H0Z" fill="none" />
-										</g>
-									</svg>
-								</a>
-							</div>
-						</div>
-					</div>
-
-					<div id="mission" class="w-full flex items-center py-16 md:py-0 md:h-screen">
-						<div class="w-full max-w-6xl mx-auto px-6">
-							<div class="grid grid-cols-1 md:grid-cols-3 gap-8 md:gap-16 items-start">
-								<div class="md:col-span-1">
-									<h2 class="md:text-5xl font-light text-[#337C6A] uppercase">
-										MISSION. Quattro valori alla guida di ogni scelta
-									</h2>
-								</div>
-								<div class="md:col-span-2" id="mission-tabs">
-									<div class="border-b border-gray-200">
-										<nav class="-mb-px flex flex-wrap space-x-8 text-xl" aria-label="Tabs">
-											<button class="tab-btn whitespace-nowrap py-4 px-1 border-b-2 text-xl text-[#337C6A] border-[#337C6A]" data-tab="1">
-												Disciplina
-											</button>
-											<button class="tab-btn whitespace-nowrap py-4 px-1 border-b-2 text-xl text-gray-500 border-transparent hover:text-gray-700 hover:border-gray-300" data-tab="2">
-												Determinazione
-											</button>
-											<button class="tab-btn whitespace-nowrap py-4 px-1 border-b-2 text-xl text-gray-500 border-transparent hover:text-gray-700 hover:border-gray-300" data-tab="3">
-												Dinamicità
-											</button>
-											<button class="tab-btn whitespace-nowrap py-4 px-1 border-b-2 text-xl text-gray-500 border-transparent hover:text-gray-700 hover:border-gray-300" data-tab="4">
-												Dedizione
-											</button>
-										</nav>
-									</div>
-									<div class="prose prose-lg leading-[1.8] text-xl text-gray-800 mt-8 min-h-[150px]">
-										<div class="tab-content" data-tab-content="1">
-											<p>
-												Un impegno costante e rigoroso, capace di trasformare l’attenzione al dettaglio in risultati concreti e affidabili.
-											</p>
-										</div>
-										<div class="tab-content hidden" data-tab-content="2">
-											<p>
-												La capacità di affrontare ogni sfida con chiarezza mentale e concentrazione, senza perdere di vista gli obiettivi.
-											</p>
-										</div>
-										<div class="tab-content hidden" data-tab-content="3">
-											<p>
-												La capacità di adattarsi con prontezza ai continui cambiamenti normativi, mantenendo sempre il controllo della situazione.
-											</p>
-										</div>
-										<div class="tab-content hidden" data-tab-content="4">
-											<p>
-												L’impegno autentico e costante verso ogni cliente, basato su preparazione approfondita e cura delle esigenze specifiche.
-											</p>
-										</div>
-									</div>
-								</div>
-							</div>
-						</div>
-					</div>
-				</div>
-			</section>
-		</main>
-
-		<div class="ajax-overlay">
-			<div class="ajax-overlay__bg"></div>
-			<div class="ajax-overlay__content-wrapper">
-				<div class="ajax-overlay__content"></div>
-			</div>
-			<button class="ajax-overlay__close-btn" aria-label="Chiudi overlay"></button>
-		</div>
-
-		<footer id="footer" class="h-[70vh] bg-white py-16 content-center">
-			<div class="max-w-7xl mx-auto px-10 grid grid-cols-1 md:grid-cols-2 gap-y-12 md:gap-8 text-sm">
-				<div class="md:col-span-1">
-					<div class="text-gray-600 tracking-wider flex flex-col gap-y-8 pl-16">
-						<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="143.515" height="63.542" viewBox="0 0 143.515 63.542">
-							<defs>
-								<clipPath id="a">
-									<rect width="143.515" height="63.543" fill="#161615" />
-								</clipPath>
-							</defs>
-							<g transform="translate(0 0)" clip-path="url(#a)">
-								<path d="M.822,15.356v-.006l-.01-.015a.172.172,0,0,0-.132-.071H.661a.174.174,0,0,0-.166.174h0V55.994H4.848V21.673Z" transform="translate(-0.19 -5.857)" fill="#161615" />
-								<path d="M53.884,0,49.509,0,27.019,34.531,5.79.013H.9A.175.175,0,0,0,.743.26L.756.283l24.91,39.1a2.464,2.464,0,0,0,3.754-.553L50.207,6.483V50.175h3.776V3.786" transform="translate(-0.279 0)" fill="#161615" />
-								<path d="M87.071,3.787h25.076c13.371,0,18.683,10.727,18.683,21.3h0c0,10.661-5.357,21.327-18.684,21.327H93.854v3.761c5.094-.022,10.633-.052,19.306-.052,15.311,0,21.766-12.5,21.766-25.036h0c0-12.487-6.46-25.011-21.766-25.011C100.375.078,101.1.014,86.972,0" transform="translate(-33.367 -0.001)" fill="#161615" />
-								<path d="M175.087.038V50.151H179.4V27.008h27.185V23.232H179.4V3.813h31.286V.038Z" transform="translate(-67.173 -0.014)" fill="#161615" />
-								<rect width="112.638" height="3.8" transform="translate(0 59.743)" fill="#161615" />
-							</g>
-						</svg>
-
-						<span class="uppercase text-sm"> P.IVA 03116060306 </span>
-					</div>
-				</div>
-				<div class="leading-relaxed md:grid-cols-1 gap-8">
-					<div class="gap-y-4 flex flex-col">
-						<p class="text-black font-black uppercase text-3xl">Studio <span class="font-light">Michele </span> Del Fabbro</p>
-
-						<p>
-							Udine, Italia <br />
-							Piazza della Repubblica, 3 <br /><br />
-							T. +39.0432.294880 | F. +39.0432.26863 <br />
-							info@…..it
-						</p>
-					</div>
-				</div>
-			</div>
-		</footer>
-
-		<script>
-			document.addEventListener("DOMContentLoaded", function () {
-				gsap.registerPlugin(ScrollTrigger, ScrollToPlugin)
-				let tl
-
-				// --- MODIFICA MOBILE: breakpoint per distinguere mobile da desktop.
-				// Coerente con il breakpoint 'md' di Tailwind (768px).
-				const isDesktop = window.matchMedia("(min-width: 768px)").matches
-
-				const sequence1Config = {
-					canvas: "#sequence-canvas-1",
-					trigger: "#section1",
-					path: "./images/",
-					frameCount: 90,
-					fileNamePrefix: "",
-					end: "+=100%",
-					pin: true
-				}
-
-				const sequence2Config = {
-					canvas: "#sequence-canvas-2",
-					trigger: "#section3",
-					path: "./video_frames_webp/",
-					frameCount: 108,
-					fileNamePrefix: "frame_",
-					end: "bottom bottom",
-					pin: "#canvas-sticky-container",
-					scrub: 0.5
-				}
-
-				function preloadImages(baseUrl, frameCount, prefix, onProgress) {
-					return new Promise((resolve) => {
-						// --- MODIFICA MOBILE: Se il frameCount è 0 (come per mobile), risolvi subito.
-						const images = []
-						if (frameCount === 0) {
-							resolve(images)
-							return
-						}
-						let loadedCount = 0
-						for (let i = 0; i < frameCount; i++) {
-							const img = new Image()
-							const frameName = `${prefix}${(i + 1)
-								.toString()
-								.padStart(5, "0")}.webp`
-							img.src = baseUrl + frameName
-							img.onload = () => {
-								loadedCount++
-								onProgress()
-								if (loadedCount === frameCount) resolve(images)
-							}
-							img.onerror = () => {
-								loadedCount++
-								console.warn(`Immagine non trovata: ${img.src}`)
-								onProgress()
-								if (loadedCount === frameCount) resolve(images)
-							}
-							images.push(img)
-						}
-					})
-				}
-
-				function setupImageSequence(config, images) {
-					if (!isDesktop || images.length === 0) return
-
-					const canvas = document.querySelector(config.canvas)
-					if (!canvas) return
-					const context = canvas.getContext("2d")
-					let frameData = {
-						frame: 0
-					}
-
-					function getDrawDimensions(image, container) {
-						const scaleX = container.clientWidth / image.naturalWidth
-						const scaleY = container.clientHeight / image.naturalHeight
-						const scale = Math.max(scaleX, scaleY)
-						const newWidth = image.naturalWidth * scale
-						const newHeight = image.naturalHeight * scale
-						const offsetX = (container.clientWidth - newWidth) / 2
-						const offsetY = (container.clientHeight - newHeight) / 2
-						return { offsetX, offsetY, newWidth, newHeight }
-					}
-
-					function render() {
-						const frameIndex = Math.max(
-							0,
-							Math.min(images.length - 1, Math.round(frameData.frame))
-						)
-						const imageToDraw = images[frameIndex]
-						if (imageToDraw && imageToDraw.complete) {
-							const container = canvas.parentElement
-							const { offsetX, offsetY, newWidth, newHeight } =
-								getDrawDimensions(imageToDraw, container)
-							context.clearRect(
-								0,
-								0,
-								context.canvas.width,
-								context.canvas.height
-							)
-							context.drawImage(
-								imageToDraw,
-								offsetX,
-								offsetY,
-								newWidth,
-								newHeight
-							)
-						}
-					}
-
-					function resizeCanvas() {
-						const container = canvas.parentElement
-						const firstImage = images[0]
-						if (!container || !firstImage) return
-						const dpr = window.devicePixelRatio || 1
-						canvas.width = container.clientWidth * dpr
-						canvas.height = container.clientHeight * dpr
-						context.setTransform(dpr, 0, 0, dpr, 0, 0)
-						render()
-					}
-
-					let stConfig = {
-						trigger: config.trigger,
-						start: config.start || "top top",
-						end: config.end,
-						scrub: config.scrub !== undefined ? config.scrub : 2,
-						onUpdate: render
-					}
-
-					if (config.pin) {
-						stConfig.pin = config.pin
-						if (config.pinSpacing !== undefined) {
-							stConfig.pinSpacing = config.pinSpacing
-						}
-					}
-
-					gsap.to(frameData, {
-						frame: config.frameCount - 1,
-						snap: "frame",
-						ease: "none",
-						scrollTrigger: stConfig
-					})
-
-					window.addEventListener("resize", resizeCanvas)
-					resizeCanvas()
-				}
-
-				function setupMissionTabs() {
-					const tabsContainer = document.querySelector("#mission-tabs")
-					if (!tabsContainer) return
-					const tabButtons = tabsContainer.querySelectorAll(".tab-btn")
-					const tabContents = tabsContainer.querySelectorAll(".tab-content")
-
-					tabButtons.forEach((button) => {
-						button.addEventListener("click", () => {
-							const tabNumber = button.dataset.tab
-							tabButtons.forEach((btn) => {
-								btn.classList.remove("text-[#337B6A]", "border-[#337B6A]")
-								btn.classList.add(
-									"text-gray-500",
-									"border-transparent",
-									"hover:text-gray-700",
-									"hover:border-gray-300"
-								)
-							})
-							button.classList.add("text-[#337B6A]", "border-[#337B6A]")
-							button.classList.remove("text-gray-500", "border-transparent")
-							tabContents.forEach((content) => {
-								if (content.dataset.tabContent === tabNumber) {
-									content.classList.remove("hidden")
-								} else {
-									content.classList.add("hidden")
-								}
-							})
-						})
-					})
-				}
-
-				function setupDotNavigation() {
-					const mainSections = document.querySelectorAll(
-						"main section[id], footer[id]"
-					)
-					const textSlides = document.querySelectorAll(
-						".text-scroller-container > div[id]"
-					)
-					const allSections = [...mainSections, ...textSlides]
-
-					allSections.forEach((section) => {
-						if (!section.getAttribute("id")) return
-
-						ScrollTrigger.create({
-							trigger: section,
-							start: "top center",
-							end: "bottom center",
-							onToggle: (self) => {
-								let targetId = section.getAttribute("id")
-								const navLink = document.querySelector(
-									`.dots-nav li[data-section="${targetId}"]`
-								)
-								if (navLink) {
-									if (self.isActive) {
-										document
-											.querySelectorAll(".dots-nav li.active")
-											.forEach((item) => item.classList.remove("active"))
-										navLink.classList.add("active")
-									}
-								}
-							}
-						})
-					})
-
-					const navItems = document.querySelectorAll(".dots-nav li")
-					navItems.forEach((item) => {
-						item.addEventListener("click", (e) => {
-							e.preventDefault()
-							const sectionId = item.dataset.section
-							if (!sectionId) return
-
-							let targetElement = document.getElementById(sectionId)
-							if (targetElement) {
-								gsap.to(window, {
-									duration: 1.5,
-									scrollTo: {
-										y: targetElement,
-										offsetY: 1
-									}
-								})
-							}
-						})
-					})
-				}
-
-				function setupRevealAnimations() {
-					const targets = gsap.utils.toArray(
-						"#section2 h1, #section2 p, #attivita h2, #attivita .prose"
-					)
-
-					targets.forEach((target) => {
-						if (
-							target.innerText.trim() === "" ||
-							target.closest("#mission-tabs")
-						) {
-							return
-						}
-
-						const wrapper = document.createElement("div")
-						wrapper.className = "has-animation animation-ltr"
-						target.parentNode.insertBefore(wrapper, target)
-						wrapper.appendChild(target)
-
-						ScrollTrigger.create({
-							trigger: wrapper,
-							start: "top 85%",
-							toggleClass: "animate-in",
-							once: true
-						})
-					})
-				}
-
-				async function initializePage() {
-					const loaderOverlay = document.getElementById("loading-overlay")
-					const loaderBar = document.getElementById("loader-bar-inner")
-
-					// --- MODIFICA MOBILE: il numero di frame da caricare dipende dal device. 0 per mobile.
-					const s1FrameCount = isDesktop ? sequence1Config.frameCount : 0
-					const s2FrameCount = isDesktop ? sequence2Config.frameCount : 0
-					const totalFrames = s1FrameCount + s2FrameCount
-
-					let loadedFrames = 0
-
-					const updateLoader = () => {
-						loadedFrames++
-						if (totalFrames > 0) {
-							const totalProgress = loadedFrames / totalFrames
-							loaderBar.style.width = `${totalProgress * 100}%`
-						}
-					}
-
-					console.log(
-						isDesktop
-							? "Inizio precaricamento per DESKTOP..."
-							: "Skipping precaricamento per MOBILE."
-					)
-
-					const [images1, images2] = await Promise.all([
-						preloadImages(
-							sequence1Config.path,
-							s1FrameCount, // Usa il numero di frame condizionale
-							sequence1Config.fileNamePrefix,
-							updateLoader
-						),
-						preloadImages(
-							sequence2Config.path,
-							s2FrameCount, // Usa il numero di frame condizionale
-							sequence2Config.fileNamePrefix,
-							updateLoader
-						)
-					])
-
-					// --- MODIFICA MOBILE: Su mobile, la barra di caricamento si completa istantaneamente
-					if (!isDesktop) {
-						loaderBar.style.width = `100%`
-					}
-
-					console.log("Precaricamento completato.")
-
-					gsap.to(loaderOverlay, {
-						opacity: 0,
-						duration: 0.5,
-						onComplete: () => {
-							loaderOverlay.style.display = "none"
-
-							// --- MODIFICA MOBILE: Inizializza le sequenze solo su desktop.
-							if (isDesktop) {
-								setupImageSequence(sequence1Config, images1)
-								setupImageSequence(sequence2Config, images2)
-							}
-
-							// Le altre funzioni vengono eseguite su tutti i device
-							setupDotNavigation()
-							setupMissionTabs()
-							setupRevealAnimations()
-							setupAjaxOverlayAnimation()
-							ScrollTrigger.refresh(true)
-						}
-					})
-				}
-
-				function setupAjaxOverlayAnimation() {
-					const triggerLinks = document.querySelectorAll(".link_page")
-					if (triggerLinks.length === 0) return
-
-					const overlay = document.querySelector(".ajax-overlay")
-					if (!overlay) return
-
-					const overlayBg = overlay.querySelector(".ajax-overlay__bg")
-					const contentWrapper = overlay.querySelector(
-						".ajax-overlay__content-wrapper"
-					)
-					const contentArea = overlay.querySelector(".ajax-overlay__content")
-					const closeBtn = overlay.querySelector(".ajax-overlay__close-btn")
-
-					let isAnimating = false
-					let activeTrigger = null
-
-					const animateRevealsIn = (container) => {
-						const targets = gsap.utils.toArray(
-							container.querySelectorAll("h1, .prose")
-						)
-						targets.forEach((target, index) => {
-							if (target.innerText.trim() === "") return
-							const wrapper = document.createElement("div")
-							wrapper.className = "has-animation animation-ltr"
-							target.parentNode.insertBefore(wrapper, target)
-							wrapper.appendChild(target)
-							setTimeout(() => {
-								wrapper.classList.add("animate-in")
-							}, 150 * index)
-						})
-					}
-
-					const openOverlay = (e) => {
-						e.preventDefault()
-						if (isAnimating) return
-						isAnimating = true
-
-						activeTrigger = e.currentTarget
-						const destinationUrl = activeTrigger.href
-
-						document.body.classList.add("is-overlay-active")
-						gsap.set(overlay, { visibility: "visible" })
-						gsap.set(contentArea, { opacity: 0 })
-						gsap.set(closeBtn, { opacity: 0 })
-
-						const tl = gsap.timeline({
-							onComplete: () => {
-								isAnimating = false
-							}
-						})
-
-						tl.to(overlayBg, {
-							opacity: 1,
-							duration: 0.5,
-							ease: "power2.inOut"
-						})
-							.to(
-								contentWrapper,
-								{ opacity: 1, scale: 1, duration: 0.5, ease: "power2.out" },
-								"-=0.4"
-							)
-							.to(contentArea, { opacity: 1, duration: 0.3 })
-							.to(
-								closeBtn,
-								{ opacity: 1, transform: "scale(1)", duration: 0.3 },
-								"-=0.3"
-							)
-
-						loadContent(destinationUrl)
-					}
-
-					const closeOverlay = () => {
-						if (isAnimating || !activeTrigger) return
-						isAnimating = true
-
-						const triggerSvg = activeTrigger.querySelector("svg")
-						if (!triggerSvg) {
-							console.error("SVG non trovato nel link attivo.")
-							isAnimating = false
-							return
-						}
-						const triggerBounds = triggerSvg.getBoundingClientRect()
-
-						const tl = gsap.timeline({
-							onComplete: () => {
-								document.body.classList.remove("is-overlay-active")
-								overlay.classList.remove("is-active")
-								contentArea.innerHTML = ""
-								gsap.set(overlay, { visibility: "hidden" })
-
-								// <<< --- ECCO LA SOLUZIONE! --- >>>
-								// Resettiamo completamente gli stili del wrapper per prepararlo alla prossima apertura.
-								gsap.set(contentWrapper, { clearProps: "all" })
-
-								isAnimating = false
-								activeTrigger = null
-							}
-						})
-
-						tl.to([contentArea, closeBtn], { opacity: 0, duration: 0.2 })
-							.to(
-								overlayBg,
-								{ opacity: 0, duration: 0.6, ease: "power2.inOut" },
-								"+=0.1"
-							)
-							.to(
-								contentWrapper,
-								{
-									top: triggerBounds.top,
-									left: triggerBounds.left,
-									width: triggerBounds.width,
-									height: triggerBounds.height,
-									borderRadius: "50%",
-									opacity: 0,
-									duration: 0.7,
-									ease: "expo.inOut"
-								},
-								"-=0.6"
-							)
-					}
-
-					const loadContent = (url) => {
-						fetch(url)
-							.then((response) => {
-								if (!response.ok) {
-									throw new Error(
-										`Errore HTTP ${response.status}: Impossibile trovare il file ${url}`
-									)
-								}
-								return response.text()
-							})
-							.then((html) => {
-								const parser = new DOMParser()
-								const doc = parser.parseFromString(html, "text/html")
-								contentArea.innerHTML = doc.body.innerHTML
-								overlay.classList.add("is-active")
-								animateRevealsIn(contentArea)
-							})
-							.catch((error) => {
-								console.error("Errore nel caricamento del contenuto:", error)
-								contentArea.innerHTML = `<div class="p-8 text-center text-red-500">${error.message}</div>`
-								overlay.classList.add("is-active")
-							})
-					}
-
-					triggerLinks.forEach((link) => {
-						link.addEventListener("click", openOverlay)
-					})
-
-					closeBtn.addEventListener("click", closeOverlay)
-					overlayBg.addEventListener("click", closeOverlay)
-					window.addEventListener("keydown", (e) => {
-						if (e.key === "Escape" && overlay.classList.contains("is-active")) {
-							closeOverlay()
-						}
-					})
-				}
-
-				// Per farla partire, assicurati di chiamare la funzione una volta che il DOM è pronto.
-				document.addEventListener("DOMContentLoaded", setupAjaxOverlayAnimation)
-
-				initializePage()
-			})
-
-			document.addEventListener("DOMContentLoaded", () => {
-				const animatedItems = document.querySelectorAll(".fade-up-target")
-				if (animatedItems.length > 0) {
-					const observer = new IntersectionObserver(
-						(entries) => {
-							entries.forEach((entry) => {
-								if (entry.isIntersecting) {
-									animatedItems.forEach((item, index) => {
-										item.style.transitionDelay = `${index * 200}ms`
-										item.classList.add("is-visible")
-									})
-									observer.unobserve(entry.target.parentElement)
-								}
-							})
-						},
-						{ threshold: 0.2 }
-					)
-					observer.observe(animatedItems[0])
-				}
-
-				const tabButtons = document.querySelectorAll(".tab-btn")
-				const tabContents = document.querySelectorAll(".tab-content")
-
-				tabButtons.forEach((button) => {
-					button.addEventListener("click", () => {
-						const tabId = button.dataset.tab
-						tabButtons.forEach((btn) => {
-							btn.classList.remove("text-[#57b3d3]", "border-[#57b3d3]")
-							btn.classList.add(
-								"text-gray-500",
-								"border-transparent",
-								"hover:text-gray-700",
-								"hover:border-gray-300"
-							)
-						})
-						button.classList.add("text-[#57b3d3]", "border-[#57b3d3]")
-						button.classList.remove("text-gray-500", "border-transparent")
-						tabContents.forEach((content) => {
-							content.classList.remove("tab-fade-in-up")
-							if (content.dataset.tabContent === tabId) {
-								content.classList.remove("hidden")
-								content.classList.add("tab-fade-in-up")
-							} else {
-								content.classList.add("hidden")
-							}
-						})
-					})
-				})
-			})
-
-			// Seleziona l'elemento del cursore esistente
-			const cursorCircle = document.getElementById("cursor-circle")
-
-			// Crea l'elemento per il tooltip e lo aggiunge al cursore
-			const cursorTooltip = document.createElement("div")
-			cursorTooltip.id = "cursor-tooltip"
-			cursorTooltip.textContent = "Scopri di più"
-			cursorCircle.appendChild(cursorTooltip)
-
-			// Seleziona tutti gli elementi che attiveranno l'effetto calamita
-			const magneticLinks = document.querySelectorAll(
-				"div .link_page, .main-nav a, .dots-nav a, #mission-tabs button"
-			)
-
-			const coords = {
-				mouseX: 0,
-				mouseY: 0, // Posizione reale del mouse
-				circleX: 0,
-				circleY: 0, // Posizione "smussata" del cursore
-				targetX: 0,
-				targetY: 0 // Posizione a cui il cursore punta (mouse o centro del link)
-			}
-
-			let activeLink = null
-			let hasMoved = false
-
-			// Aggiorna le coordinate del mouse e inizializza la posizione del cerchio al primo movimento
-			window.addEventListener("mousemove", (e) => {
-				if (!hasMoved) {
-					// Imposta la posizione iniziale per evitare un salto all'avvio
-					coords.circleX = e.clientX
-					coords.circleY = e.clientY
-					hasMoved = true
-				}
-				coords.mouseX = e.clientX
-				coords.mouseY = e.clientY
-			})
-
-			// Aggiunge i listener per 'mouseenter' e 'mouseleave' a ogni link magnetico
-			magneticLinks.forEach((link) => {
-				link.addEventListener("mouseenter", () => {
-					activeLink = link
-					cursorCircle.classList.add("is-magnetic")
-				})
-				link.addEventListener("mouseleave", () => {
-					activeLink = null
-					cursorCircle.classList.remove("is-magnetic")
-				})
-			})
-
-			const softnessFactor = 0.1 // Fattore di "morbidezza" del movimento
-
-			const animateCircle = () => {
-				// Se un link è attivo, il cursore punta al suo centro
-				if (activeLink) {
-					const rect = activeLink.getBoundingClientRect()
-					coords.targetX = rect.left + rect.width / 2
-					coords.targetY = rect.top + rect.height / 2
-				} else {
-					// Altrimenti, punta alla posizione reale del mouse
-					coords.targetX = coords.mouseX
-					coords.targetY = coords.mouseY
-				}
-
-				// Calcola la nuova posizione del cerchio usando l'interpolazione lineare (lerp)
-				let deltaX = coords.targetX - coords.circleX
-				let deltaY = coords.targetY - coords.circleY
-				coords.circleX += deltaX * softnessFactor
-				coords.circleY += deltaY * softnessFactor
-
-				// Misura la dimensione del cursore per centrarlo correttamente durante l'animazione
-				const cursorSize = cursorCircle.getBoundingClientRect()
-				const transX = coords.circleX - cursorSize.width / 2
-				const transY = coords.circleY - cursorSize.height / 2
-
-				// Applica la trasformazione per posizionare il cursore
-				cursorCircle.style.transform = `translate(${transX}px, ${transY}px)`
-
-				// Richiede il prossimo frame per un'animazione fluida
-				requestAnimationFrame(animateCircle)
-			}
-
-			// Avvia il ciclo di animazione del cursore
-			animateCircle()
-		</script>
-	</body>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Visual Prompt Director</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=DM+Mono:wght@300;400;500&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --black: #0a0a0a;
+    --surface: #111111;
+    --surface2: #1a1a1a;
+    --surface3: #222222;
+    --border: #2a2a2a;
+    --border2: #333333;
+    --accent: #c8a96e;
+    --accent2: #e8c98e;
+    --text: #e8e4dc;
+    --muted: #666666;
+    --muted2: #888888;
+    --cyan: #5cc8d4;
+    --error: #e05555;
+    --success: #5db87a;
+    --60: var(--black);
+    --30: var(--surface);
+    --10: var(--accent);
+  }
+ 
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+ 
+  body {
+    background: var(--60);
+    color: var(--text);
+    font-family: 'DM Sans', sans-serif;
+    font-weight: 300;
+    min-height: 100vh;
+    overflow-x: hidden;
+  }
+ 
+  /* LAYOUT */
+  .app {
+    display: grid;
+    grid-template-columns: 280px 1fr;
+    grid-template-rows: auto 1fr;
+    min-height: 100vh;
+  }
+ 
+  /* HEADER */
+  header {
+    grid-column: 1 / -1;
+    background: var(--surface);
+    border-bottom: 1px solid var(--border);
+    padding: 0 2rem;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    height: 64px;
+  }
+ 
+  .logo {
+    display: flex;
+    align-items: baseline;
+    gap: 0.5rem;
+  }
+ 
+  .logo-title {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.25rem;
+    color: var(--text);
+    letter-spacing: 0.02em;
+  }
+ 
+  .logo-sub {
+    font-family: 'DM Mono', monospace;
+    font-size: 0.6rem;
+    color: var(--accent);
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+  }
+ 
+  .header-right {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+  }
+ 
+  .status-dot {
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: var(--success);
+    animation: pulse 2s infinite;
+  }
+ 
+  @keyframes pulse {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0.4; }
+  }
+ 
+  .status-label {
+    font-family: 'DM Mono', monospace;
+    font-size: 0.65rem;
+    color: var(--muted2);
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+  }
+ 
+  /* SIDEBAR */
+  aside {
+    background: var(--surface);
+    border-right: 1px solid var(--border);
+    padding: 1.5rem;
+    overflow-y: auto;
+  }
+ 
+  .sidebar-section {
+    margin-bottom: 2rem;
+  }
+ 
+  .sidebar-label {
+    font-family: 'DM Mono', monospace;
+    font-size: 0.6rem;
+    color: var(--muted);
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    margin-bottom: 0.75rem;
+    display: block;
+  }
+ 
+  /* STYLE PRESETS */
+  .style-grid {
+    display: flex;
+    flex-direction: column;
+    gap: 0.4rem;
+  }
+ 
+  .style-card {
+    background: var(--surface2);
+    border: 1px solid var(--border);
+    border-radius: 4px;
+    padding: 0.75rem 1rem;
+    cursor: pointer;
+    transition: all 0.15s ease;
+    position: relative;
+  }
+ 
+  .style-card:hover {
+    border-color: var(--border2);
+    background: var(--surface3);
+  }
+ 
+  .style-card.active {
+    border-color: var(--accent);
+    background: rgba(200, 169, 110, 0.06);
+  }
+ 
+  .style-card.active::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 0;
+    bottom: 0;
+    width: 2px;
+    background: var(--accent);
+    border-radius: 4px 0 0 4px;
+  }
+ 
+  .style-name {
+    font-family: 'DM Mono', monospace;
+    font-size: 0.7rem;
+    color: var(--accent);
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    margin-bottom: 0.2rem;
+  }
+ 
+  .style-desc {
+    font-size: 0.7rem;
+    color: var(--muted2);
+    line-height: 1.4;
+  }
+ 
+  /* RATIO SELECT */
+  .ratio-group {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 0.35rem;
+  }
+ 
+  .ratio-btn {
+    background: var(--surface2);
+    border: 1px solid var(--border);
+    border-radius: 3px;
+    padding: 0.4rem;
+    cursor: pointer;
+    font-family: 'DM Mono', monospace;
+    font-size: 0.6rem;
+    color: var(--muted2);
+    text-align: center;
+    transition: all 0.15s;
+  }
+ 
+  .ratio-btn:hover { border-color: var(--border2); color: var(--text); }
+  .ratio-btn.active { border-color: var(--accent); color: var(--accent); background: rgba(200,169,110,0.06); }
+ 
+  /* SLIDERS */
+  .slider-group { display: flex; flex-direction: column; gap: 0.75rem; }
+ 
+  .slider-row {
+    display: flex;
+    flex-direction: column;
+    gap: 0.35rem;
+  }
+ 
+  .slider-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+ 
+  .slider-name {
+    font-family: 'DM Mono', monospace;
+    font-size: 0.65rem;
+    color: var(--muted2);
+    letter-spacing: 0.08em;
+  }
+ 
+  .slider-val {
+    font-family: 'DM Mono', monospace;
+    font-size: 0.65rem;
+    color: var(--accent);
+  }
+ 
+  input[type="range"] {
+    width: 100%;
+    -webkit-appearance: none;
+    height: 2px;
+    background: var(--border2);
+    border-radius: 1px;
+    outline: none;
+  }
+ 
+  input[type="range"]::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
+    background: var(--accent);
+    cursor: pointer;
+  }
+ 
+  /* TOGGLES */
+  .toggle-group { display: flex; flex-direction: column; gap: 0.5rem; }
+ 
+  .toggle-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+ 
+  .toggle-name {
+    font-family: 'DM Mono', monospace;
+    font-size: 0.65rem;
+    color: var(--muted2);
+    letter-spacing: 0.08em;
+  }
+ 
+  .toggle {
+    width: 32px;
+    height: 16px;
+    background: var(--border2);
+    border-radius: 8px;
+    cursor: pointer;
+    position: relative;
+    transition: background 0.2s;
+  }
+ 
+  .toggle.on { background: var(--accent); }
+ 
+  .toggle::after {
+    content: '';
+    position: absolute;
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
+    background: white;
+    top: 2px;
+    left: 2px;
+    transition: transform 0.2s;
+  }
+ 
+  .toggle.on::after { transform: translateX(16px); }
+ 
+  /* MAIN */
+  main {
+    background: var(--black);
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+  }
+ 
+  /* BRIEF AREA */
+  .brief-section {
+    padding: 1.5rem 2rem;
+    border-bottom: 1px solid var(--border);
+    background: var(--surface);
+  }
+ 
+  .brief-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 0.75rem;
+  }
+ 
+  .brief-label {
+    font-family: 'DM Mono', monospace;
+    font-size: 0.6rem;
+    color: var(--muted);
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+  }
+ 
+  .brief-actions {
+    display: flex;
+    gap: 0.5rem;
+    align-items: center;
+  }
+ 
+  textarea {
+    width: 100%;
+    background: var(--surface2);
+    border: 1px solid var(--border);
+    border-radius: 4px;
+    padding: 1rem;
+    color: var(--text);
+    font-family: 'DM Sans', sans-serif;
+    font-size: 0.9rem;
+    font-weight: 300;
+    line-height: 1.6;
+    resize: none;
+    height: 80px;
+    outline: none;
+    transition: border-color 0.15s;
+  }
+ 
+  textarea:focus { border-color: var(--border2); }
+  textarea::placeholder { color: var(--muted); }
+ 
+  /* BUTTONS */
+  .btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.4rem;
+    padding: 0.5rem 1.2rem;
+    border: none;
+    border-radius: 3px;
+    cursor: pointer;
+    font-family: 'DM Mono', monospace;
+    font-size: 0.65rem;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    transition: all 0.15s;
+  }
+ 
+  .btn-primary {
+    background: var(--accent);
+    color: var(--black);
+    font-weight: 500;
+  }
+ 
+  .btn-primary:hover { background: var(--accent2); }
+  .btn-primary:disabled { opacity: 0.4; cursor: not-allowed; }
+ 
+  .btn-ghost {
+    background: transparent;
+    color: var(--muted2);
+    border: 1px solid var(--border);
+  }
+ 
+  .btn-ghost:hover { color: var(--text); border-color: var(--border2); }
+ 
+  .btn-icon {
+    background: transparent;
+    border: none;
+    color: var(--muted);
+    cursor: pointer;
+    padding: 0.3rem;
+    border-radius: 3px;
+    transition: color 0.15s;
+    font-size: 0.8rem;
+  }
+ 
+  .btn-icon:hover { color: var(--text); }
+ 
+  /* OUTPUT AREA */
+  .output-section {
+    flex: 1;
+    overflow-y: auto;
+    padding: 1.5rem 2rem;
+  }
+ 
+  /* PROMPT CARD */
+  .prompt-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    margin-bottom: 1rem;
+    overflow: hidden;
+    animation: fadeUp 0.3s ease both;
+  }
+ 
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(8px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+ 
+  .prompt-card-header {
+    padding: 0.75rem 1rem;
+    border-bottom: 1px solid var(--border);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background: var(--surface2);
+  }
+ 
+  .prompt-style-tag {
+    font-family: 'DM Mono', monospace;
+    font-size: 0.65rem;
+    color: var(--accent);
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+  }
+ 
+  .prompt-card-actions {
+    display: flex;
+    gap: 0.25rem;
+  }
+ 
+  .prompt-body {
+    padding: 1rem;
+  }
+ 
+  .prompt-text {
+    font-family: 'DM Mono', monospace;
+    font-size: 0.72rem;
+    color: var(--text);
+    line-height: 1.7;
+    word-break: break-word;
+    white-space: pre-wrap;
+  }
+ 
+  .prompt-params {
+    margin-top: 0.5rem;
+    font-family: 'DM Mono', monospace;
+    font-size: 0.68rem;
+    color: var(--cyan);
+  }
+ 
+  .prompt-rationale {
+    margin-top: 0.75rem;
+    padding-top: 0.75rem;
+    border-top: 1px solid var(--border);
+    font-size: 0.75rem;
+    color: var(--muted2);
+    line-height: 1.6;
+    font-style: italic;
+  }
+ 
+  /* IMAGE PREVIEW */
+  .image-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+    gap: 0.75rem;
+    margin-top: 1rem;
+  }
+ 
+  .image-thumb {
+    aspect-ratio: 16/9;
+    background: var(--surface2);
+    border: 1px solid var(--border);
+    border-radius: 4px;
+    overflow: hidden;
+    position: relative;
+  }
+ 
+  .image-thumb img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+ 
+  .image-thumb-label {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    background: linear-gradient(transparent, rgba(0,0,0,0.8));
+    padding: 1rem 0.5rem 0.4rem;
+    font-family: 'DM Mono', monospace;
+    font-size: 0.55rem;
+    color: var(--accent);
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+  }
+ 
+  /* LOADING */
+  .loading-bar {
+    height: 1px;
+    background: linear-gradient(90deg, transparent, var(--accent), transparent);
+    background-size: 200% 100%;
+    animation: shimmer 1.5s infinite;
+    margin-bottom: 1rem;
+  }
+ 
+  @keyframes shimmer {
+    0% { background-position: -200% 0; }
+    100% { background-position: 200% 0; }
+  }
+ 
+  .loading-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    padding: 1.5rem;
+    text-align: center;
+    color: var(--muted);
+    font-family: 'DM Mono', monospace;
+    font-size: 0.7rem;
+    letter-spacing: 0.1em;
+  }
+ 
+  /* EMPTY STATE */
+  .empty-state {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    padding: 3rem;
+    gap: 0.75rem;
+  }
+ 
+  .empty-glyph {
+    font-family: 'Playfair Display', serif;
+    font-size: 3rem;
+    color: var(--border2);
+    line-height: 1;
+    font-style: italic;
+  }
+ 
+  .empty-title {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.1rem;
+    color: var(--muted2);
+    font-style: italic;
+  }
+ 
+  .empty-sub {
+    font-family: 'DM Mono', monospace;
+    font-size: 0.65rem;
+    color: var(--muted);
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+  }
+ 
+  /* FAL API KEY */
+  .api-key-row {
+    display: flex;
+    gap: 0.5rem;
+    align-items: center;
+  }
+ 
+  input[type="password"], input[type="text"] {
+    flex: 1;
+    background: var(--surface2);
+    border: 1px solid var(--border);
+    border-radius: 3px;
+    padding: 0.45rem 0.75rem;
+    color: var(--text);
+    font-family: 'DM Mono', monospace;
+    font-size: 0.65rem;
+    outline: none;
+    transition: border-color 0.15s;
+  }
+ 
+  input:focus { border-color: var(--border2); }
+  input::placeholder { color: var(--muted); }
+ 
+  /* TOAST */
+  .toast {
+    position: fixed;
+    bottom: 1.5rem;
+    right: 1.5rem;
+    background: var(--surface2);
+    border: 1px solid var(--border2);
+    border-radius: 4px;
+    padding: 0.75rem 1rem;
+    font-family: 'DM Mono', monospace;
+    font-size: 0.65rem;
+    color: var(--text);
+    letter-spacing: 0.08em;
+    z-index: 100;
+    animation: slideIn 0.2s ease;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+  }
+ 
+  @keyframes slideIn {
+    from { opacity: 0; transform: translateY(8px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+ 
+  .toast.success { border-color: var(--success); }
+  .toast.error { border-color: var(--error); }
+ 
+  /* DIVIDER */
+  .divider {
+    height: 1px;
+    background: var(--border);
+    margin: 1rem 0;
+  }
+ 
+  /* SCROLLBAR */
+  ::-webkit-scrollbar { width: 4px; }
+  ::-webkit-scrollbar-track { background: transparent; }
+  ::-webkit-scrollbar-thumb { background: var(--border2); border-radius: 2px; }
+ 
+  /* GENERATE SECTION */
+  .generate-bar {
+    padding: 1rem 2rem;
+    background: var(--surface);
+    border-top: 1px solid var(--border);
+    display: flex;
+    gap: 0.75rem;
+    align-items: center;
+  }
+ 
+  .generate-info {
+    flex: 1;
+    font-family: 'DM Mono', monospace;
+    font-size: 0.6rem;
+    color: var(--muted);
+    letter-spacing: 0.08em;
+  }
+ 
+  /* IMAGE RESULT */
+  .image-result {
+    margin-top: 1rem;
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    overflow: hidden;
+  }
+ 
+  .image-result img {
+    width: 100%;
+    height: auto;
+    display: block;
+  }
+ 
+  .image-result-bar {
+    background: var(--surface2);
+    border-top: 1px solid var(--border);
+    padding: 0.5rem 1rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+ 
+  .image-result-meta {
+    font-family: 'DM Mono', monospace;
+    font-size: 0.6rem;
+    color: var(--muted);
+    letter-spacing: 0.08em;
+  }
+ 
+  /* TAB BAR */
+  .tab-bar {
+    display: flex;
+    gap: 0;
+    border-bottom: 1px solid var(--border);
+    background: var(--surface);
+  }
+ 
+  .tab {
+    padding: 0.7rem 1.25rem;
+    font-family: 'DM Mono', monospace;
+    font-size: 0.6rem;
+    color: var(--muted);
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    cursor: pointer;
+    border-bottom: 2px solid transparent;
+    transition: all 0.15s;
+    margin-bottom: -1px;
+  }
+ 
+  .tab:hover { color: var(--text); }
+  .tab.active { color: var(--accent); border-bottom-color: var(--accent); }
+ 
+  .tab-content { display: none; }
+  .tab-content.active { display: block; }
+ 
+  /* COPY FLASH */
+  .copied-flash {
+    color: var(--success) !important;
+    transition: color 0.3s;
+  }
+</style>
+</head>
+<body>
+ 
+<div class="app">
+ 
+  <!-- HEADER -->
+  <header>
+    <div class="logo">
+      <span class="logo-title">Visual Prompt Director</span>
+      <span class="logo-sub">pb style system · v1.0</span>
+    </div>
+    <div class="header-right">
+      <div class="status-dot"></div>
+      <span class="status-label">Ready</span>
+    </div>
+  </header>
+ 
+  <!-- SIDEBAR -->
+  <aside>
+ 
+    <!-- API KEY -->
+    <div class="sidebar-section">
+      <span class="sidebar-label">fal.ai API Key</span>
+      <div class="api-key-row">
+        <input type="password" id="falApiKey" placeholder="fal_key_…" />
+      </div>
+    </div>
+ 
+    <div class="divider"></div>
+ 
+    <!-- STYLE PRESETS -->
+    <div class="sidebar-section">
+      <span class="sidebar-label">Style Preset</span>
+      <div class="style-grid" id="styleGrid">
+ 
+        <div class="style-card active" data-style="pbcinema">
+          <div class="style-name">pbcinema</div>
+          <div class="style-desc">Cinematic ADV. Key light warm, fill cool. Teal shadows, golden highlights.</div>
+        </div>
+ 
+        <div class="style-card" data-style="pbcinema2">
+          <div class="style-name">pbcinema2</div>
+          <div class="style-desc">Theatrical. Specific lenses, architectural geometry, hyperreal texture.</div>
+        </div>
+ 
+        <div class="style-card" data-style="pbmovie3">
+          <div class="style-name">pbmovie3</div>
+          <div class="style-desc">Clean, bright, empathetic. Natural light, neutral-cool temperature.</div>
+        </div>
+ 
+        <div class="style-card" data-style="pbcinema4">
+          <div class="style-name">pbcinema4</div>
+          <div class="style-desc">Kids & family ADV. Bright, peachy skin, fairytale serene mood.</div>
+        </div>
+ 
+        <div class="style-card" data-style="pbadv">
+          <div class="style-name">pbadv</div>
+          <div class="style-desc">Vertical social ADV. Instagram format, symmetric, minimal background.</div>
+        </div>
+ 
+        <div class="style-card" data-style="pbcinematik">
+          <div class="style-name">pbcinematik</div>
+          <div class="style-desc">Perceptual depth. Rim light, cyan oval glow. Hyperreal skin texture.</div>
+        </div>
+ 
+        <div class="style-card" data-style="experimental">
+          <div class="style-name">experimental</div>
+          <div class="style-desc">Critical mix of all styles. Creative freedom, photographic credibility.</div>
+        </div>
+ 
+      </div>
+    </div>
+ 
+    <div class="divider"></div>
+ 
+    <!-- RATIO -->
+    <div class="sidebar-section">
+      <span class="sidebar-label">Aspect Ratio</span>
+      <div class="ratio-group" id="ratioGroup">
+        <div class="ratio-btn active" data-ratio="16:9">16:9</div>
+        <div class="ratio-btn" data-ratio="4:5">4:5</div>
+        <div class="ratio-btn" data-ratio="9:16">9:16</div>
+        <div class="ratio-btn" data-ratio="2.39:1">2.39:1</div>
+        <div class="ratio-btn" data-ratio="1:1">1:1</div>
+        <div class="ratio-btn" data-ratio="4:3">4:3</div>
+      </div>
+    </div>
+ 
+    <div class="divider"></div>
+ 
+    <!-- PARAMS -->
+    <div class="sidebar-section">
+      <span class="sidebar-label">Parameters</span>
+      <div class="slider-group">
+ 
+        <div class="slider-row">
+          <div class="slider-header">
+            <span class="slider-name">--stylize</span>
+            <span class="slider-val" id="stylizeVal">600</span>
+          </div>
+          <input type="range" id="stylizeSlider" min="0" max="1000" step="50" value="600">
+        </div>
+ 
+        <div class="slider-row">
+          <div class="slider-header">
+            <span class="slider-name">--chaos</span>
+            <span class="slider-val" id="chaosVal">0</span>
+          </div>
+          <input type="range" id="chaosSlider" min="0" max="100" step="5" value="0">
+        </div>
+ 
+      </div>
+    </div>
+ 
+    <div class="divider"></div>
+ 
+    <!-- TOGGLES -->
+    <div class="sidebar-section">
+      <span class="sidebar-label">Flags</span>
+      <div class="toggle-group">
+ 
+        <div class="toggle-row">
+          <span class="toggle-name">--raw</span>
+          <div class="toggle on" id="toggleRaw"></div>
+        </div>
+ 
+        <div class="toggle-row">
+          <span class="toggle-name">--p (personalization)</span>
+          <div class="toggle on" id="toggleP"></div>
+        </div>
+ 
+        <div class="toggle-row">
+          <span class="toggle-name">generate image via fal.ai</span>
+          <div class="toggle" id="toggleFal"></div>
+        </div>
+ 
+      </div>
+    </div>
+ 
+  </aside>
+ 
+  <!-- MAIN -->
+  <main>
+ 
+    <!-- BRIEF -->
+    <div class="brief-section">
+      <div class="brief-header">
+        <span class="brief-label">Visual Brief</span>
+        <div class="brief-actions">
+          <button class="btn-icon" id="clearBtn" title="Clear">✕</button>
+        </div>
+      </div>
+      <textarea id="briefInput" placeholder="Describe the subject, mood, context. E.g.: young woman in a coffee shop, morning light, warm intimate feeling, lifestyle brand…"></textarea>
+    </div>
+ 
+    <!-- TAB BAR -->
+    <div class="tab-bar">
+      <div class="tab active" data-tab="prompt">Prompt Output</div>
+      <div class="tab" data-tab="image">Image Result</div>
+      <div class="tab" data-tab="history">History</div>
+    </div>
+ 
+    <!-- OUTPUT -->
+    <div class="output-section">
+ 
+      <!-- PROMPT TAB -->
+      <div class="tab-content active" id="tabPrompt">
+        <div class="empty-state" id="emptyState">
+          <div class="empty-glyph">pb</div>
+          <div class="empty-title">Write a brief, select a style</div>
+          <div class="empty-sub">then generate</div>
+        </div>
+        <div id="promptOutput" style="display:none"></div>
+      </div>
+ 
+      <!-- IMAGE TAB -->
+      <div class="tab-content" id="tabImage">
+        <div class="empty-state">
+          <div class="empty-glyph">◎</div>
+          <div class="empty-title">Enable fal.ai generation</div>
+          <div class="empty-sub">toggle in sidebar + add api key</div>
+        </div>
+        <div id="imageOutput" style="display:none"></div>
+      </div>
+ 
+      <!-- HISTORY TAB -->
+      <div class="tab-content" id="tabHistory">
+        <div class="empty-state" id="historyEmpty">
+          <div class="empty-glyph">≡</div>
+          <div class="empty-title">No history yet</div>
+          <div class="empty-sub">generated prompts will appear here</div>
+        </div>
+        <div id="historyList" style="display:none"></div>
+      </div>
+ 
+    </div>
+ 
+    <!-- GENERATE BAR -->
+    <div class="generate-bar">
+      <div class="generate-info" id="generateInfo">Select a style and write a brief</div>
+      <button class="btn btn-ghost" id="promptOnlyBtn">Prompt only</button>
+      <button class="btn btn-primary" id="generateBtn" disabled>Generate</button>
+    </div>
+ 
+  </main>
+ 
+</div>
+ 
+<!-- TOAST CONTAINER -->
+<div id="toastContainer"></div>
+ 
+<script>
+// ─── STATE ───────────────────────────────────────────────────────────────────
+const state = {
+  style: 'pbcinema',
+  ratio: '16:9',
+  stylize: 600,
+  chaos: 0,
+  raw: true,
+  personalization: true,
+  falEnabled: false,
+  generating: false,
+  history: []
+};
+ 
+// ─── STYLE DEFINITIONS ───────────────────────────────────────────────────────
+const styles = {
+  pbcinema: {
+    name: 'pbcinema',
+    defaultRatio: '16:9',
+    defaultStylize: 600,
+    build: (brief, params) => ({
+      prompt: `${brief}, hyperrealistic cinematic photography, central symmetric composition with clear foreground midground background separation, warm key light source with cool fill light, teal blue shadows and golden highlights color grading, peachy warm skin tones, subtle dodge and burn modeling, fine 35mm analog film grain, professional advertising photography, ultra detailed surface textures`,
+      params: buildParams(params),
+      rationale: 'Cinematic advertising look. The warm/cool split and teal-gold grading give it the commercial depth typical of high-end brand campaigns.'
+    })
+  },
+  pbcinema2: {
+    name: 'pbcinema2',
+    defaultRatio: '2.39:1',
+    defaultStylize: 650,
+    build: (brief, params) => ({
+      prompt: `${brief}, shot on 65mm T2.0 anamorphic, theatrical cinematic photography, strong central symmetry with marked architectural geometry, warm key light with cool fill, advanced dodge and burn skin modeling, teal blue shadows with golden highlight transitions, soft contrast with hyperrealistic texture detail, cinematic analog film grain`,
+      params: buildParams(params),
+      rationale: 'Theatrical evolution. The anamorphic lens choice and architectural geometry add a cinematic gravitas that feels premium and editorial.'
+    })
+  },
+  pbmovie3: {
+    name: 'pbmovie3',
+    defaultRatio: '16:9',
+    defaultStylize: 500,
+    build: (brief, params) => ({
+      prompt: `${brief}, clean cinematic photography with bright natural or believable simulated lighting, neutral to cool color temperature avoiding warm yellow cast, soft gradient transitions, subtle blue shadow accent, low soft contrast, clear natural skin tones without yellow shift, defined textures without harsh rendering, editorial advertising quality, empathetic composed mood`,
+      params: buildParams(params),
+      rationale: 'Bright and empathetic. Works well for lifestyle, wellness, and human-centered campaigns where warmth comes from the subject, not the color grade.'
+    })
+  },
+  pbcinema4: {
+    name: 'pbcinema4 (kids ADV)',
+    defaultRatio: '4:5',
+    defaultStylize: 500,
+    build: (brief, params) => ({
+      prompt: `${brief}, very bright family advertising photography with balanced neutral to cool lighting, subtle golden light accents without heavy warmth, luminous peachy pink skin tones explicitly no yellow cast, soft teal touched shadow transitions, clear bright highlight rendering, marked depth of field composition with foreground subject and narrative supporting objects, empathetic fairytale serene mood, child friendly premium accessible aesthetic`,
+      params: buildParams({ ...params, ratio: '4:5' }),
+      rationale: 'Optimized for kids and family campaigns. The luminous quality and soft fairytale mood create trust and warmth without feeling cheap or saccharine.'
+    })
+  },
+  pbadv: {
+    name: 'pbadv',
+    defaultRatio: '4:5',
+    defaultStylize: 500,
+    build: (brief, params) => ({
+      prompt: `${brief}, clean vertical social media advertising photography, strong central symmetric subject placement, minimal blurred background with controlled depth, natural neutral cool lighting without color dominance, soft bluish shadow detail, controlled natural color palette, empathetic serene premium accessible mood, optimized for Instagram advertising format`,
+      params: buildParams({ ...params, ratio: params.ratio === '9:16' ? '9:16' : '4:5' }),
+      rationale: 'Built for Instagram and social ADV. The vertical format and minimal background keep focus on the subject across all feed placements.'
+    })
+  },
+  pbcinematik: {
+    name: 'pbcinematik',
+    defaultRatio: '16:9',
+    defaultStylize: 650,
+    build: (brief, params) => ({
+      prompt: `${brief}, cinematic photography with strong perceptual depth emphasis, very subtle lateral rim light at low intensity, soft semi-transparent cyan horizontal oval gradient glow positioned behind and slightly above subject head not perfectly centered, no extreme contrast or heavy shadows, hyperrealistic skin texture with clearly visible pores and real cutaneous detail, absolutely no skin smoothing no airbrushing no plastic effect, deep silent cinematic mood with believable photographic credibility`,
+      params: buildParams(params),
+      rationale: 'The signature cyan glow and hyperreal skin texture create a distinctive visual depth. Strong for portrait-driven campaigns where the face is the product.'
+    })
+  },
+  experimental: {
+    name: 'experimental',
+    defaultRatio: '16:9',
+    defaultStylize: 800,
+    build: (brief, params) => ({
+      prompt: `${brief}, experimental cinematic photography blending warm key light with cool cinematic fill, perceptual depth with subtle rim definition, soft teal shadow gradient with restrained golden highlight, hyperrealistic texture rendering without skin smoothing, unconventional composition that breaks symmetric convention while maintaining photographic credibility, editorial advertising mood with unexpected spatial tension`,
+      params: buildParams({ ...params, raw: false }),
+      rationale: 'Critical mix of all pb styles. No --raw flag here to let V8 interpret more freely. Best for creative exploration before locking a campaign direction.'
+    })
+  }
+};
+ 
+function buildParams({ ratio, stylize, chaos, raw, personalization }) {
+  let p = `--ar ${ratio} --s ${stylize}`;
+  if (raw) p += ' --raw';
+  if (personalization) p += ' --p';
+  if (chaos > 0) p += ` --chaos ${chaos}`;
+  p += ' --v 8';
+  return p;
+}
+ 
+// ─── DOM REFS ─────────────────────────────────────────────────────────────────
+const els = {
+  briefInput: document.getElementById('briefInput'),
+  generateBtn: document.getElementById('generateBtn'),
+  promptOnlyBtn: document.getElementById('promptOnlyBtn'),
+  clearBtn: document.getElementById('clearBtn'),
+  emptyState: document.getElementById('emptyState'),
+  promptOutput: document.getElementById('promptOutput'),
+  imageOutput: document.getElementById('imageOutput'),
+  historyList: document.getElementById('historyList'),
+  historyEmpty: document.getElementById('historyEmpty'),
+  generateInfo: document.getElementById('generateInfo'),
+  stylizeSlider: document.getElementById('stylizeSlider'),
+  stylizeVal: document.getElementById('stylizeVal'),
+  chaosSlider: document.getElementById('chaosSlider'),
+  chaosVal: document.getElementById('chaosVal'),
+  toggleRaw: document.getElementById('toggleRaw'),
+  toggleP: document.getElementById('toggleP'),
+  toggleFal: document.getElementById('toggleFal'),
+  falApiKey: document.getElementById('falApiKey'),
+  toastContainer: document.getElementById('toastContainer'),
+};
+ 
+// ─── INIT ─────────────────────────────────────────────────────────────────────
+document.querySelectorAll('.style-card').forEach(card => {
+  card.addEventListener('click', () => {
+    document.querySelectorAll('.style-card').forEach(c => c.classList.remove('active'));
+    card.classList.add('active');
+    state.style = card.dataset.style;
+    const styleDef = styles[state.style];
+    if (styleDef) {
+      state.stylize = styleDef.defaultStylize;
+      els.stylizeSlider.value = state.stylize;
+      els.stylizeVal.textContent = state.stylize;
+    }
+    updateInfo();
+  });
+});
+ 
+document.querySelectorAll('.ratio-btn').forEach(btn => {
+  btn.addEventListener('click', () => {
+    document.querySelectorAll('.ratio-btn').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+    state.ratio = btn.dataset.ratio;
+    updateInfo();
+  });
+});
+ 
+els.stylizeSlider.addEventListener('input', e => {
+  state.stylize = parseInt(e.target.value);
+  els.stylizeVal.textContent = state.stylize;
+});
+ 
+els.chaosSlider.addEventListener('input', e => {
+  state.chaos = parseInt(e.target.value);
+  els.chaosVal.textContent = state.chaos;
+});
+ 
+[
+  { el: els.toggleRaw, key: 'raw' },
+  { el: els.toggleP, key: 'personalization' },
+  { el: els.toggleFal, key: 'falEnabled' }
+].forEach(({ el, key }) => {
+  el.addEventListener('click', () => {
+    state[key] = !state[key];
+    el.classList.toggle('on', state[key]);
+    updateInfo();
+  });
+});
+ 
+els.briefInput.addEventListener('input', updateGenerateBtn);
+els.clearBtn.addEventListener('click', () => { els.briefInput.value = ''; updateGenerateBtn(); });
+ 
+document.querySelectorAll('.tab').forEach(tab => {
+  tab.addEventListener('click', () => {
+    document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+    document.querySelectorAll('.tab-content').forEach(c => c.classList.remove('active'));
+    tab.classList.add('active');
+    document.getElementById('tab' + cap(tab.dataset.tab)).classList.add('active');
+  });
+});
+ 
+els.promptOnlyBtn.addEventListener('click', () => {
+  if (!els.briefInput.value.trim()) return;
+  generatePrompt(false);
+});
+ 
+els.generateBtn.addEventListener('click', () => {
+  if (!els.briefInput.value.trim()) return;
+  generatePrompt(state.falEnabled);
+});
+ 
+function cap(s) { return s.charAt(0).toUpperCase() + s.slice(1); }
+ 
+function updateGenerateBtn() {
+  const hasText = els.briefInput.value.trim().length > 0;
+  els.generateBtn.disabled = !hasText || state.generating;
+  els.promptOnlyBtn.disabled = !hasText || state.generating;
+}
+ 
+function updateInfo() {
+  const falNote = state.falEnabled ? ' · fal.ai generation ON' : '';
+  els.generateInfo.textContent = `${state.style} · ${state.ratio} · s${state.stylize}${falNote}`;
+}
+ 
+// ─── GENERATE ─────────────────────────────────────────────────────────────────
+async function generatePrompt(withImage) {
+  const brief = els.briefInput.value.trim();
+  if (!brief) return;
+ 
+  state.generating = true;
+  updateGenerateBtn();
+ 
+  const params = {
+    ratio: state.ratio,
+    stylize: state.stylize,
+    chaos: state.chaos,
+    raw: state.raw,
+    personalization: state.personalization
+  };
+ 
+  // Show loading
+  els.emptyState.style.display = 'none';
+  els.promptOutput.style.display = 'block';
+  els.promptOutput.innerHTML = `<div class="loading-bar"></div><div class="loading-card">Generating prompt via Claude…</div>`;
+ 
+  // Switch to prompt tab
+  document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+  document.querySelectorAll('.tab-content').forEach(c => c.classList.remove('active'));
+  document.querySelector('[data-tab="prompt"]').classList.add('active');
+  document.getElementById('tabPrompt').classList.add('active');
+ 
+  try {
+    const styleData = styles[state.style];
+    const builtStyle = styleData.build(brief, params);
+ 
+    // Use Claude API to enrich the prompt
+    const systemPrompt = `You are a professional visual prompt engineer specializing in the pb style system for Midjourney V8. Your job is to take a brief and a base prompt structure and return an enriched, production-ready prompt.
+ 
+Rules:
+- Output ONLY a JSON object, no markdown, no extra text
+- The JSON has exactly these fields: "enrichedPrompt" (string), "params" (string), "rationale" (string, max 2 sentences)
+- enrichedPrompt: expand the base prompt with specific visual details (lighting direction, material textures, spatial relationships, camera position) that match the style. 50-90 words.
+- params: the MJ parameters string
+- rationale: why this interpretation works for the brief
+- Never add generic descriptors: beautiful, stunning, amazing, elegant
+- Always maintain photographic and ADV credibility
+- No illustrative or painterly language`;
+ 
+    const userMsg = `Brief: "${brief}"
+Style: ${state.style}
+Base prompt: ${builtStyle.prompt}
+Parameters: ${builtStyle.params}
+Rationale hint: ${builtStyle.rationale}
+ 
+Enrich the prompt for Midjourney V8, maintaining the pb style system rules.`;
+ 
+    const response = await fetch('https://api.anthropic.com/v1/messages', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        model: 'claude-sonnet-4-20250514',
+        max_tokens: 1000,
+        system: systemPrompt,
+        messages: [{ role: 'user', content: userMsg }]
+      })
+    });
+ 
+    const data = await response.json();
+    const raw = data.content.map(b => b.text || '').join('');
+    let parsed;
+ 
+    try {
+      const clean = raw.replace(/```json|```/g, '').trim();
+      parsed = JSON.parse(clean);
+    } catch {
+      parsed = {
+        enrichedPrompt: builtStyle.prompt,
+        params: builtStyle.params,
+        rationale: builtStyle.rationale
+      };
+    }
+ 
+    const fullPrompt = parsed.enrichedPrompt + '\n' + parsed.params;
+ 
+    // Render prompt card
+    const card = renderPromptCard({
+      style: state.style,
+      prompt: parsed.enrichedPrompt,
+      params: parsed.params,
+      rationale: parsed.rationale,
+      brief
+    });
+ 
+    els.promptOutput.innerHTML = '';
+    els.promptOutput.appendChild(card);
+ 
+    // Add to history
+    state.history.unshift({ style: state.style, brief, prompt: fullPrompt, ts: Date.now() });
+    renderHistory();
+ 
+    // Image generation
+    if (withImage) {
+      const apiKey = els.falApiKey.value.trim();
+      if (!apiKey) {
+        showToast('Add your fal.ai API key to generate images', 'error');
+      } else {
+        await generateImage(parsed.enrichedPrompt, parsed.params, apiKey);
+      }
+    }
+ 
+    showToast('Prompt ready', 'success');
+ 
+  } catch (err) {
+    els.promptOutput.innerHTML = `<div class="loading-card" style="color:var(--error)">Error: ${err.message}</div>`;
+    showToast('Generation failed', 'error');
+  }
+ 
+  state.generating = false;
+  updateGenerateBtn();
+}
+ 
+// ─── RENDER PROMPT CARD ───────────────────────────────────────────────────────
+function renderPromptCard({ style, prompt, params, rationale, brief }) {
+  const card = document.createElement('div');
+  card.className = 'prompt-card';
+ 
+  const fullPrompt = prompt + '\n' + params;
+ 
+  card.innerHTML = `
+    <div class="prompt-card-header">
+      <span class="prompt-style-tag">${style}</span>
+      <div class="prompt-card-actions">
+        <button class="btn-icon copy-btn" title="Copy full prompt">⎘ copy</button>
+      </div>
+    </div>
+    <div class="prompt-body">
+      <div class="prompt-text">${escHtml(prompt)}</div>
+      <div class="prompt-params">${escHtml(params)}</div>
+      <div class="prompt-rationale">${escHtml(rationale)}</div>
+    </div>
+  `;
+ 
+  card.querySelector('.copy-btn').addEventListener('click', function() {
+    navigator.clipboard.writeText(fullPrompt);
+    this.textContent = '✓ copied';
+    this.classList.add('copied-flash');
+    setTimeout(() => {
+      this.textContent = '⎘ copy';
+      this.classList.remove('copied-flash');
+    }, 1500);
+  });
+ 
+  return card;
+}
+ 
+// ─── IMAGE GENERATION via fal.ai ─────────────────────────────────────────────
+async function generateImage(prompt, params, apiKey) {
+  document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+  document.querySelectorAll('.tab-content').forEach(c => c.classList.remove('active'));
+  document.querySelector('[data-tab="image"]').classList.add('active');
+  document.getElementById('tabImage').classList.add('active');
+ 
+  els.imageOutput.style.display = 'block';
+  els.imageOutput.innerHTML = `<div class="loading-bar"></div><div class="loading-card">Sending to fal.ai flux-pro…</div>`;
+ 
+  // Parse ratio
+  const ratioMap = {
+    '16:9': { width: 1344, height: 768 },
+    '4:5': { width: 768, height: 960 },
+    '9:16': { width: 768, height: 1344 },
+    '2.39:1': { width: 1344, height: 562 },
+    '1:1': { width: 1024, height: 1024 },
+    '4:3': { width: 1024, height: 768 }
+  };
+  const dims = ratioMap[state.ratio] || { width: 1344, height: 768 };
+ 
+  try {
+    const res = await fetch('https://fal.run/fal-ai/flux-pro', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': `Key ${apiKey}`
+      },
+      body: JSON.stringify({
+        prompt: prompt,
+        image_size: { width: dims.width, height: dims.height },
+        num_inference_steps: 28,
+        guidance_scale: 3.5,
+        num_images: 1,
+        safety_tolerance: '2'
+      })
+    });
+ 
+    if (!res.ok) throw new Error(`fal.ai error: ${res.status}`);
+    const data = await res.json();
+    const imgUrl = data.images?.[0]?.url;
+ 
+    if (imgUrl) {
+      els.imageOutput.innerHTML = `
+        <div class="image-result">
+          <img src="${imgUrl}" alt="Generated image" />
+          <div class="image-result-bar">
+            <span class="image-result-meta">${state.style} · ${state.ratio} · flux-pro</span>
+            <a href="${imgUrl}" download class="btn btn-ghost" style="text-decoration:none">↓ download</a>
+          </div>
+        </div>
+      `;
+      showToast('Image generated', 'success');
+    } else {
+      throw new Error('No image returned');
+    }
+ 
+  } catch (err) {
+    els.imageOutput.innerHTML = `<div class="loading-card" style="color:var(--error)">Image generation failed: ${err.message}</div>`;
+    showToast('Image failed', 'error');
+  }
+}
+ 
+// ─── HISTORY ──────────────────────────────────────────────────────────────────
+function renderHistory() {
+  if (state.history.length === 0) {
+    els.historyEmpty.style.display = 'flex';
+    els.historyList.style.display = 'none';
+    return;
+  }
+ 
+  els.historyEmpty.style.display = 'none';
+  els.historyList.style.display = 'block';
+ 
+  els.historyList.innerHTML = state.history.map((item, i) => `
+    <div class="prompt-card" style="animation-delay:${i * 0.05}s">
+      <div class="prompt-card-header">
+        <span class="prompt-style-tag">${item.style}</span>
+        <span class="image-result-meta">${new Date(item.ts).toLocaleTimeString()}</span>
+      </div>
+      <div class="prompt-body">
+        <div class="prompt-text" style="font-size:0.68rem;color:var(--muted2);margin-bottom:0.5rem">${escHtml(item.brief)}</div>
+        <div class="prompt-text">${escHtml(item.prompt)}</div>
+      </div>
+    </div>
+  `).join('');
+}
+ 
+// ─── TOAST ────────────────────────────────────────────────────────────────────
+function showToast(msg, type = '') {
+  const toast = document.createElement('div');
+  toast.className = `toast ${type}`;
+  const dot = type === 'success' ? '●' : type === 'error' ? '✕' : '·';
+  toast.innerHTML = `<span style="color:var(--${type === 'success' ? 'success' : type === 'error' ? 'error' : 'muted'})">${dot}</span> ${msg}`;
+  els.toastContainer.appendChild(toast);
+  setTimeout(() => toast.remove(), 3000);
+}
+ 
+// ─── UTILS ────────────────────────────────────────────────────────────────────
+function escHtml(str) {
+  return String(str).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+}
+ 
+// ─── INIT ─────────────────────────────────────────────────────────────────────
+updateInfo();
+updateGenerateBtn();
+</script>
+</body>
 </html>
