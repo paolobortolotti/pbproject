@@ -37,7 +37,6 @@
     overflow-x: hidden;
   }
  
-  /* LAYOUT */
   .app {
     display: grid;
     grid-template-columns: 280px 1fr;
@@ -45,7 +44,6 @@
     min-height: 100vh;
   }
  
-  /* HEADER */
   header {
     grid-column: 1 / -1;
     background: var(--surface);
@@ -57,664 +55,110 @@
     height: 64px;
   }
  
-  .logo {
-    display: flex;
-    align-items: baseline;
-    gap: 0.5rem;
-  }
+  .logo { display: flex; align-items: baseline; gap: 0.5rem; }
+  .logo-title { font-family: 'Playfair Display', serif; font-size: 1.25rem; color: var(--text); letter-spacing: 0.02em; }
+  .logo-sub { font-family: 'DM Mono', monospace; font-size: 0.6rem; color: var(--accent); letter-spacing: 0.15em; text-transform: uppercase; }
+  .header-right { display: flex; align-items: center; gap: 1rem; }
+  .status-dot { width: 6px; height: 6px; border-radius: 50%; background: var(--success); animation: pulse 2s infinite; }
+  @keyframes pulse { 0%, 100% { opacity: 1; } 50% { opacity: 0.4; } }
+  .status-label { font-family: 'DM Mono', monospace; font-size: 0.65rem; color: var(--muted2); letter-spacing: 0.1em; text-transform: uppercase; }
  
-  .logo-title {
-    font-family: 'Playfair Display', serif;
-    font-size: 1.25rem;
-    color: var(--text);
-    letter-spacing: 0.02em;
-  }
- 
-  .logo-sub {
-    font-family: 'DM Mono', monospace;
-    font-size: 0.6rem;
-    color: var(--accent);
-    letter-spacing: 0.15em;
-    text-transform: uppercase;
-  }
- 
-  .header-right {
-    display: flex;
-    align-items: center;
-    gap: 1rem;
-  }
- 
-  .status-dot {
-    width: 6px;
-    height: 6px;
-    border-radius: 50%;
-    background: var(--success);
-    animation: pulse 2s infinite;
-  }
- 
-  @keyframes pulse {
-    0%, 100% { opacity: 1; }
-    50% { opacity: 0.4; }
-  }
- 
-  .status-label {
-    font-family: 'DM Mono', monospace;
-    font-size: 0.65rem;
-    color: var(--muted2);
-    letter-spacing: 0.1em;
-    text-transform: uppercase;
-  }
- 
-  /* SIDEBAR */
-  aside {
-    background: var(--surface);
-    border-right: 1px solid var(--border);
-    padding: 1.5rem;
-    overflow-y: auto;
-  }
- 
-  .sidebar-section {
-    margin-bottom: 2rem;
-  }
- 
-  .sidebar-label {
-    font-family: 'DM Mono', monospace;
-    font-size: 0.6rem;
-    color: var(--muted);
-    letter-spacing: 0.15em;
-    text-transform: uppercase;
-    margin-bottom: 0.75rem;
-    display: block;
-  }
- 
-  /* STYLE PRESETS */
-  .style-grid {
-    display: flex;
-    flex-direction: column;
-    gap: 0.4rem;
-  }
- 
-  .style-card {
-    background: var(--surface2);
-    border: 1px solid var(--border);
-    border-radius: 4px;
-    padding: 0.75rem 1rem;
-    cursor: pointer;
-    transition: all 0.15s ease;
-    position: relative;
-  }
- 
-  .style-card:hover {
-    border-color: var(--border2);
-    background: var(--surface3);
-  }
- 
-  .style-card.active {
-    border-color: var(--accent);
-    background: rgba(200, 169, 110, 0.06);
-  }
- 
-  .style-card.active::before {
-    content: '';
-    position: absolute;
-    left: 0;
-    top: 0;
-    bottom: 0;
-    width: 2px;
-    background: var(--accent);
-    border-radius: 4px 0 0 4px;
-  }
- 
-  .style-name {
-    font-family: 'DM Mono', monospace;
-    font-size: 0.7rem;
-    color: var(--accent);
-    letter-spacing: 0.08em;
-    text-transform: uppercase;
-    margin-bottom: 0.2rem;
-  }
- 
-  .style-desc {
-    font-size: 0.7rem;
-    color: var(--muted2);
-    line-height: 1.4;
-  }
- 
-  /* RATIO SELECT */
-  .ratio-group {
-    display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    gap: 0.35rem;
-  }
- 
-  .ratio-btn {
-    background: var(--surface2);
-    border: 1px solid var(--border);
-    border-radius: 3px;
-    padding: 0.4rem;
-    cursor: pointer;
-    font-family: 'DM Mono', monospace;
-    font-size: 0.6rem;
-    color: var(--muted2);
-    text-align: center;
-    transition: all 0.15s;
-  }
- 
+  aside { background: var(--surface); border-right: 1px solid var(--border); padding: 1.5rem; overflow-y: auto; }
+  .sidebar-section { margin-bottom: 2rem; }
+  .sidebar-label { font-family: 'DM Mono', monospace; font-size: 0.6rem; color: var(--muted); letter-spacing: 0.15em; text-transform: uppercase; margin-bottom: 0.75rem; display: block; }
+  .style-grid { display: flex; flex-direction: column; gap: 0.4rem; }
+  .style-card { background: var(--surface2); border: 1px solid var(--border); border-radius: 4px; padding: 0.75rem 1rem; cursor: pointer; transition: all 0.15s ease; position: relative; }
+  .style-card:hover { border-color: var(--border2); background: var(--surface3); }
+  .style-card.active { border-color: var(--accent); background: rgba(200, 169, 110, 0.06); }
+  .style-card.active::before { content: ''; position: absolute; left: 0; top: 0; bottom: 0; width: 2px; background: var(--accent); border-radius: 4px 0 0 4px; }
+  .style-name { font-family: 'DM Mono', monospace; font-size: 0.7rem; color: var(--accent); letter-spacing: 0.08em; text-transform: uppercase; margin-bottom: 0.2rem; }
+  .style-desc { font-size: 0.7rem; color: var(--muted2); line-height: 1.4; }
+  .ratio-group { display: grid; grid-template-columns: repeat(3, 1fr); gap: 0.35rem; }
+  .ratio-btn { background: var(--surface2); border: 1px solid var(--border); border-radius: 3px; padding: 0.4rem; cursor: pointer; font-family: 'DM Mono', monospace; font-size: 0.6rem; color: var(--muted2); text-align: center; transition: all 0.15s; }
   .ratio-btn:hover { border-color: var(--border2); color: var(--text); }
   .ratio-btn.active { border-color: var(--accent); color: var(--accent); background: rgba(200,169,110,0.06); }
- 
-  /* SLIDERS */
   .slider-group { display: flex; flex-direction: column; gap: 0.75rem; }
- 
-  .slider-row {
-    display: flex;
-    flex-direction: column;
-    gap: 0.35rem;
-  }
- 
-  .slider-header {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-  }
- 
-  .slider-name {
-    font-family: 'DM Mono', monospace;
-    font-size: 0.65rem;
-    color: var(--muted2);
-    letter-spacing: 0.08em;
-  }
- 
-  .slider-val {
-    font-family: 'DM Mono', monospace;
-    font-size: 0.65rem;
-    color: var(--accent);
-  }
- 
-  input[type="range"] {
-    width: 100%;
-    -webkit-appearance: none;
-    height: 2px;
-    background: var(--border2);
-    border-radius: 1px;
-    outline: none;
-  }
- 
-  input[type="range"]::-webkit-slider-thumb {
-    -webkit-appearance: none;
-    width: 12px;
-    height: 12px;
-    border-radius: 50%;
-    background: var(--accent);
-    cursor: pointer;
-  }
- 
-  /* TOGGLES */
+  .slider-row { display: flex; flex-direction: column; gap: 0.35rem; }
+  .slider-header { display: flex; justify-content: space-between; align-items: center; }
+  .slider-name { font-family: 'DM Mono', monospace; font-size: 0.65rem; color: var(--muted2); letter-spacing: 0.08em; }
+  .slider-val { font-family: 'DM Mono', monospace; font-size: 0.65rem; color: var(--accent); }
+  input[type="range"] { width: 100%; -webkit-appearance: none; height: 2px; background: var(--border2); border-radius: 1px; outline: none; }
+  input[type="range"]::-webkit-slider-thumb { -webkit-appearance: none; width: 12px; height: 12px; border-radius: 50%; background: var(--accent); cursor: pointer; }
   .toggle-group { display: flex; flex-direction: column; gap: 0.5rem; }
- 
-  .toggle-row {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-  }
- 
-  .toggle-name {
-    font-family: 'DM Mono', monospace;
-    font-size: 0.65rem;
-    color: var(--muted2);
-    letter-spacing: 0.08em;
-  }
- 
-  .toggle {
-    width: 32px;
-    height: 16px;
-    background: var(--border2);
-    border-radius: 8px;
-    cursor: pointer;
-    position: relative;
-    transition: background 0.2s;
-  }
- 
+  .toggle-row { display: flex; justify-content: space-between; align-items: center; }
+  .toggle-name { font-family: 'DM Mono', monospace; font-size: 0.65rem; color: var(--muted2); letter-spacing: 0.08em; }
+  .toggle { width: 32px; height: 16px; background: var(--border2); border-radius: 8px; cursor: pointer; position: relative; transition: background 0.2s; }
   .toggle.on { background: var(--accent); }
- 
-  .toggle::after {
-    content: '';
-    position: absolute;
-    width: 12px;
-    height: 12px;
-    border-radius: 50%;
-    background: white;
-    top: 2px;
-    left: 2px;
-    transition: transform 0.2s;
-  }
- 
+  .toggle::after { content: ''; position: absolute; width: 12px; height: 12px; border-radius: 50%; background: white; top: 2px; left: 2px; transition: transform 0.2s; }
   .toggle.on::after { transform: translateX(16px); }
- 
-  /* MAIN */
-  main {
-    background: var(--black);
-    display: flex;
-    flex-direction: column;
-    overflow: hidden;
-  }
- 
-  /* BRIEF AREA */
-  .brief-section {
-    padding: 1.5rem 2rem;
-    border-bottom: 1px solid var(--border);
-    background: var(--surface);
-  }
- 
-  .brief-header {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin-bottom: 0.75rem;
-  }
- 
-  .brief-label {
-    font-family: 'DM Mono', monospace;
-    font-size: 0.6rem;
-    color: var(--muted);
-    letter-spacing: 0.15em;
-    text-transform: uppercase;
-  }
- 
-  .brief-actions {
-    display: flex;
-    gap: 0.5rem;
-    align-items: center;
-  }
- 
-  textarea {
-    width: 100%;
-    background: var(--surface2);
-    border: 1px solid var(--border);
-    border-radius: 4px;
-    padding: 1rem;
-    color: var(--text);
-    font-family: 'DM Sans', sans-serif;
-    font-size: 0.9rem;
-    font-weight: 300;
-    line-height: 1.6;
-    resize: none;
-    height: 80px;
-    outline: none;
-    transition: border-color 0.15s;
-  }
- 
+  main { background: var(--black); display: flex; flex-direction: column; overflow: hidden; }
+  .brief-section { padding: 1.5rem 2rem; border-bottom: 1px solid var(--border); background: var(--surface); }
+  .brief-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.75rem; }
+  .brief-label { font-family: 'DM Mono', monospace; font-size: 0.6rem; color: var(--muted); letter-spacing: 0.15em; text-transform: uppercase; }
+  .brief-actions { display: flex; gap: 0.5rem; align-items: center; }
+  textarea { width: 100%; background: var(--surface2); border: 1px solid var(--border); border-radius: 4px; padding: 1rem; color: var(--text); font-family: 'DM Sans', sans-serif; font-size: 0.9rem; font-weight: 300; line-height: 1.6; resize: none; height: 80px; outline: none; transition: border-color 0.15s; }
   textarea:focus { border-color: var(--border2); }
   textarea::placeholder { color: var(--muted); }
- 
-  /* BUTTONS */
-  .btn {
-    display: inline-flex;
-    align-items: center;
-    gap: 0.4rem;
-    padding: 0.5rem 1.2rem;
-    border: none;
-    border-radius: 3px;
-    cursor: pointer;
-    font-family: 'DM Mono', monospace;
-    font-size: 0.65rem;
-    letter-spacing: 0.1em;
-    text-transform: uppercase;
-    transition: all 0.15s;
-  }
- 
-  .btn-primary {
-    background: var(--accent);
-    color: var(--black);
-    font-weight: 500;
-  }
- 
+  .btn { display: inline-flex; align-items: center; gap: 0.4rem; padding: 0.5rem 1.2rem; border: none; border-radius: 3px; cursor: pointer; font-family: 'DM Mono', monospace; font-size: 0.65rem; letter-spacing: 0.1em; text-transform: uppercase; transition: all 0.15s; }
+  .btn-primary { background: var(--accent); color: var(--black); font-weight: 500; }
   .btn-primary:hover { background: var(--accent2); }
   .btn-primary:disabled { opacity: 0.4; cursor: not-allowed; }
- 
-  .btn-ghost {
-    background: transparent;
-    color: var(--muted2);
-    border: 1px solid var(--border);
-  }
- 
+  .btn-ghost { background: transparent; color: var(--muted2); border: 1px solid var(--border); }
   .btn-ghost:hover { color: var(--text); border-color: var(--border2); }
- 
-  .btn-icon {
-    background: transparent;
-    border: none;
-    color: var(--muted);
-    cursor: pointer;
-    padding: 0.3rem;
-    border-radius: 3px;
-    transition: color 0.15s;
-    font-size: 0.8rem;
-  }
- 
+  .btn-icon { background: transparent; border: none; color: var(--muted); cursor: pointer; padding: 0.3rem; border-radius: 3px; transition: color 0.15s; font-size: 0.8rem; }
   .btn-icon:hover { color: var(--text); }
- 
-  /* OUTPUT AREA */
-  .output-section {
-    flex: 1;
-    overflow-y: auto;
-    padding: 1.5rem 2rem;
-  }
- 
-  /* PROMPT CARD */
-  .prompt-card {
-    background: var(--surface);
-    border: 1px solid var(--border);
-    border-radius: 6px;
-    margin-bottom: 1rem;
-    overflow: hidden;
-    animation: fadeUp 0.3s ease both;
-  }
- 
-  @keyframes fadeUp {
-    from { opacity: 0; transform: translateY(8px); }
-    to { opacity: 1; transform: translateY(0); }
-  }
- 
-  .prompt-card-header {
-    padding: 0.75rem 1rem;
-    border-bottom: 1px solid var(--border);
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    background: var(--surface2);
-  }
- 
-  .prompt-style-tag {
-    font-family: 'DM Mono', monospace;
-    font-size: 0.65rem;
-    color: var(--accent);
-    letter-spacing: 0.1em;
-    text-transform: uppercase;
-  }
- 
-  .prompt-card-actions {
-    display: flex;
-    gap: 0.25rem;
-  }
- 
-  .prompt-body {
-    padding: 1rem;
-  }
- 
-  .prompt-text {
-    font-family: 'DM Mono', monospace;
-    font-size: 0.72rem;
-    color: var(--text);
-    line-height: 1.7;
-    word-break: break-word;
-    white-space: pre-wrap;
-  }
- 
-  .prompt-params {
-    margin-top: 0.5rem;
-    font-family: 'DM Mono', monospace;
-    font-size: 0.68rem;
-    color: var(--cyan);
-  }
- 
-  .prompt-rationale {
-    margin-top: 0.75rem;
-    padding-top: 0.75rem;
-    border-top: 1px solid var(--border);
-    font-size: 0.75rem;
-    color: var(--muted2);
-    line-height: 1.6;
-    font-style: italic;
-  }
- 
-  /* IMAGE PREVIEW */
-  .image-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
-    gap: 0.75rem;
-    margin-top: 1rem;
-  }
- 
-  .image-thumb {
-    aspect-ratio: 16/9;
-    background: var(--surface2);
-    border: 1px solid var(--border);
-    border-radius: 4px;
-    overflow: hidden;
-    position: relative;
-  }
- 
-  .image-thumb img {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-  }
- 
-  .image-thumb-label {
-    position: absolute;
-    bottom: 0;
-    left: 0;
-    right: 0;
-    background: linear-gradient(transparent, rgba(0,0,0,0.8));
-    padding: 1rem 0.5rem 0.4rem;
-    font-family: 'DM Mono', monospace;
-    font-size: 0.55rem;
-    color: var(--accent);
-    letter-spacing: 0.08em;
-    text-transform: uppercase;
-  }
- 
-  /* LOADING */
-  .loading-bar {
-    height: 1px;
-    background: linear-gradient(90deg, transparent, var(--accent), transparent);
-    background-size: 200% 100%;
-    animation: shimmer 1.5s infinite;
-    margin-bottom: 1rem;
-  }
- 
-  @keyframes shimmer {
-    0% { background-position: -200% 0; }
-    100% { background-position: 200% 0; }
-  }
- 
-  .loading-card {
-    background: var(--surface);
-    border: 1px solid var(--border);
-    border-radius: 6px;
-    padding: 1.5rem;
-    text-align: center;
-    color: var(--muted);
-    font-family: 'DM Mono', monospace;
-    font-size: 0.7rem;
-    letter-spacing: 0.1em;
-  }
- 
-  /* EMPTY STATE */
-  .empty-state {
-    flex: 1;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    text-align: center;
-    padding: 3rem;
-    gap: 0.75rem;
-  }
- 
-  .empty-glyph {
-    font-family: 'Playfair Display', serif;
-    font-size: 3rem;
-    color: var(--border2);
-    line-height: 1;
-    font-style: italic;
-  }
- 
-  .empty-title {
-    font-family: 'Playfair Display', serif;
-    font-size: 1.1rem;
-    color: var(--muted2);
-    font-style: italic;
-  }
- 
-  .empty-sub {
-    font-family: 'DM Mono', monospace;
-    font-size: 0.65rem;
-    color: var(--muted);
-    letter-spacing: 0.1em;
-    text-transform: uppercase;
-  }
- 
-  /* FAL API KEY */
-  .api-key-row {
-    display: flex;
-    gap: 0.5rem;
-    align-items: center;
-  }
- 
-  input[type="password"], input[type="text"] {
-    flex: 1;
-    background: var(--surface2);
-    border: 1px solid var(--border);
-    border-radius: 3px;
-    padding: 0.45rem 0.75rem;
-    color: var(--text);
-    font-family: 'DM Mono', monospace;
-    font-size: 0.65rem;
-    outline: none;
-    transition: border-color 0.15s;
-  }
- 
+  .output-section { flex: 1; overflow-y: auto; padding: 1.5rem 2rem; }
+  .prompt-card { background: var(--surface); border: 1px solid var(--border); border-radius: 6px; margin-bottom: 1rem; overflow: hidden; animation: fadeUp 0.3s ease both; }
+  @keyframes fadeUp { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: translateY(0); } }
+  .prompt-card-header { padding: 0.75rem 1rem; border-bottom: 1px solid var(--border); display: flex; justify-content: space-between; align-items: center; background: var(--surface2); }
+  .prompt-style-tag { font-family: 'DM Mono', monospace; font-size: 0.65rem; color: var(--accent); letter-spacing: 0.1em; text-transform: uppercase; }
+  .prompt-card-actions { display: flex; gap: 0.25rem; }
+  .prompt-body { padding: 1rem; }
+  .prompt-text { font-family: 'DM Mono', monospace; font-size: 0.72rem; color: var(--text); line-height: 1.7; word-break: break-word; white-space: pre-wrap; }
+  .prompt-params { margin-top: 0.5rem; font-family: 'DM Mono', monospace; font-size: 0.68rem; color: var(--cyan); }
+  .prompt-rationale { margin-top: 0.75rem; padding-top: 0.75rem; border-top: 1px solid var(--border); font-size: 0.75rem; color: var(--muted2); line-height: 1.6; font-style: italic; }
+  .image-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: 0.75rem; margin-top: 1rem; }
+  .image-thumb { aspect-ratio: 16/9; background: var(--surface2); border: 1px solid var(--border); border-radius: 4px; overflow: hidden; position: relative; }
+  .image-thumb img { width: 100%; height: 100%; object-fit: cover; }
+  .image-thumb-label { position: absolute; bottom: 0; left: 0; right: 0; background: linear-gradient(transparent, rgba(0,0,0,0.8)); padding: 1rem 0.5rem 0.4rem; font-family: 'DM Mono', monospace; font-size: 0.55rem; color: var(--accent); letter-spacing: 0.08em; text-transform: uppercase; }
+  .loading-bar { height: 1px; background: linear-gradient(90deg, transparent, var(--accent), transparent); background-size: 200% 100%; animation: shimmer 1.5s infinite; margin-bottom: 1rem; }
+  @keyframes shimmer { 0% { background-position: -200% 0; } 100% { background-position: 200% 0; } }
+  .loading-card { background: var(--surface); border: 1px solid var(--border); border-radius: 6px; padding: 1.5rem; text-align: center; color: var(--muted); font-family: 'DM Mono', monospace; font-size: 0.7rem; letter-spacing: 0.1em; }
+  .empty-state { flex: 1; display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: center; padding: 3rem; gap: 0.75rem; }
+  .empty-glyph { font-family: 'Playfair Display', serif; font-size: 3rem; color: var(--border2); line-height: 1; font-style: italic; }
+  .empty-title { font-family: 'Playfair Display', serif; font-size: 1.1rem; color: var(--muted2); font-style: italic; }
+  .empty-sub { font-family: 'DM Mono', monospace; font-size: 0.65rem; color: var(--muted); letter-spacing: 0.1em; text-transform: uppercase; }
+  .api-key-row { display: flex; gap: 0.5rem; align-items: center; }
+  input[type="password"], input[type="text"] { flex: 1; background: var(--surface2); border: 1px solid var(--border); border-radius: 3px; padding: 0.45rem 0.75rem; color: var(--text); font-family: 'DM Mono', monospace; font-size: 0.65rem; outline: none; transition: border-color 0.15s; }
   input:focus { border-color: var(--border2); }
   input::placeholder { color: var(--muted); }
- 
-  /* TOAST */
-  .toast {
-    position: fixed;
-    bottom: 1.5rem;
-    right: 1.5rem;
-    background: var(--surface2);
-    border: 1px solid var(--border2);
-    border-radius: 4px;
-    padding: 0.75rem 1rem;
-    font-family: 'DM Mono', monospace;
-    font-size: 0.65rem;
-    color: var(--text);
-    letter-spacing: 0.08em;
-    z-index: 100;
-    animation: slideIn 0.2s ease;
-    display: flex;
-    align-items: center;
-    gap: 0.5rem;
-  }
- 
-  @keyframes slideIn {
-    from { opacity: 0; transform: translateY(8px); }
-    to { opacity: 1; transform: translateY(0); }
-  }
- 
+  .toast { position: fixed; bottom: 1.5rem; right: 1.5rem; background: var(--surface2); border: 1px solid var(--border2); border-radius: 4px; padding: 0.75rem 1rem; font-family: 'DM Mono', monospace; font-size: 0.65rem; color: var(--text); letter-spacing: 0.08em; z-index: 100; animation: slideIn 0.2s ease; display: flex; align-items: center; gap: 0.5rem; }
+  @keyframes slideIn { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: translateY(0); } }
   .toast.success { border-color: var(--success); }
   .toast.error { border-color: var(--error); }
- 
-  /* DIVIDER */
-  .divider {
-    height: 1px;
-    background: var(--border);
-    margin: 1rem 0;
-  }
- 
-  /* SCROLLBAR */
+  .divider { height: 1px; background: var(--border); margin: 1rem 0; }
   ::-webkit-scrollbar { width: 4px; }
   ::-webkit-scrollbar-track { background: transparent; }
   ::-webkit-scrollbar-thumb { background: var(--border2); border-radius: 2px; }
- 
-  /* GENERATE SECTION */
-  .generate-bar {
-    padding: 1rem 2rem;
-    background: var(--surface);
-    border-top: 1px solid var(--border);
-    display: flex;
-    gap: 0.75rem;
-    align-items: center;
-  }
- 
-  .generate-info {
-    flex: 1;
-    font-family: 'DM Mono', monospace;
-    font-size: 0.6rem;
-    color: var(--muted);
-    letter-spacing: 0.08em;
-  }
- 
-  /* IMAGE RESULT */
-  .image-result {
-    margin-top: 1rem;
-    border: 1px solid var(--border);
-    border-radius: 6px;
-    overflow: hidden;
-  }
- 
-  .image-result img {
-    width: 100%;
-    height: auto;
-    display: block;
-  }
- 
-  .image-result-bar {
-    background: var(--surface2);
-    border-top: 1px solid var(--border);
-    padding: 0.5rem 1rem;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-  }
- 
-  .image-result-meta {
-    font-family: 'DM Mono', monospace;
-    font-size: 0.6rem;
-    color: var(--muted);
-    letter-spacing: 0.08em;
-  }
- 
-  /* TAB BAR */
-  .tab-bar {
-    display: flex;
-    gap: 0;
-    border-bottom: 1px solid var(--border);
-    background: var(--surface);
-  }
- 
-  .tab {
-    padding: 0.7rem 1.25rem;
-    font-family: 'DM Mono', monospace;
-    font-size: 0.6rem;
-    color: var(--muted);
-    letter-spacing: 0.1em;
-    text-transform: uppercase;
-    cursor: pointer;
-    border-bottom: 2px solid transparent;
-    transition: all 0.15s;
-    margin-bottom: -1px;
-  }
- 
+  .generate-bar { padding: 1rem 2rem; background: var(--surface); border-top: 1px solid var(--border); display: flex; gap: 0.75rem; align-items: center; }
+  .generate-info { flex: 1; font-family: 'DM Mono', monospace; font-size: 0.6rem; color: var(--muted); letter-spacing: 0.08em; }
+  .image-result { margin-top: 1rem; border: 1px solid var(--border); border-radius: 6px; overflow: hidden; }
+  .image-result img { width: 100%; height: auto; display: block; }
+  .image-result-bar { background: var(--surface2); border-top: 1px solid var(--border); padding: 0.5rem 1rem; display: flex; justify-content: space-between; align-items: center; }
+  .image-result-meta { font-family: 'DM Mono', monospace; font-size: 0.6rem; color: var(--muted); letter-spacing: 0.08em; }
+  .tab-bar { display: flex; gap: 0; border-bottom: 1px solid var(--border); background: var(--surface); }
+  .tab { padding: 0.7rem 1.25rem; font-family: 'DM Mono', monospace; font-size: 0.6rem; color: var(--muted); letter-spacing: 0.1em; text-transform: uppercase; cursor: pointer; border-bottom: 2px solid transparent; transition: all 0.15s; margin-bottom: -1px; }
   .tab:hover { color: var(--text); }
   .tab.active { color: var(--accent); border-bottom-color: var(--accent); }
- 
   .tab-content { display: none; }
   .tab-content.active { display: block; }
- 
-  /* COPY FLASH */
-  .copied-flash {
-    color: var(--success) !important;
-    transition: color 0.3s;
-  }
+  .copied-flash { color: var(--success) !important; transition: color 0.3s; }
 </style>
 </head>
 <body>
- 
+
 <div class="app">
- 
-  <!-- HEADER -->
+
   <header>
     <div class="logo">
       <span class="logo-title">Visual Prompt Director</span>
@@ -725,66 +169,33 @@
       <span class="status-label">Ready</span>
     </div>
   </header>
- 
-  <!-- SIDEBAR -->
+
   <aside>
- 
-    <!-- API KEY -->
+
     <div class="sidebar-section">
       <span class="sidebar-label">fal.ai API Key</span>
       <div class="api-key-row">
         <input type="password" id="falApiKey" placeholder="fal_key_…" />
       </div>
     </div>
- 
+
     <div class="divider"></div>
- 
-    <!-- STYLE PRESETS -->
+
     <div class="sidebar-section">
       <span class="sidebar-label">Style Preset</span>
       <div class="style-grid" id="styleGrid">
- 
-        <div class="style-card active" data-style="pbcinema">
-          <div class="style-name">pbcinema</div>
-          <div class="style-desc">Cinematic ADV. Key light warm, fill cool. Teal shadows, golden highlights.</div>
-        </div>
- 
-        <div class="style-card" data-style="pbcinema2">
-          <div class="style-name">pbcinema2</div>
-          <div class="style-desc">Theatrical. Specific lenses, architectural geometry, hyperreal texture.</div>
-        </div>
- 
-        <div class="style-card" data-style="pbmovie3">
-          <div class="style-name">pbmovie3</div>
-          <div class="style-desc">Clean, bright, empathetic. Natural light, neutral-cool temperature.</div>
-        </div>
- 
-        <div class="style-card" data-style="pbcinema4">
-          <div class="style-name">pbcinema4</div>
-          <div class="style-desc">Kids & family ADV. Bright, peachy skin, fairytale serene mood.</div>
-        </div>
- 
-        <div class="style-card" data-style="pbadv">
-          <div class="style-name">pbadv</div>
-          <div class="style-desc">Vertical social ADV. Instagram format, symmetric, minimal background.</div>
-        </div>
- 
-        <div class="style-card" data-style="pbcinematik">
-          <div class="style-name">pbcinematik</div>
-          <div class="style-desc">Perceptual depth. Rim light, cyan oval glow. Hyperreal skin texture.</div>
-        </div>
- 
-        <div class="style-card" data-style="experimental">
-          <div class="style-name">experimental</div>
-          <div class="style-desc">Critical mix of all styles. Creative freedom, photographic credibility.</div>
-        </div>
- 
+        <div class="style-card active" data-style="pbcinema"><div class="style-name">pbcinema</div><div class="style-desc">Cinematic ADV. Key light warm, fill cool. Teal shadows, golden highlights.</div></div>
+        <div class="style-card" data-style="pbcinema2"><div class="style-name">pbcinema2</div><div class="style-desc">Theatrical. Specific lenses, architectural geometry, hyperreal texture.</div></div>
+        <div class="style-card" data-style="pbmovie3"><div class="style-name">pbmovie3</div><div class="style-desc">Clean, bright, empathetic. Natural light, neutral-cool temperature.</div></div>
+        <div class="style-card" data-style="pbcinema4"><div class="style-name">pbcinema4</div><div class="style-desc">Kids & family ADV. Bright, peachy skin, fairytale serene mood.</div></div>
+        <div class="style-card" data-style="pbadv"><div class="style-name">pbadv</div><div class="style-desc">Vertical social ADV. Instagram format, symmetric, minimal background.</div></div>
+        <div class="style-card" data-style="pbcinematik"><div class="style-name">pbcinematik</div><div class="style-desc">Perceptual depth. Rim light, cyan oval glow. Hyperreal skin texture.</div></div>
+        <div class="style-card" data-style="experimental"><div class="style-name">experimental</div><div class="style-desc">Critical mix of all styles. Creative freedom, photographic credibility.</div></div>
       </div>
     </div>
- 
+
     <div class="divider"></div>
- 
-    <!-- RATIO -->
+
     <div class="sidebar-section">
       <span class="sidebar-label">Aspect Ratio</span>
       <div class="ratio-group" id="ratioGroup">
@@ -796,218 +207,95 @@
         <div class="ratio-btn" data-ratio="4:3">4:3</div>
       </div>
     </div>
- 
+
     <div class="divider"></div>
- 
-    <!-- PARAMS -->
+
     <div class="sidebar-section">
       <span class="sidebar-label">Parameters</span>
       <div class="slider-group">
- 
         <div class="slider-row">
-          <div class="slider-header">
-            <span class="slider-name">--stylize</span>
-            <span class="slider-val" id="stylizeVal">600</span>
-          </div>
+          <div class="slider-header"><span class="slider-name">--stylize</span><span class="slider-val" id="stylizeVal">600</span></div>
           <input type="range" id="stylizeSlider" min="0" max="1000" step="50" value="600">
         </div>
- 
         <div class="slider-row">
-          <div class="slider-header">
-            <span class="slider-name">--chaos</span>
-            <span class="slider-val" id="chaosVal">0</span>
-          </div>
+          <div class="slider-header"><span class="slider-name">--chaos</span><span class="slider-val" id="chaosVal">0</span></div>
           <input type="range" id="chaosSlider" min="0" max="100" step="5" value="0">
         </div>
- 
       </div>
     </div>
- 
+
     <div class="divider"></div>
- 
-    <!-- TOGGLES -->
+
     <div class="sidebar-section">
       <span class="sidebar-label">Flags</span>
       <div class="toggle-group">
- 
-        <div class="toggle-row">
-          <span class="toggle-name">--raw</span>
-          <div class="toggle on" id="toggleRaw"></div>
-        </div>
- 
-        <div class="toggle-row">
-          <span class="toggle-name">--p (personalization)</span>
-          <div class="toggle on" id="toggleP"></div>
-        </div>
- 
-        <div class="toggle-row">
-          <span class="toggle-name">generate image via fal.ai</span>
-          <div class="toggle" id="toggleFal"></div>
-        </div>
- 
+        <div class="toggle-row"><span class="toggle-name">--raw</span><div class="toggle on" id="toggleRaw"></div></div>
+        <div class="toggle-row"><span class="toggle-name">--p (personalization)</span><div class="toggle on" id="toggleP"></div></div>
+        <div class="toggle-row"><span class="toggle-name">generate image via fal.ai</span><div class="toggle" id="toggleFal"></div></div>
       </div>
     </div>
- 
+
   </aside>
- 
-  <!-- MAIN -->
+
   <main>
- 
-    <!-- BRIEF -->
+
     <div class="brief-section">
       <div class="brief-header">
         <span class="brief-label">Visual Brief</span>
-        <div class="brief-actions">
-          <button class="btn-icon" id="clearBtn" title="Clear">✕</button>
-        </div>
+        <div class="brief-actions"><button class="btn-icon" id="clearBtn" title="Clear">✕</button></div>
       </div>
       <textarea id="briefInput" placeholder="Describe the subject, mood, context. E.g.: young woman in a coffee shop, morning light, warm intimate feeling, lifestyle brand…"></textarea>
     </div>
- 
-    <!-- TAB BAR -->
+
     <div class="tab-bar">
       <div class="tab active" data-tab="prompt">Prompt Output</div>
       <div class="tab" data-tab="image">Image Result</div>
       <div class="tab" data-tab="history">History</div>
     </div>
- 
-    <!-- OUTPUT -->
+
     <div class="output-section">
- 
-      <!-- PROMPT TAB -->
       <div class="tab-content active" id="tabPrompt">
-        <div class="empty-state" id="emptyState">
-          <div class="empty-glyph">pb</div>
-          <div class="empty-title">Write a brief, select a style</div>
-          <div class="empty-sub">then generate</div>
-        </div>
+        <div class="empty-state" id="emptyState"><div class="empty-glyph">pb</div><div class="empty-title">Write a brief, select a style</div><div class="empty-sub">then generate</div></div>
         <div id="promptOutput" style="display:none"></div>
       </div>
- 
-      <!-- IMAGE TAB -->
       <div class="tab-content" id="tabImage">
-        <div class="empty-state">
-          <div class="empty-glyph">◎</div>
-          <div class="empty-title">Enable fal.ai generation</div>
-          <div class="empty-sub">toggle in sidebar + add api key</div>
-        </div>
+        <div class="empty-state"><div class="empty-glyph">◎</div><div class="empty-title">Enable fal.ai generation</div><div class="empty-sub">toggle in sidebar + add api key</div></div>
         <div id="imageOutput" style="display:none"></div>
       </div>
- 
-      <!-- HISTORY TAB -->
       <div class="tab-content" id="tabHistory">
-        <div class="empty-state" id="historyEmpty">
-          <div class="empty-glyph">≡</div>
-          <div class="empty-title">No history yet</div>
-          <div class="empty-sub">generated prompts will appear here</div>
-        </div>
+        <div class="empty-state" id="historyEmpty"><div class="empty-glyph">≡</div><div class="empty-title">No history yet</div><div class="empty-sub">generated prompts will appear here</div></div>
         <div id="historyList" style="display:none"></div>
       </div>
- 
     </div>
- 
-    <!-- GENERATE BAR -->
+
     <div class="generate-bar">
       <div class="generate-info" id="generateInfo">Select a style and write a brief</div>
       <button class="btn btn-ghost" id="promptOnlyBtn">Prompt only</button>
       <button class="btn btn-primary" id="generateBtn" disabled>Generate</button>
     </div>
- 
+
   </main>
- 
+
 </div>
- 
-<!-- TOAST CONTAINER -->
+
 <div id="toastContainer"></div>
- 
+
 <script>
-// ─── STATE ───────────────────────────────────────────────────────────────────
 const state = {
-  style: 'pbcinema',
-  ratio: '16:9',
-  stylize: 600,
-  chaos: 0,
-  raw: true,
-  personalization: true,
-  falEnabled: false,
-  generating: false,
-  history: []
+  style: 'pbcinema', ratio: '16:9', stylize: 600, chaos: 0,
+  raw: true, personalization: true, falEnabled: false, generating: false, history: []
 };
- 
-// ─── STYLE DEFINITIONS ───────────────────────────────────────────────────────
+
 const styles = {
-  pbcinema: {
-    name: 'pbcinema',
-    defaultRatio: '16:9',
-    defaultStylize: 600,
-    build: (brief, params) => ({
-      prompt: `${brief}, hyperrealistic cinematic photography, central symmetric composition with clear foreground midground background separation, warm key light source with cool fill light, teal blue shadows and golden highlights color grading, peachy warm skin tones, subtle dodge and burn modeling, fine 35mm analog film grain, professional advertising photography, ultra detailed surface textures`,
-      params: buildParams(params),
-      rationale: 'Cinematic advertising look. The warm/cool split and teal-gold grading give it the commercial depth typical of high-end brand campaigns.'
-    })
-  },
-  pbcinema2: {
-    name: 'pbcinema2',
-    defaultRatio: '2.39:1',
-    defaultStylize: 650,
-    build: (brief, params) => ({
-      prompt: `${brief}, shot on 65mm T2.0 anamorphic, theatrical cinematic photography, strong central symmetry with marked architectural geometry, warm key light with cool fill, advanced dodge and burn skin modeling, teal blue shadows with golden highlight transitions, soft contrast with hyperrealistic texture detail, cinematic analog film grain`,
-      params: buildParams(params),
-      rationale: 'Theatrical evolution. The anamorphic lens choice and architectural geometry add a cinematic gravitas that feels premium and editorial.'
-    })
-  },
-  pbmovie3: {
-    name: 'pbmovie3',
-    defaultRatio: '16:9',
-    defaultStylize: 500,
-    build: (brief, params) => ({
-      prompt: `${brief}, clean cinematic photography with bright natural or believable simulated lighting, neutral to cool color temperature avoiding warm yellow cast, soft gradient transitions, subtle blue shadow accent, low soft contrast, clear natural skin tones without yellow shift, defined textures without harsh rendering, editorial advertising quality, empathetic composed mood`,
-      params: buildParams(params),
-      rationale: 'Bright and empathetic. Works well for lifestyle, wellness, and human-centered campaigns where warmth comes from the subject, not the color grade.'
-    })
-  },
-  pbcinema4: {
-    name: 'pbcinema4 (kids ADV)',
-    defaultRatio: '4:5',
-    defaultStylize: 500,
-    build: (brief, params) => ({
-      prompt: `${brief}, very bright family advertising photography with balanced neutral to cool lighting, subtle golden light accents without heavy warmth, luminous peachy pink skin tones explicitly no yellow cast, soft teal touched shadow transitions, clear bright highlight rendering, marked depth of field composition with foreground subject and narrative supporting objects, empathetic fairytale serene mood, child friendly premium accessible aesthetic`,
-      params: buildParams({ ...params, ratio: '4:5' }),
-      rationale: 'Optimized for kids and family campaigns. The luminous quality and soft fairytale mood create trust and warmth without feeling cheap or saccharine.'
-    })
-  },
-  pbadv: {
-    name: 'pbadv',
-    defaultRatio: '4:5',
-    defaultStylize: 500,
-    build: (brief, params) => ({
-      prompt: `${brief}, clean vertical social media advertising photography, strong central symmetric subject placement, minimal blurred background with controlled depth, natural neutral cool lighting without color dominance, soft bluish shadow detail, controlled natural color palette, empathetic serene premium accessible mood, optimized for Instagram advertising format`,
-      params: buildParams({ ...params, ratio: params.ratio === '9:16' ? '9:16' : '4:5' }),
-      rationale: 'Built for Instagram and social ADV. The vertical format and minimal background keep focus on the subject across all feed placements.'
-    })
-  },
-  pbcinematik: {
-    name: 'pbcinematik',
-    defaultRatio: '16:9',
-    defaultStylize: 650,
-    build: (brief, params) => ({
-      prompt: `${brief}, cinematic photography with strong perceptual depth emphasis, very subtle lateral rim light at low intensity, soft semi-transparent cyan horizontal oval gradient glow positioned behind and slightly above subject head not perfectly centered, no extreme contrast or heavy shadows, hyperrealistic skin texture with clearly visible pores and real cutaneous detail, absolutely no skin smoothing no airbrushing no plastic effect, deep silent cinematic mood with believable photographic credibility`,
-      params: buildParams(params),
-      rationale: 'The signature cyan glow and hyperreal skin texture create a distinctive visual depth. Strong for portrait-driven campaigns where the face is the product.'
-    })
-  },
-  experimental: {
-    name: 'experimental',
-    defaultRatio: '16:9',
-    defaultStylize: 800,
-    build: (brief, params) => ({
-      prompt: `${brief}, experimental cinematic photography blending warm key light with cool cinematic fill, perceptual depth with subtle rim definition, soft teal shadow gradient with restrained golden highlight, hyperrealistic texture rendering without skin smoothing, unconventional composition that breaks symmetric convention while maintaining photographic credibility, editorial advertising mood with unexpected spatial tension`,
-      params: buildParams({ ...params, raw: false }),
-      rationale: 'Critical mix of all pb styles. No --raw flag here to let V8 interpret more freely. Best for creative exploration before locking a campaign direction.'
-    })
-  }
+  pbcinema: { name: 'pbcinema', defaultRatio: '16:9', defaultStylize: 600, build: (brief, params) => ({ prompt: `${brief}, hyperrealistic cinematic photography, central symmetric composition with clear foreground midground background separation, warm key light source with cool fill light, teal blue shadows and golden highlights color grading, peachy warm skin tones, subtle dodge and burn modeling, fine 35mm analog film grain, professional advertising photography, ultra detailed surface textures`, params: buildParams(params), rationale: 'Cinematic advertising look. The warm/cool split and teal-gold grading give it the commercial depth typical of high-end brand campaigns.' }) },
+  pbcinema2: { name: 'pbcinema2', defaultRatio: '2.39:1', defaultStylize: 650, build: (brief, params) => ({ prompt: `${brief}, shot on 65mm T2.0 anamorphic, theatrical cinematic photography, strong central symmetry with marked architectural geometry, warm key light with cool fill, advanced dodge and burn skin modeling, teal blue shadows with golden highlight transitions, soft contrast with hyperrealistic texture detail, cinematic analog film grain`, params: buildParams(params), rationale: 'Theatrical evolution. The anamorphic lens choice and architectural geometry add a cinematic gravitas that feels premium and editorial.' }) },
+  pbmovie3: { name: 'pbmovie3', defaultRatio: '16:9', defaultStylize: 500, build: (brief, params) => ({ prompt: `${brief}, clean cinematic photography with bright natural or believable simulated lighting, neutral to cool color temperature avoiding warm yellow cast, soft gradient transitions, subtle blue shadow accent, low soft contrast, clear natural skin tones without yellow shift, defined textures without harsh rendering, editorial advertising quality, empathetic composed mood`, params: buildParams(params), rationale: 'Bright and empathetic. Works well for lifestyle, wellness, and human-centered campaigns where warmth comes from the subject, not the color grade.' }) },
+  pbcinema4: { name: 'pbcinema4 (kids ADV)', defaultRatio: '4:5', defaultStylize: 500, build: (brief, params) => ({ prompt: `${brief}, very bright family advertising photography with balanced neutral to cool lighting, subtle golden light accents without heavy warmth, luminous peachy pink skin tones explicitly no yellow cast, soft teal touched shadow transitions, clear bright highlight rendering, marked depth of field composition with foreground subject and narrative supporting objects, empathetic fairytale serene mood, child friendly premium accessible aesthetic`, params: buildParams({ ...params, ratio: '4:5' }), rationale: 'Optimized for kids and family campaigns. The luminous quality and soft fairytale mood create trust and warmth without feeling cheap or saccharine.' }) },
+  pbadv: { name: 'pbadv', defaultRatio: '4:5', defaultStylize: 500, build: (brief, params) => ({ prompt: `${brief}, clean vertical social media advertising photography, strong central symmetric subject placement, minimal blurred background with controlled depth, natural neutral cool lighting without color dominance, soft bluish shadow detail, controlled natural color palette, empathetic serene premium accessible mood, optimized for Instagram advertising format`, params: buildParams({ ...params, ratio: params.ratio === '9:16' ? '9:16' : '4:5' }), rationale: 'Built for Instagram and social ADV. The vertical format and minimal background keep focus on the subject across all feed placements.' }) },
+  pbcinematik: { name: 'pbcinematik', defaultRatio: '16:9', defaultStylize: 650, build: (brief, params) => ({ prompt: `${brief}, cinematic photography with strong perceptual depth emphasis, very subtle lateral rim light at low intensity, soft semi-transparent cyan horizontal oval gradient glow positioned behind and slightly above subject head not perfectly centered, no extreme contrast or heavy shadows, hyperrealistic skin texture with clearly visible pores and real cutaneous detail, absolutely no skin smoothing no airbrushing no plastic effect, deep silent cinematic mood with believable photographic credibility`, params: buildParams(params), rationale: 'The signature cyan glow and hyperreal skin texture create a distinctive visual depth. Strong for portrait-driven campaigns where the face is the product.' }) },
+  experimental: { name: 'experimental', defaultRatio: '16:9', defaultStylize: 800, build: (brief, params) => ({ prompt: `${brief}, experimental cinematic photography blending warm key light with cool cinematic fill, perceptual depth with subtle rim definition, soft teal shadow gradient with restrained golden highlight, hyperrealistic texture rendering without skin smoothing, unconventional composition that breaks symmetric convention while maintaining photographic credibility, editorial advertising mood with unexpected spatial tension`, params: buildParams({ ...params, raw: false }), rationale: 'Critical mix of all pb styles. No --raw flag here to let V8 interpret more freely. Best for creative exploration before locking a campaign direction.' }) }
 };
- 
+
 function buildParams({ ratio, stylize, chaos, raw, personalization }) {
   let p = `--ar ${ratio} --s ${stylize}`;
   if (raw) p += ' --raw';
@@ -1016,8 +304,7 @@ function buildParams({ ratio, stylize, chaos, raw, personalization }) {
   p += ' --v 8';
   return p;
 }
- 
-// ─── DOM REFS ─────────────────────────────────────────────────────────────────
+
 const els = {
   briefInput: document.getElementById('briefInput'),
   generateBtn: document.getElementById('generateBtn'),
@@ -1039,23 +326,27 @@ const els = {
   falApiKey: document.getElementById('falApiKey'),
   toastContainer: document.getElementById('toastContainer'),
 };
- 
-// ─── INIT ─────────────────────────────────────────────────────────────────────
+
+// ─── LOCALSTORAGE: carica la chiave salvata all'avvio ─────────────────────────
+const savedKey = localStorage.getItem('fal_api_key');
+if (savedKey) els.falApiKey.value = savedKey;
+
+// ─── LOCALSTORAGE: salva la chiave ad ogni modifica ───────────────────────────
+els.falApiKey.addEventListener('input', () => {
+  localStorage.setItem('fal_api_key', els.falApiKey.value);
+});
+
 document.querySelectorAll('.style-card').forEach(card => {
   card.addEventListener('click', () => {
     document.querySelectorAll('.style-card').forEach(c => c.classList.remove('active'));
     card.classList.add('active');
     state.style = card.dataset.style;
     const styleDef = styles[state.style];
-    if (styleDef) {
-      state.stylize = styleDef.defaultStylize;
-      els.stylizeSlider.value = state.stylize;
-      els.stylizeVal.textContent = state.stylize;
-    }
+    if (styleDef) { state.stylize = styleDef.defaultStylize; els.stylizeSlider.value = state.stylize; els.stylizeVal.textContent = state.stylize; }
     updateInfo();
   });
 });
- 
+
 document.querySelectorAll('.ratio-btn').forEach(btn => {
   btn.addEventListener('click', () => {
     document.querySelectorAll('.ratio-btn').forEach(b => b.classList.remove('active'));
@@ -1064,32 +355,17 @@ document.querySelectorAll('.ratio-btn').forEach(btn => {
     updateInfo();
   });
 });
- 
-els.stylizeSlider.addEventListener('input', e => {
-  state.stylize = parseInt(e.target.value);
-  els.stylizeVal.textContent = state.stylize;
+
+els.stylizeSlider.addEventListener('input', e => { state.stylize = parseInt(e.target.value); els.stylizeVal.textContent = state.stylize; });
+els.chaosSlider.addEventListener('input', e => { state.chaos = parseInt(e.target.value); els.chaosVal.textContent = state.chaos; });
+
+[{ el: els.toggleRaw, key: 'raw' }, { el: els.toggleP, key: 'personalization' }, { el: els.toggleFal, key: 'falEnabled' }].forEach(({ el, key }) => {
+  el.addEventListener('click', () => { state[key] = !state[key]; el.classList.toggle('on', state[key]); updateInfo(); });
 });
- 
-els.chaosSlider.addEventListener('input', e => {
-  state.chaos = parseInt(e.target.value);
-  els.chaosVal.textContent = state.chaos;
-});
- 
-[
-  { el: els.toggleRaw, key: 'raw' },
-  { el: els.toggleP, key: 'personalization' },
-  { el: els.toggleFal, key: 'falEnabled' }
-].forEach(({ el, key }) => {
-  el.addEventListener('click', () => {
-    state[key] = !state[key];
-    el.classList.toggle('on', state[key]);
-    updateInfo();
-  });
-});
- 
+
 els.briefInput.addEventListener('input', updateGenerateBtn);
 els.clearBtn.addEventListener('click', () => { els.briefInput.value = ''; updateGenerateBtn(); });
- 
+
 document.querySelectorAll('.tab').forEach(tab => {
   tab.addEventListener('click', () => {
     document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
@@ -1098,270 +374,111 @@ document.querySelectorAll('.tab').forEach(tab => {
     document.getElementById('tab' + cap(tab.dataset.tab)).classList.add('active');
   });
 });
- 
-els.promptOnlyBtn.addEventListener('click', () => {
-  if (!els.briefInput.value.trim()) return;
-  generatePrompt(false);
-});
- 
-els.generateBtn.addEventListener('click', () => {
-  if (!els.briefInput.value.trim()) return;
-  generatePrompt(state.falEnabled);
-});
- 
+
+els.promptOnlyBtn.addEventListener('click', () => { if (!els.briefInput.value.trim()) return; generatePrompt(false); });
+els.generateBtn.addEventListener('click', () => { if (!els.briefInput.value.trim()) return; generatePrompt(state.falEnabled); });
+
 function cap(s) { return s.charAt(0).toUpperCase() + s.slice(1); }
- 
-function updateGenerateBtn() {
-  const hasText = els.briefInput.value.trim().length > 0;
-  els.generateBtn.disabled = !hasText || state.generating;
-  els.promptOnlyBtn.disabled = !hasText || state.generating;
-}
- 
-function updateInfo() {
-  const falNote = state.falEnabled ? ' · fal.ai generation ON' : '';
-  els.generateInfo.textContent = `${state.style} · ${state.ratio} · s${state.stylize}${falNote}`;
-}
- 
-// ─── GENERATE ─────────────────────────────────────────────────────────────────
+function updateGenerateBtn() { const hasText = els.briefInput.value.trim().length > 0; els.generateBtn.disabled = !hasText || state.generating; els.promptOnlyBtn.disabled = !hasText || state.generating; }
+function updateInfo() { const falNote = state.falEnabled ? ' · fal.ai generation ON' : ''; els.generateInfo.textContent = `${state.style} · ${state.ratio} · s${state.stylize}${falNote}`; }
+
 async function generatePrompt(withImage) {
   const brief = els.briefInput.value.trim();
   if (!brief) return;
- 
   state.generating = true;
   updateGenerateBtn();
- 
-  const params = {
-    ratio: state.ratio,
-    stylize: state.stylize,
-    chaos: state.chaos,
-    raw: state.raw,
-    personalization: state.personalization
-  };
- 
-  // Show loading
+  const params = { ratio: state.ratio, stylize: state.stylize, chaos: state.chaos, raw: state.raw, personalization: state.personalization };
   els.emptyState.style.display = 'none';
   els.promptOutput.style.display = 'block';
   els.promptOutput.innerHTML = `<div class="loading-bar"></div><div class="loading-card">Generating prompt via Claude…</div>`;
- 
-  // Switch to prompt tab
   document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
   document.querySelectorAll('.tab-content').forEach(c => c.classList.remove('active'));
   document.querySelector('[data-tab="prompt"]').classList.add('active');
   document.getElementById('tabPrompt').classList.add('active');
- 
   try {
     const styleData = styles[state.style];
     const builtStyle = styleData.build(brief, params);
- 
-    // Use Claude API to enrich the prompt
-    const systemPrompt = `You are a professional visual prompt engineer specializing in the pb style system for Midjourney V8. Your job is to take a brief and a base prompt structure and return an enriched, production-ready prompt.
- 
-Rules:
-- Output ONLY a JSON object, no markdown, no extra text
-- The JSON has exactly these fields: "enrichedPrompt" (string), "params" (string), "rationale" (string, max 2 sentences)
-- enrichedPrompt: expand the base prompt with specific visual details (lighting direction, material textures, spatial relationships, camera position) that match the style. 50-90 words.
-- params: the MJ parameters string
-- rationale: why this interpretation works for the brief
-- Never add generic descriptors: beautiful, stunning, amazing, elegant
-- Always maintain photographic and ADV credibility
-- No illustrative or painterly language`;
- 
-    const userMsg = `Brief: "${brief}"
-Style: ${state.style}
-Base prompt: ${builtStyle.prompt}
-Parameters: ${builtStyle.params}
-Rationale hint: ${builtStyle.rationale}
- 
-Enrich the prompt for Midjourney V8, maintaining the pb style system rules.`;
- 
+    const systemPrompt = `You are a professional visual prompt engineer specializing in the pb style system for Midjourney V8. Your job is to take a brief and a base prompt structure and return an enriched, production-ready prompt.\n\nRules:\n- Output ONLY a JSON object, no markdown, no extra text\n- The JSON has exactly these fields: "enrichedPrompt" (string), "params" (string), "rationale" (string, max 2 sentences)\n- enrichedPrompt: expand the base prompt with specific visual details (lighting direction, material textures, spatial relationships, camera position) that match the style. 50-90 words.\n- params: the MJ parameters string\n- rationale: why this interpretation works for the brief\n- Never add generic descriptors: beautiful, stunning, amazing, elegant\n- Always maintain photographic and ADV credibility\n- No illustrative or painterly language`;
+    const userMsg = `Brief: "${brief}"\nStyle: ${state.style}\nBase prompt: ${builtStyle.prompt}\nParameters: ${builtStyle.params}\nRationale hint: ${builtStyle.rationale}\n\nEnrich the prompt for Midjourney V8, maintaining the pb style system rules.`;
     const response = await fetch('https://api.anthropic.com/v1/messages', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({
-        model: 'claude-sonnet-4-20250514',
-        max_tokens: 1000,
-        system: systemPrompt,
-        messages: [{ role: 'user', content: userMsg }]
-      })
+      body: JSON.stringify({ model: 'claude-sonnet-4-20250514', max_tokens: 1000, system: systemPrompt, messages: [{ role: 'user', content: userMsg }] })
     });
- 
     const data = await response.json();
     const raw = data.content.map(b => b.text || '').join('');
     let parsed;
- 
-    try {
-      const clean = raw.replace(/```json|```/g, '').trim();
-      parsed = JSON.parse(clean);
-    } catch {
-      parsed = {
-        enrichedPrompt: builtStyle.prompt,
-        params: builtStyle.params,
-        rationale: builtStyle.rationale
-      };
-    }
- 
+    try { const clean = raw.replace(/```json|```/g, '').trim(); parsed = JSON.parse(clean); }
+    catch { parsed = { enrichedPrompt: builtStyle.prompt, params: builtStyle.params, rationale: builtStyle.rationale }; }
     const fullPrompt = parsed.enrichedPrompt + '\n' + parsed.params;
- 
-    // Render prompt card
-    const card = renderPromptCard({
-      style: state.style,
-      prompt: parsed.enrichedPrompt,
-      params: parsed.params,
-      rationale: parsed.rationale,
-      brief
-    });
- 
+    const card = renderPromptCard({ style: state.style, prompt: parsed.enrichedPrompt, params: parsed.params, rationale: parsed.rationale, brief });
     els.promptOutput.innerHTML = '';
     els.promptOutput.appendChild(card);
- 
-    // Add to history
     state.history.unshift({ style: state.style, brief, prompt: fullPrompt, ts: Date.now() });
     renderHistory();
- 
-    // Image generation
     if (withImage) {
       const apiKey = els.falApiKey.value.trim();
-      if (!apiKey) {
-        showToast('Add your fal.ai API key to generate images', 'error');
-      } else {
-        await generateImage(parsed.enrichedPrompt, parsed.params, apiKey);
-      }
+      if (!apiKey) { showToast('Add your fal.ai API key to generate images', 'error'); }
+      else { await generateImage(parsed.enrichedPrompt, parsed.params, apiKey); }
     }
- 
     showToast('Prompt ready', 'success');
- 
   } catch (err) {
     els.promptOutput.innerHTML = `<div class="loading-card" style="color:var(--error)">Error: ${err.message}</div>`;
     showToast('Generation failed', 'error');
   }
- 
   state.generating = false;
   updateGenerateBtn();
 }
- 
-// ─── RENDER PROMPT CARD ───────────────────────────────────────────────────────
+
 function renderPromptCard({ style, prompt, params, rationale, brief }) {
   const card = document.createElement('div');
   card.className = 'prompt-card';
- 
   const fullPrompt = prompt + '\n' + params;
- 
-  card.innerHTML = `
-    <div class="prompt-card-header">
-      <span class="prompt-style-tag">${style}</span>
-      <div class="prompt-card-actions">
-        <button class="btn-icon copy-btn" title="Copy full prompt">⎘ copy</button>
-      </div>
-    </div>
-    <div class="prompt-body">
-      <div class="prompt-text">${escHtml(prompt)}</div>
-      <div class="prompt-params">${escHtml(params)}</div>
-      <div class="prompt-rationale">${escHtml(rationale)}</div>
-    </div>
-  `;
- 
+  card.innerHTML = `<div class="prompt-card-header"><span class="prompt-style-tag">${style}</span><div class="prompt-card-actions"><button class="btn-icon copy-btn" title="Copy full prompt">⎘ copy</button></div></div><div class="prompt-body"><div class="prompt-text">${escHtml(prompt)}</div><div class="prompt-params">${escHtml(params)}</div><div class="prompt-rationale">${escHtml(rationale)}</div></div>`;
   card.querySelector('.copy-btn').addEventListener('click', function() {
     navigator.clipboard.writeText(fullPrompt);
     this.textContent = '✓ copied';
     this.classList.add('copied-flash');
-    setTimeout(() => {
-      this.textContent = '⎘ copy';
-      this.classList.remove('copied-flash');
-    }, 1500);
+    setTimeout(() => { this.textContent = '⎘ copy'; this.classList.remove('copied-flash'); }, 1500);
   });
- 
   return card;
 }
- 
-// ─── IMAGE GENERATION via fal.ai ─────────────────────────────────────────────
+
 async function generateImage(prompt, params, apiKey) {
   document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
   document.querySelectorAll('.tab-content').forEach(c => c.classList.remove('active'));
   document.querySelector('[data-tab="image"]').classList.add('active');
   document.getElementById('tabImage').classList.add('active');
- 
   els.imageOutput.style.display = 'block';
   els.imageOutput.innerHTML = `<div class="loading-bar"></div><div class="loading-card">Sending to fal.ai flux-pro…</div>`;
- 
-  // Parse ratio
-  const ratioMap = {
-    '16:9': { width: 1344, height: 768 },
-    '4:5': { width: 768, height: 960 },
-    '9:16': { width: 768, height: 1344 },
-    '2.39:1': { width: 1344, height: 562 },
-    '1:1': { width: 1024, height: 1024 },
-    '4:3': { width: 1024, height: 768 }
-  };
+  const ratioMap = { '16:9': { width: 1344, height: 768 }, '4:5': { width: 768, height: 960 }, '9:16': { width: 768, height: 1344 }, '2.39:1': { width: 1344, height: 562 }, '1:1': { width: 1024, height: 1024 }, '4:3': { width: 1024, height: 768 } };
   const dims = ratioMap[state.ratio] || { width: 1344, height: 768 };
- 
   try {
     const res = await fetch('https://fal.run/fal-ai/flux-pro', {
       method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-        'Authorization': `Key ${apiKey}`
-      },
-      body: JSON.stringify({
-        prompt: prompt,
-        image_size: { width: dims.width, height: dims.height },
-        num_inference_steps: 28,
-        guidance_scale: 3.5,
-        num_images: 1,
-        safety_tolerance: '2'
-      })
+      headers: { 'Content-Type': 'application/json', 'Authorization': `Key ${apiKey}` },
+      body: JSON.stringify({ prompt: prompt, image_size: { width: dims.width, height: dims.height }, num_inference_steps: 28, guidance_scale: 3.5, num_images: 1, safety_tolerance: '2' })
     });
- 
     if (!res.ok) throw new Error(`fal.ai error: ${res.status}`);
     const data = await res.json();
     const imgUrl = data.images?.[0]?.url;
- 
     if (imgUrl) {
-      els.imageOutput.innerHTML = `
-        <div class="image-result">
-          <img src="${imgUrl}" alt="Generated image" />
-          <div class="image-result-bar">
-            <span class="image-result-meta">${state.style} · ${state.ratio} · flux-pro</span>
-            <a href="${imgUrl}" download class="btn btn-ghost" style="text-decoration:none">↓ download</a>
-          </div>
-        </div>
-      `;
+      els.imageOutput.innerHTML = `<div class="image-result"><img src="${imgUrl}" alt="Generated image" /><div class="image-result-bar"><span class="image-result-meta">${state.style} · ${state.ratio} · flux-pro</span><a href="${imgUrl}" download class="btn btn-ghost" style="text-decoration:none">↓ download</a></div></div>`;
       showToast('Image generated', 'success');
-    } else {
-      throw new Error('No image returned');
-    }
- 
+    } else { throw new Error('No image returned'); }
   } catch (err) {
     els.imageOutput.innerHTML = `<div class="loading-card" style="color:var(--error)">Image generation failed: ${err.message}</div>`;
     showToast('Image failed', 'error');
   }
 }
- 
-// ─── HISTORY ──────────────────────────────────────────────────────────────────
+
 function renderHistory() {
-  if (state.history.length === 0) {
-    els.historyEmpty.style.display = 'flex';
-    els.historyList.style.display = 'none';
-    return;
-  }
- 
+  if (state.history.length === 0) { els.historyEmpty.style.display = 'flex'; els.historyList.style.display = 'none'; return; }
   els.historyEmpty.style.display = 'none';
   els.historyList.style.display = 'block';
- 
-  els.historyList.innerHTML = state.history.map((item, i) => `
-    <div class="prompt-card" style="animation-delay:${i * 0.05}s">
-      <div class="prompt-card-header">
-        <span class="prompt-style-tag">${item.style}</span>
-        <span class="image-result-meta">${new Date(item.ts).toLocaleTimeString()}</span>
-      </div>
-      <div class="prompt-body">
-        <div class="prompt-text" style="font-size:0.68rem;color:var(--muted2);margin-bottom:0.5rem">${escHtml(item.brief)}</div>
-        <div class="prompt-text">${escHtml(item.prompt)}</div>
-      </div>
-    </div>
-  `).join('');
+  els.historyList.innerHTML = state.history.map((item, i) => `<div class="prompt-card" style="animation-delay:${i * 0.05}s"><div class="prompt-card-header"><span class="prompt-style-tag">${item.style}</span><span class="image-result-meta">${new Date(item.ts).toLocaleTimeString()}</span></div><div class="prompt-body"><div class="prompt-text" style="font-size:0.68rem;color:var(--muted2);margin-bottom:0.5rem">${escHtml(item.brief)}</div><div class="prompt-text">${escHtml(item.prompt)}</div></div></div>`).join('');
 }
- 
-// ─── TOAST ────────────────────────────────────────────────────────────────────
+
 function showToast(msg, type = '') {
   const toast = document.createElement('div');
   toast.className = `toast ${type}`;
@@ -1370,13 +487,11 @@ function showToast(msg, type = '') {
   els.toastContainer.appendChild(toast);
   setTimeout(() => toast.remove(), 3000);
 }
- 
-// ─── UTILS ────────────────────────────────────────────────────────────────────
+
 function escHtml(str) {
   return String(str).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
 }
- 
-// ─── INIT ─────────────────────────────────────────────────────────────────────
+
 updateInfo();
 updateGenerateBtn();
 </script>
