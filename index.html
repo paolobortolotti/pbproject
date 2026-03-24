@@ -332,9 +332,12 @@ const savedKey = localStorage.getItem('fal_api_key');
 if (savedKey) els.falApiKey.value = savedKey;
 
 // ─── LOCALSTORAGE: salva la chiave ad ogni modifica ───────────────────────────
+const savedKey = localStorage.getItem('fal_api_key');
+if (savedKey) els.falApiKey.value = savedKey;
 els.falApiKey.addEventListener('input', () => {
   localStorage.setItem('fal_api_key', els.falApiKey.value);
 });
+  
 
 document.querySelectorAll('.style-card').forEach(card => {
   card.addEventListener('click', () => {
@@ -402,7 +405,7 @@ async function generatePrompt(withImage) {
     const userMsg = `Brief: "${brief}"\nStyle: ${state.style}\nBase prompt: ${builtStyle.prompt}\nParameters: ${builtStyle.params}\nRationale hint: ${builtStyle.rationale}\n\nEnrich the prompt for Midjourney V8, maintaining the pb style system rules.`;
     const response = await fetch('https://api.anthropic.com/v1/messages', {
       method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
+      headers: { 'Content-Type': 'application/json', 'anthropic-dangerous-direct-browser-access': 'true' },
       body: JSON.stringify({ model: 'claude-sonnet-4-20250514', max_tokens: 1000, system: systemPrompt, messages: [{ role: 'user', content: userMsg }] })
     });
     const data = await response.json();
