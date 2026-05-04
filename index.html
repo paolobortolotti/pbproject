@@ -293,6 +293,7 @@
     <div class="generate-bar">
       <div class="generate-info" id="generateInfo">Select a style and write a brief</div>
       <button class="btn btn-ghost" id="promptOnlyBtn">Prompt only</button>
+      <button class="btn btn-ghost" id="imageDirectBtn" disabled title="Send your prompt directly to fal.ai — no DeepSeek">→ Image</button>
       <button class="btn btn-primary" id="generateBtn" disabled>Generate</button>
     </div>
 
@@ -333,6 +334,7 @@ const els = {
   briefInput: document.getElementById('briefInput'),
   generateBtn: document.getElementById('generateBtn'),
   promptOnlyBtn: document.getElementById('promptOnlyBtn'),
+  imageDirectBtn: document.getElementById('imageDirectBtn'),
   clearBtn: document.getElementById('clearBtn'),
   emptyState: document.getElementById('emptyState'),
   promptOutput: document.getElementById('promptOutput'),
@@ -416,9 +418,20 @@ document.querySelectorAll('.tab').forEach(tab => {
 
 els.promptOnlyBtn.addEventListener('click', () => { if (!els.briefInput.value.trim()) return; generatePrompt(false); });
 els.generateBtn.addEventListener('click', () => { if (!els.briefInput.value.trim()) return; generatePrompt(state.falEnabled); });
+els.imageDirectBtn.addEventListener('click', async () => {
+  const prompt = els.briefInput.value.trim();
+  if (!prompt) return;
+  const apiKey = els.falApiKey?.value.trim() || localStorage.getItem('fal_api_key');
+  if (!apiKey) { showToast('Add your fal.ai API key to generate images', 'error'); return; }
+  state.generating = true;
+  updateGenerateBtn();
+  await generateImage(prompt, {}, apiKey);
+  state.generating = false;
+  updateGenerateBtn();
+});
 
 function cap(s) { return s.charAt(0).toUpperCase() + s.slice(1); }
-function updateGenerateBtn() { const hasText = els.briefInput.value.trim().length > 0; els.generateBtn.disabled = !hasText || state.generating; els.promptOnlyBtn.disabled = !hasText || state.generating; }
+function updateGenerateBtn() { const hasText = els.briefInput.value.trim().length > 0; els.generateBtn.disabled = !hasText || state.generating; els.promptOnlyBtn.disabled = !hasText || state.generating; els.imageDirectBtn.disabled = !hasText || state.generating; }
 function updateInfo() { const falNote = state.falEnabled ? ' · fal.ai generation ON' : ''; els.generateInfo.textContent = `${state.style} · ${state.ratio} · s${state.stylize}${falNote}`; }
 
 async function generatePrompt(withImage) {
