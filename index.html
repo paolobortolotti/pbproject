@@ -343,10 +343,11 @@ els.falApiKey.addEventListener('input', () => {
   localStorage.setItem('fal_api_key', els.falApiKey.value);
 });
 
-const savedAnthropicKey = localStorage.getItem('anthropic_api_key');
-if (savedAnthropicKey) els.anthropicApiKey.value = savedAnthropicKey;
+localStorage.removeItem('anthropic_api_key');
+const savedDeepseekKey = localStorage.getItem('deepseek_api_key');
+if (savedDeepseekKey) els.anthropicApiKey.value = savedDeepseekKey;
 els.anthropicApiKey.addEventListener('input', () => {
-  localStorage.setItem('anthropic_api_key', els.anthropicApiKey.value);
+  localStorage.setItem('deepseek_api_key', els.anthropicApiKey.value);
 });
   
 
