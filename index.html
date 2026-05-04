@@ -16,8 +16,8 @@
     --accent: #c8a96e;
     --accent2: #e8c98e;
     --text: #e8e4dc;
-    --muted: #666666;
-    --muted2: #888888;
+    --muted: #777777;
+    --muted2: #999999;
     --cyan: #5cc8d4;
     --error: #e05555;
     --success: #5db87a;
@@ -39,7 +39,7 @@
  
   .app {
     display: grid;
-    grid-template-columns: 280px 1fr;
+    grid-template-columns: 300px 1fr;
     grid-template-rows: auto 1fr;
     min-height: 100vh;
   }
@@ -52,54 +52,54 @@
     display: flex;
     align-items: center;
     justify-content: space-between;
-    height: 64px;
+    height: 68px;
   }
  
   .logo { display: flex; align-items: baseline; gap: 0.5rem; }
   .logo-title { font-family: 'Playfair Display', serif; font-size: 1.25rem; color: var(--text); letter-spacing: 0.02em; }
-  .logo-sub { font-family: 'DM Mono', monospace; font-size: 0.6rem; color: var(--accent); letter-spacing: 0.15em; text-transform: uppercase; }
+  .logo-sub { font-family: 'DM Mono', monospace; font-size: 0.72rem; color: var(--accent); letter-spacing: 0.15em; text-transform: uppercase; }
   .header-right { display: flex; align-items: center; gap: 1rem; }
   .status-dot { width: 6px; height: 6px; border-radius: 50%; background: var(--success); animation: pulse 2s infinite; }
   @keyframes pulse { 0%, 100% { opacity: 1; } 50% { opacity: 0.4; } }
-  .status-label { font-family: 'DM Mono', monospace; font-size: 0.65rem; color: var(--muted2); letter-spacing: 0.1em; text-transform: uppercase; }
+  .status-label { font-family: 'DM Mono', monospace; font-size: 0.76rem; color: var(--muted2); letter-spacing: 0.1em; text-transform: uppercase; }
  
-  aside { background: var(--surface); border-right: 1px solid var(--border); padding: 1.5rem; overflow-y: auto; }
+  aside { background: var(--surface); border-right: 1px solid var(--border); padding: 1.75rem; overflow-y: auto; }
   .sidebar-section { margin-bottom: 2rem; }
-  .sidebar-label { font-family: 'DM Mono', monospace; font-size: 0.6rem; color: var(--muted); letter-spacing: 0.15em; text-transform: uppercase; margin-bottom: 0.75rem; display: block; }
+  .sidebar-label { font-family: 'DM Mono', monospace; font-size: 0.72rem; color: var(--muted); letter-spacing: 0.15em; text-transform: uppercase; margin-bottom: 1rem; display: block; }
   .style-grid { display: flex; flex-direction: column; gap: 0.4rem; }
-  .style-card { background: var(--surface2); border: 1px solid var(--border); border-radius: 4px; padding: 0.75rem 1rem; cursor: pointer; transition: all 0.15s ease; position: relative; }
+  .style-card { background: var(--surface2); border: 1px solid var(--border); border-radius: 4px; padding: 0.85rem 1.1rem; cursor: pointer; transition: all 0.15s ease; position: relative; }
   .style-card:hover { border-color: var(--border2); background: var(--surface3); }
   .style-card.active { border-color: var(--accent); background: rgba(200, 169, 110, 0.06); }
   .style-card.active::before { content: ''; position: absolute; left: 0; top: 0; bottom: 0; width: 2px; background: var(--accent); border-radius: 4px 0 0 4px; }
-  .style-name { font-family: 'DM Mono', monospace; font-size: 0.7rem; color: var(--accent); letter-spacing: 0.08em; text-transform: uppercase; margin-bottom: 0.2rem; }
-  .style-desc { font-size: 0.7rem; color: var(--muted2); line-height: 1.4; }
+  .style-name { font-family: 'DM Mono', monospace; font-size: 0.82rem; color: var(--accent); letter-spacing: 0.08em; text-transform: uppercase; margin-bottom: 0.25rem; }
+  .style-desc { font-size: 0.8rem; color: var(--muted2); line-height: 1.5; }
   .ratio-group { display: grid; grid-template-columns: repeat(3, 1fr); gap: 0.35rem; }
-  .ratio-btn { background: var(--surface2); border: 1px solid var(--border); border-radius: 3px; padding: 0.4rem; cursor: pointer; font-family: 'DM Mono', monospace; font-size: 0.6rem; color: var(--muted2); text-align: center; transition: all 0.15s; }
+  .ratio-btn { background: var(--surface2); border: 1px solid var(--border); border-radius: 3px; padding: 0.5rem; cursor: pointer; font-family: 'DM Mono', monospace; font-size: 0.72rem; color: var(--muted2); text-align: center; transition: all 0.15s; }
   .ratio-btn:hover { border-color: var(--border2); color: var(--text); }
   .ratio-btn.active { border-color: var(--accent); color: var(--accent); background: rgba(200,169,110,0.06); }
   .slider-group { display: flex; flex-direction: column; gap: 0.75rem; }
   .slider-row { display: flex; flex-direction: column; gap: 0.35rem; }
   .slider-header { display: flex; justify-content: space-between; align-items: center; }
-  .slider-name { font-family: 'DM Mono', monospace; font-size: 0.65rem; color: var(--muted2); letter-spacing: 0.08em; }
-  .slider-val { font-family: 'DM Mono', monospace; font-size: 0.65rem; color: var(--accent); }
+  .slider-name { font-family: 'DM Mono', monospace; font-size: 0.76rem; color: var(--muted2); letter-spacing: 0.08em; }
+  .slider-val { font-family: 'DM Mono', monospace; font-size: 0.76rem; color: var(--accent); }
   input[type="range"] { width: 100%; -webkit-appearance: none; height: 2px; background: var(--border2); border-radius: 1px; outline: none; }
   input[type="range"]::-webkit-slider-thumb { -webkit-appearance: none; width: 12px; height: 12px; border-radius: 50%; background: var(--accent); cursor: pointer; }
   .toggle-group { display: flex; flex-direction: column; gap: 0.5rem; }
   .toggle-row { display: flex; justify-content: space-between; align-items: center; }
-  .toggle-name { font-family: 'DM Mono', monospace; font-size: 0.65rem; color: var(--muted2); letter-spacing: 0.08em; }
+  .toggle-name { font-family: 'DM Mono', monospace; font-size: 0.76rem; color: var(--muted2); letter-spacing: 0.08em; }
   .toggle { width: 32px; height: 16px; background: var(--border2); border-radius: 8px; cursor: pointer; position: relative; transition: background 0.2s; }
   .toggle.on { background: var(--accent); }
   .toggle::after { content: ''; position: absolute; width: 12px; height: 12px; border-radius: 50%; background: white; top: 2px; left: 2px; transition: transform 0.2s; }
   .toggle.on::after { transform: translateX(16px); }
   main { background: var(--black); display: flex; flex-direction: column; overflow: hidden; }
-  .brief-section { padding: 1.5rem 2rem; border-bottom: 1px solid var(--border); background: var(--surface); }
-  .brief-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.75rem; }
-  .brief-label { font-family: 'DM Mono', monospace; font-size: 0.6rem; color: var(--muted); letter-spacing: 0.15em; text-transform: uppercase; }
+  .brief-section { padding: 1.75rem 2rem; border-bottom: 1px solid var(--border); background: var(--surface); }
+  .brief-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.85rem; }
+  .brief-label { font-family: 'DM Mono', monospace; font-size: 0.72rem; color: var(--muted); letter-spacing: 0.15em; text-transform: uppercase; }
   .brief-actions { display: flex; gap: 0.5rem; align-items: center; }
-  textarea { width: 100%; background: var(--surface2); border: 1px solid var(--border); border-radius: 4px; padding: 1rem; color: var(--text); font-family: 'DM Sans', sans-serif; font-size: 0.9rem; font-weight: 300; line-height: 1.6; resize: none; height: 80px; outline: none; transition: border-color 0.15s; }
+  textarea { width: 100%; background: var(--surface2); border: 1px solid var(--border); border-radius: 4px; padding: 1rem; color: var(--text); font-family: 'DM Sans', sans-serif; font-size: 1rem; font-weight: 300; line-height: 1.6; resize: none; height: 100px; outline: none; transition: border-color 0.15s; }
   textarea:focus { border-color: var(--border2); }
   textarea::placeholder { color: var(--muted); }
-  .btn { display: inline-flex; align-items: center; gap: 0.4rem; padding: 0.5rem 1.2rem; border: none; border-radius: 3px; cursor: pointer; font-family: 'DM Mono', monospace; font-size: 0.65rem; letter-spacing: 0.1em; text-transform: uppercase; transition: all 0.15s; }
+  .btn { display: inline-flex; align-items: center; gap: 0.4rem; padding: 0.55rem 1.25rem; border: none; border-radius: 3px; cursor: pointer; font-family: 'DM Mono', monospace; font-size: 0.72rem; letter-spacing: 0.1em; text-transform: uppercase; transition: all 0.15s; }
   .btn-primary { background: var(--accent); color: var(--black); font-weight: 500; }
   .btn-primary:hover { background: var(--accent2); }
   .btn-primary:disabled { opacity: 0.4; cursor: not-allowed; }
@@ -107,32 +107,32 @@
   .btn-ghost:hover { color: var(--text); border-color: var(--border2); }
   .btn-icon { background: transparent; border: none; color: var(--muted); cursor: pointer; padding: 0.3rem; border-radius: 3px; transition: color 0.15s; font-size: 0.8rem; }
   .btn-icon:hover { color: var(--text); }
-  .output-section { flex: 1; overflow-y: auto; padding: 1.5rem 2rem; }
+  .output-section { flex: 1; overflow-y: auto; padding: 1.75rem 2rem; }
   .prompt-card { background: var(--surface); border: 1px solid var(--border); border-radius: 6px; margin-bottom: 1rem; overflow: hidden; animation: fadeUp 0.3s ease both; }
   @keyframes fadeUp { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: translateY(0); } }
-  .prompt-card-header { padding: 0.75rem 1rem; border-bottom: 1px solid var(--border); display: flex; justify-content: space-between; align-items: center; background: var(--surface2); }
-  .prompt-style-tag { font-family: 'DM Mono', monospace; font-size: 0.65rem; color: var(--accent); letter-spacing: 0.1em; text-transform: uppercase; }
+  .prompt-card-header { padding: 0.85rem 1.1rem; border-bottom: 1px solid var(--border); display: flex; justify-content: space-between; align-items: center; background: var(--surface2); }
+  .prompt-style-tag { font-family: 'DM Mono', monospace; font-size: 0.76rem; color: var(--accent); letter-spacing: 0.1em; text-transform: uppercase; }
   .prompt-card-actions { display: flex; gap: 0.25rem; }
-  .prompt-body { padding: 1rem; }
-  .prompt-text { font-family: 'DM Mono', monospace; font-size: 0.72rem; color: var(--text); line-height: 1.7; word-break: break-word; white-space: pre-wrap; }
-  .prompt-params { margin-top: 0.5rem; font-family: 'DM Mono', monospace; font-size: 0.68rem; color: var(--cyan); }
-  .prompt-rationale { margin-top: 0.75rem; padding-top: 0.75rem; border-top: 1px solid var(--border); font-size: 0.75rem; color: var(--muted2); line-height: 1.6; font-style: italic; }
+  .prompt-body { padding: 1.25rem; }
+  .prompt-text { font-family: 'DM Mono', monospace; font-size: 0.88rem; color: var(--text); line-height: 1.75; word-break: break-word; white-space: pre-wrap; }
+  .prompt-params { margin-top: 0.6rem; font-family: 'DM Mono', monospace; font-size: 0.82rem; color: var(--cyan); }
+  .prompt-rationale { margin-top: 0.85rem; padding-top: 0.85rem; border-top: 1px solid var(--border); font-size: 0.86rem; color: var(--muted2); line-height: 1.65; font-style: italic; }
   .image-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: 0.75rem; margin-top: 1rem; }
   .image-thumb { aspect-ratio: 16/9; background: var(--surface2); border: 1px solid var(--border); border-radius: 4px; overflow: hidden; position: relative; }
   .image-thumb img { width: 100%; height: 100%; object-fit: cover; }
   .image-thumb-label { position: absolute; bottom: 0; left: 0; right: 0; background: linear-gradient(transparent, rgba(0,0,0,0.8)); padding: 1rem 0.5rem 0.4rem; font-family: 'DM Mono', monospace; font-size: 0.55rem; color: var(--accent); letter-spacing: 0.08em; text-transform: uppercase; }
   .loading-bar { height: 1px; background: linear-gradient(90deg, transparent, var(--accent), transparent); background-size: 200% 100%; animation: shimmer 1.5s infinite; margin-bottom: 1rem; }
   @keyframes shimmer { 0% { background-position: -200% 0; } 100% { background-position: 200% 0; } }
-  .loading-card { background: var(--surface); border: 1px solid var(--border); border-radius: 6px; padding: 1.5rem; text-align: center; color: var(--muted); font-family: 'DM Mono', monospace; font-size: 0.7rem; letter-spacing: 0.1em; }
+  .loading-card { background: var(--surface); border: 1px solid var(--border); border-radius: 6px; padding: 1.5rem; text-align: center; color: var(--muted); font-family: 'DM Mono', monospace; font-size: 0.8rem; letter-spacing: 0.1em; }
   .empty-state { flex: 1; display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: center; padding: 3rem; gap: 0.75rem; }
-  .empty-glyph { font-family: 'Playfair Display', serif; font-size: 3rem; color: var(--border2); line-height: 1; font-style: italic; }
-  .empty-title { font-family: 'Playfair Display', serif; font-size: 1.1rem; color: var(--muted2); font-style: italic; }
-  .empty-sub { font-family: 'DM Mono', monospace; font-size: 0.65rem; color: var(--muted); letter-spacing: 0.1em; text-transform: uppercase; }
+  .empty-glyph { font-family: 'Playfair Display', serif; font-size: 3.5rem; color: var(--border2); line-height: 1; font-style: italic; }
+  .empty-title { font-family: 'Playfair Display', serif; font-size: 1.25rem; color: var(--muted2); font-style: italic; }
+  .empty-sub { font-family: 'DM Mono', monospace; font-size: 0.76rem; color: var(--muted); letter-spacing: 0.1em; text-transform: uppercase; }
   .api-key-row { display: flex; gap: 0.5rem; align-items: center; }
-  input[type="password"], input[type="text"] { flex: 1; background: var(--surface2); border: 1px solid var(--border); border-radius: 3px; padding: 0.45rem 0.75rem; color: var(--text); font-family: 'DM Mono', monospace; font-size: 0.65rem; outline: none; transition: border-color 0.15s; }
+  input[type="password"], input[type="text"] { flex: 1; background: var(--surface2); border: 1px solid var(--border); border-radius: 3px; padding: 0.5rem 0.85rem; color: var(--text); font-family: 'DM Mono', monospace; font-size: 0.76rem; outline: none; transition: border-color 0.15s; }
   input:focus { border-color: var(--border2); }
   input::placeholder { color: var(--muted); }
-  .toast { position: fixed; bottom: 1.5rem; right: 1.5rem; background: var(--surface2); border: 1px solid var(--border2); border-radius: 4px; padding: 0.75rem 1rem; font-family: 'DM Mono', monospace; font-size: 0.65rem; color: var(--text); letter-spacing: 0.08em; z-index: 100; animation: slideIn 0.2s ease; display: flex; align-items: center; gap: 0.5rem; }
+  .toast { position: fixed; bottom: 1.5rem; right: 1.5rem; background: var(--surface2); border: 1px solid var(--border2); border-radius: 4px; padding: 0.85rem 1.1rem; font-family: 'DM Mono', monospace; font-size: 0.76rem; color: var(--text); letter-spacing: 0.08em; z-index: 100; animation: slideIn 0.2s ease; display: flex; align-items: center; gap: 0.5rem; }
   @keyframes slideIn { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: translateY(0); } }
   .toast.success { border-color: var(--success); }
   .toast.error { border-color: var(--error); }
@@ -140,14 +140,14 @@
   ::-webkit-scrollbar { width: 4px; }
   ::-webkit-scrollbar-track { background: transparent; }
   ::-webkit-scrollbar-thumb { background: var(--border2); border-radius: 2px; }
-  .generate-bar { padding: 1rem 2rem; background: var(--surface); border-top: 1px solid var(--border); display: flex; gap: 0.75rem; align-items: center; }
-  .generate-info { flex: 1; font-family: 'DM Mono', monospace; font-size: 0.6rem; color: var(--muted); letter-spacing: 0.08em; }
+  .generate-bar { padding: 1.25rem 2rem; background: var(--surface); border-top: 1px solid var(--border); display: flex; gap: 0.75rem; align-items: center; }
+  .generate-info { flex: 1; font-family: 'DM Mono', monospace; font-size: 0.72rem; color: var(--muted); letter-spacing: 0.08em; }
   .image-result { margin-top: 1rem; border: 1px solid var(--border); border-radius: 6px; overflow: hidden; }
   .image-result img { width: 100%; height: auto; display: block; }
   .image-result-bar { background: var(--surface2); border-top: 1px solid var(--border); padding: 0.5rem 1rem; display: flex; justify-content: space-between; align-items: center; }
-  .image-result-meta { font-family: 'DM Mono', monospace; font-size: 0.6rem; color: var(--muted); letter-spacing: 0.08em; }
+  .image-result-meta { font-family: 'DM Mono', monospace; font-size: 0.72rem; color: var(--muted); letter-spacing: 0.08em; }
   .tab-bar { display: flex; gap: 0; border-bottom: 1px solid var(--border); background: var(--surface); }
-  .tab { padding: 0.7rem 1.25rem; font-family: 'DM Mono', monospace; font-size: 0.6rem; color: var(--muted); letter-spacing: 0.1em; text-transform: uppercase; cursor: pointer; border-bottom: 2px solid transparent; transition: all 0.15s; margin-bottom: -1px; }
+  .tab { padding: 0.85rem 1.4rem; font-family: 'DM Mono', monospace; font-size: 0.72rem; color: var(--muted); letter-spacing: 0.1em; text-transform: uppercase; cursor: pointer; border-bottom: 2px solid transparent; transition: all 0.15s; margin-bottom: -1px; }
   .tab:hover { color: var(--text); }
   .tab.active { color: var(--accent); border-bottom-color: var(--accent); }
   .tab-content { display: none; }
@@ -327,11 +327,6 @@ const els = {
   toastContainer: document.getElementById('toastContainer'),
 };
 
-// ─── LOCALSTORAGE: carica la chiave salvata all'avvio ─────────────────────────
-const savedKey = localStorage.getItem('fal_api_key');
-if (savedKey) els.falApiKey.value = savedKey;
-
-// ─── LOCALSTORAGE: salva la chiave ad ogni modifica ───────────────────────────
 const savedKey = localStorage.getItem('fal_api_key');
 if (savedKey) els.falApiKey.value = savedKey;
 els.falApiKey.addEventListener('input', () => {
