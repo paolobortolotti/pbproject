@@ -191,6 +191,17 @@
     <div class="divider"></div>
 
     <div class="sidebar-section">
+      <span class="sidebar-label">fal.ai Model</span>
+      <div class="ratio-group" id="falModelGroup">
+        <div class="ratio-btn active" data-model="fal-ai/flux-pro" title="~$0.05/img — ADV, massima qualità">flux-pro</div>
+        <div class="ratio-btn" data-model="fal-ai/flux/dev" title="~$0.025/img — iterazioni, test">flux-dev</div>
+        <div class="ratio-btn" data-model="fal-ai/nano-banana-2" title="~$0.08/img — testo in immagine, social">nano-banana</div>
+      </div>
+    </div>
+
+    <div class="divider"></div>
+
+    <div class="sidebar-section">
       <span class="sidebar-label">Style Preset</span>
       <div class="style-grid" id="styleGrid">
         <div class="style-card active" data-style="pbcinema"><div class="style-name">pbcinema</div><div class="style-desc">Cinematic ADV. Key light warm, fill cool. Teal shadows, golden highlights.</div></div>
@@ -200,6 +211,7 @@
         <div class="style-card" data-style="pbadv"><div class="style-name">pbadv</div><div class="style-desc">Vertical social ADV. Instagram format, symmetric, minimal background.</div></div>
         <div class="style-card" data-style="pbcinematik"><div class="style-name">pbcinematik</div><div class="style-desc">Perceptual depth. Rim light, cyan oval glow. Hyperreal skin texture.</div></div>
         <div class="style-card" data-style="experimental"><div class="style-name">experimental</div><div class="style-desc">Critical mix of all styles. Creative freedom, photographic credibility.</div></div>
+        <div class="style-card" data-style="pbglobal"><div class="style-name">pbglobal</div><div class="style-desc">Country signature ADV. Hyper-realistic subject + product + background. Editorial advertising hybrid.</div></div>
       </div>
     </div>
 
@@ -292,7 +304,7 @@
 <script>
 const state = {
   style: 'pbcinema', ratio: '16:9', stylize: 600, chaos: 0,
-  raw: true, personalization: true, falEnabled: false, generating: false, history: []
+  raw: true, personalization: true, falEnabled: false, falModel: 'fal-ai/flux-pro', generating: false, history: []
 };
 
 const styles = {
@@ -302,7 +314,8 @@ const styles = {
   pbcinema4: { name: 'pbcinema4 (kids ADV)', defaultRatio: '4:5', defaultStylize: 500, build: (brief, params) => ({ prompt: `${brief}, very bright family advertising photography with balanced neutral to cool lighting, subtle golden light accents without heavy warmth, luminous peachy pink skin tones explicitly no yellow cast, soft teal touched shadow transitions, clear bright highlight rendering, marked depth of field composition with foreground subject and narrative supporting objects, empathetic fairytale serene mood, child friendly premium accessible aesthetic`, params: buildParams({ ...params, ratio: '4:5' }), rationale: 'Optimized for kids and family campaigns. The luminous quality and soft fairytale mood create trust and warmth without feeling cheap or saccharine.' }) },
   pbadv: { name: 'pbadv', defaultRatio: '4:5', defaultStylize: 500, build: (brief, params) => ({ prompt: `${brief}, clean vertical social media advertising photography, strong central symmetric subject placement, minimal blurred background with controlled depth, natural neutral cool lighting without color dominance, soft bluish shadow detail, controlled natural color palette, empathetic serene premium accessible mood, optimized for Instagram advertising format`, params: buildParams({ ...params, ratio: params.ratio === '9:16' ? '9:16' : '4:5' }), rationale: 'Built for Instagram and social ADV. The vertical format and minimal background keep focus on the subject across all feed placements.' }) },
   pbcinematik: { name: 'pbcinematik', defaultRatio: '16:9', defaultStylize: 650, build: (brief, params) => ({ prompt: `${brief}, cinematic photography with strong perceptual depth emphasis, very subtle lateral rim light at low intensity, soft semi-transparent cyan horizontal oval gradient glow positioned behind and slightly above subject head not perfectly centered, no extreme contrast or heavy shadows, hyperrealistic skin texture with clearly visible pores and real cutaneous detail, absolutely no skin smoothing no airbrushing no plastic effect, deep silent cinematic mood with believable photographic credibility`, params: buildParams(params), rationale: 'The signature cyan glow and hyperreal skin texture create a distinctive visual depth. Strong for portrait-driven campaigns where the face is the product.' }) },
-  experimental: { name: 'experimental', defaultRatio: '16:9', defaultStylize: 800, build: (brief, params) => ({ prompt: `${brief}, experimental cinematic photography blending warm key light with cool cinematic fill, perceptual depth with subtle rim definition, soft teal shadow gradient with restrained golden highlight, hyperrealistic texture rendering without skin smoothing, unconventional composition that breaks symmetric convention while maintaining photographic credibility, editorial advertising mood with unexpected spatial tension`, params: buildParams({ ...params, raw: false }), rationale: 'Critical mix of all pb styles. No --raw flag here to let V8 interpret more freely. Best for creative exploration before locking a campaign direction.' }) }
+  experimental: { name: 'experimental', defaultRatio: '16:9', defaultStylize: 800, build: (brief, params) => ({ prompt: `${brief}, experimental cinematic photography blending warm key light with cool cinematic fill, perceptual depth with subtle rim definition, soft teal shadow gradient with restrained golden highlight, hyperrealistic texture rendering without skin smoothing, unconventional composition that breaks symmetric convention while maintaining photographic credibility, editorial advertising mood with unexpected spatial tension`, params: buildParams({ ...params, raw: false }), rationale: 'Critical mix of all pb styles. No --raw flag here to let V8 interpret more freely. Best for creative exploration before locking a campaign direction.' }) },
+  pbglobal: { name: 'pbglobal (country signature)', defaultRatio: '4:5', defaultStylize: 600, build: (brief, params) => ({ prompt: `${brief}, single advertising photography panel, hyper-realistic commercial photography, young adult from the represented country with realistic regionally coherent physical traits non-caricatured no exaggerated stereotypes subtle ethnic and cultural cues in skin tone facial structure and hair type, neutral confident slightly cinematic expression, minimal authentic contemporary clothing, subject holds iconic country product toward camera in strong foreground dominance, product is photorealistic with clean minimal label slightly premium positioning, background is an environment tied to country identity with shallow depth of field integrated naturally not postcard-like, bold country name uppercase large at top of frame, product name smaller clean sans-serif below, typography modern slightly condensed high readability matte finish, natural directional light soft cinematic contrast consistent across frame slight rim light for subject separation no overexposed highlights, 35mm or 50mm lens feel slight low angle strong foreground hand and product shallow depth of field, micro textures visible on skin materials and product surfaces realistic imperfections controlled color grading, ultra high resolution editorial advertising hybrid, no AI artifacts no plastic skin no over-saturation no fake reflections no cultural stereotypes exaggerated no cartoonish elements no inconsistent lighting no messy typography`, params: buildParams({ ...params, ratio: '4:5' }), rationale: 'Built for country signature campaigns. Each image works as a standalone advertising poster: credible diversity, premium product, integrated environment. Avoid passing ratio other than 4:5 or 9:16 for best composition.' }) }
 };
 
 function buildParams({ ratio, stylize, chaos, raw, personalization }) {
@@ -364,9 +377,18 @@ document.querySelectorAll('.style-card').forEach(card => {
 
 document.querySelectorAll('.ratio-btn').forEach(btn => {
   btn.addEventListener('click', () => {
-    document.querySelectorAll('.ratio-btn').forEach(b => b.classList.remove('active'));
+    document.querySelectorAll('#ratioGroup .ratio-btn').forEach(b => b.classList.remove('active'));
     btn.classList.add('active');
     state.ratio = btn.dataset.ratio;
+    updateInfo();
+  });
+});
+
+document.querySelectorAll('#falModelGroup .ratio-btn').forEach(btn => {
+  btn.addEventListener('click', () => {
+    document.querySelectorAll('#falModelGroup .ratio-btn').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+    state.falModel = btn.dataset.model;
     updateInfo();
   });
 });
@@ -468,11 +490,12 @@ async function generateImage(prompt, params, apiKey) {
   document.querySelector('[data-tab="image"]').classList.add('active');
   document.getElementById('tabImage').classList.add('active');
   els.imageOutput.style.display = 'block';
-  els.imageOutput.innerHTML = `<div class="loading-bar"></div><div class="loading-card">Sending to fal.ai flux-pro…</div>`;
+  const modelShort = state.falModel.split('/').pop();
+  els.imageOutput.innerHTML = `<div class="loading-bar"></div><div class="loading-card">Sending to fal.ai ${modelShort}…</div>`;
   const ratioMap = { '16:9': { width: 1344, height: 768 }, '4:5': { width: 768, height: 960 }, '9:16': { width: 768, height: 1344 }, '2.39:1': { width: 1344, height: 562 }, '1:1': { width: 1024, height: 1024 }, '4:3': { width: 1024, height: 768 } };
   const dims = ratioMap[state.ratio] || { width: 1344, height: 768 };
   try {
-    const res = await fetch('https://fal.run/fal-ai/flux-pro', {
+    const res = await fetch(`https://fal.run/${state.falModel}`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json', 'Authorization': `Key ${apiKey}` },
       body: JSON.stringify({ prompt: prompt, image_size: { width: dims.width, height: dims.height }, num_inference_steps: 28, guidance_scale: 3.5, num_images: 1, safety_tolerance: '2' })
@@ -481,7 +504,7 @@ async function generateImage(prompt, params, apiKey) {
     const data = await res.json();
     const imgUrl = data.images?.[0]?.url;
     if (imgUrl) {
-      els.imageOutput.innerHTML = `<div class="image-result"><img src="${imgUrl}" alt="Generated image" /><div class="image-result-bar"><span class="image-result-meta">${state.style} · ${state.ratio} · flux-pro</span><a href="${imgUrl}" download class="btn btn-ghost" style="text-decoration:none">↓ download</a></div></div>`;
+      els.imageOutput.innerHTML = `<div class="image-result"><img src="${imgUrl}" alt="Generated image" /><div class="image-result-bar"><span class="image-result-meta">${state.style} · ${state.ratio} · ${modelShort}</span><a href="${imgUrl}" download class="btn btn-ghost" style="text-decoration:none">↓ download</a></div></div>`;
       showToast('Image generated', 'success');
     } else { throw new Error('No image returned'); }
   } catch (err) {
