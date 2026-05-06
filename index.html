@@ -153,6 +153,13 @@
   .tab-content { display: none; }
   .tab-content.active { display: block; }
   .copied-flash { color: var(--success) !important; transition: color 0.3s; }
+  @media (max-width: 768px) {
+    .app { grid-template-columns: 1fr; }
+    aside { border-right: none; border-bottom: 1px solid var(--border); max-height: 50vh; }
+    header { padding: 0 1rem; }
+    .brief-section, .output-section, .generate-bar { padding-left: 1rem; padding-right: 1rem; }
+    .generate-bar { flex-wrap: wrap; }
+  }
 </style>
 </head>
 <body>
@@ -175,7 +182,7 @@
     <div class="sidebar-section">
       <span class="sidebar-label">DeepSeek API Key</span>
       <div class="api-key-row">
-        <input type="password" id="anthropicApiKey" placeholder="sk-…" />
+        <input type="password" id="deepseekApiKey" placeholder="sk-…" autocomplete="off" />
       </div>
     </div>
 
@@ -184,7 +191,7 @@
     <div class="sidebar-section">
       <span class="sidebar-label">fal.ai API Key</span>
       <div class="api-key-row">
-        <input type="password" id="falApiKey" placeholder="fal_key_…" />
+        <input type="password" id="falApiKey" placeholder="fal_key_…" autocomplete="off" />
       </div>
     </div>
 
@@ -281,7 +288,7 @@
         <div id="promptOutput" style="display:none"></div>
       </div>
       <div class="tab-content" id="tabImage">
-        <div class="empty-state"><div class="empty-glyph">◎</div><div class="empty-title">Enable fal.ai generation</div><div class="empty-sub">toggle in sidebar + add api key</div></div>
+        <div class="empty-state" id="imageEmpty"><div class="empty-glyph">◎</div><div class="empty-title" id="imageEmptyTitle">Enable fal.ai generation</div><div class="empty-sub" id="imageEmptySub">toggle in sidebar + add api key</div></div>
         <div id="imageOutput" style="display:none"></div>
       </div>
       <div class="tab-content" id="tabHistory">
@@ -304,9 +311,30 @@
 <div id="toastContainer"></div>
 
 <script>
+const RATIO_DIMS = {
+  '16:9':   { width: 1344, height: 768 },
+  '4:5':    { width: 768,  height: 960 },
+  '9:16':   { width: 768,  height: 1344 },
+  '2.39:1': { width: 1344, height: 562 },
+  '1:1':    { width: 1024, height: 1024 },
+  '4:3':    { width: 1024, height: 768 }
+};
+
+function buildFalBody(model, prompt, dims) {
+  const base = { prompt, image_size: { width: dims.width, height: dims.height }, num_images: 1 };
+  if (model.includes('flux')) {
+    return { ...base, num_inference_steps: 28, guidance_scale: 3.5, safety_tolerance: 2 };
+  }
+  return base;
+}
+
+const HISTORY_KEY = 'pb_history_v1';
+const HISTORY_MAX = 50;
+
 const state = {
   style: 'pbcinema', ratio: '16:9', stylize: 600, chaos: 0,
-  raw: true, personalization: true, falEnabled: false, falModel: 'fal-ai/flux-pro', generating: false, history: []
+  raw: true, personalization: true, falEnabled: false, falModel: 'fal-ai/flux-pro', generating: false,
+  history: JSON.parse(localStorage.getItem(HISTORY_KEY) || '[]')
 };
 
 const styles = {
@@ -350,23 +378,40 @@ const els = {
   toggleP: document.getElementById('toggleP'),
   toggleFal: document.getElementById('toggleFal'),
   falApiKey: document.getElementById('falApiKey'),
-  anthropicApiKey: document.getElementById('anthropicApiKey'),
+  deepseekApiKey: document.getElementById('deepseekApiKey'),
+  imageEmpty: document.getElementById('imageEmpty'),
+  imageEmptyTitle: document.getElementById('imageEmptyTitle'),
+  imageEmptySub: document.getElementById('imageEmptySub'),
   toastContainer: document.getElementById('toastContainer'),
 };
+
+function updateImageEmptyState() {
+  const hasKey = !!els.falApiKey.value.trim();
+  if (state.falEnabled && hasKey) {
+    els.imageEmptyTitle.textContent = 'Ready to generate';
+    els.imageEmptySub.textContent = 'press generate to send to fal.ai';
+  } else if (state.falEnabled && !hasKey) {
+    els.imageEmptyTitle.textContent = 'Add your fal.ai API key';
+    els.imageEmptySub.textContent = 'paste it in the sidebar';
+  } else {
+    els.imageEmptyTitle.textContent = 'Enable fal.ai generation';
+    els.imageEmptySub.textContent = 'toggle in sidebar + add api key';
+  }
+}
 
 const savedFalKey = localStorage.getItem('fal_api_key');
 if (savedFalKey) els.falApiKey.value = savedFalKey;
 els.falApiKey.addEventListener('input', () => {
   localStorage.setItem('fal_api_key', els.falApiKey.value);
+  updateImageEmptyState();
 });
 
-localStorage.removeItem('gemini_api_key');
 const savedDeepseekKey = localStorage.getItem('deepseek_api_key');
-if (savedDeepseekKey) els.anthropicApiKey.value = savedDeepseekKey;
-els.anthropicApiKey.addEventListener('input', () => {
-  localStorage.setItem('deepseek_api_key', els.anthropicApiKey.value);
+if (savedDeepseekKey) els.deepseekApiKey.value = savedDeepseekKey;
+els.deepseekApiKey.addEventListener('input', () => {
+  localStorage.setItem('deepseek_api_key', els.deepseekApiKey.value);
 });
-  
+
 
 document.querySelectorAll('.style-card').forEach(card => {
   card.addEventListener('click', () => {
@@ -401,7 +446,7 @@ els.stylizeSlider.addEventListener('input', e => { state.stylize = parseInt(e.ta
 els.chaosSlider.addEventListener('input', e => { state.chaos = parseInt(e.target.value); els.chaosVal.textContent = state.chaos; });
 
 [{ el: els.toggleRaw, key: 'raw' }, { el: els.toggleP, key: 'personalization' }, { el: els.toggleFal, key: 'falEnabled' }].forEach(({ el, key }) => {
-  el.addEventListener('click', () => { state[key] = !state[key]; el.classList.toggle('on', state[key]); updateInfo(); });
+  el.addEventListener('click', () => { state[key] = !state[key]; el.classList.toggle('on', state[key]); updateInfo(); updateImageEmptyState(); });
 });
 
 els.briefInput.addEventListener('input', updateGenerateBtn);
@@ -452,7 +497,7 @@ async function generatePrompt(withImage) {
     const builtStyle = styleData.build(brief, params);
     const systemPrompt = `You are a professional visual prompt engineer specializing in the pb style system for Midjourney V8. Your job is to take a brief and a base prompt structure and return an enriched, production-ready prompt.\n\nRules:\n- Output ONLY a JSON object, no markdown, no extra text\n- The JSON has exactly these fields: "enrichedPrompt" (string), "params" (string), "rationale" (string, max 2 sentences)\n- enrichedPrompt: expand the base prompt with specific visual details (lighting direction, material textures, spatial relationships, camera position) that match the style. 50-90 words.\n- params: the MJ parameters string\n- rationale: why this interpretation works for the brief\n- Never add generic descriptors: beautiful, stunning, amazing, elegant\n- Always maintain photographic and ADV credibility\n- No illustrative or painterly language`;
     const userMsg = `Brief: "${brief}"\nStyle: ${state.style}\nBase prompt: ${builtStyle.prompt}\nParameters: ${builtStyle.params}\nRationale hint: ${builtStyle.rationale}\n\nEnrich the prompt for Midjourney V8, maintaining the pb style system rules.`;
-    const deepseekKey = els.anthropicApiKey.value.trim();
+    const deepseekKey = els.deepseekApiKey.value.trim();
     if (!deepseekKey) throw new Error('Add your DeepSeek API key in the sidebar');
     const response = await fetch('https://api.deepseek.com/chat/completions', {
       method: 'POST',
@@ -470,6 +515,8 @@ async function generatePrompt(withImage) {
     els.promptOutput.innerHTML = '';
     els.promptOutput.appendChild(card);
     state.history.unshift({ style: state.style, brief, prompt: fullPrompt, ts: Date.now() });
+    state.history = state.history.slice(0, HISTORY_MAX);
+    persistHistory();
     renderHistory();
     if (withImage) {
       const apiKey = els.falApiKey.value.trim();
@@ -505,27 +552,69 @@ async function generateImage(prompt, params, apiKey) {
   document.querySelector('[data-tab="image"]').classList.add('active');
   document.getElementById('tabImage').classList.add('active');
   els.imageOutput.style.display = 'block';
+  els.imageEmpty.style.display = 'none';
   const modelShort = state.falModel.split('/').pop();
-  els.imageOutput.innerHTML = `<div class="loading-bar"></div><div class="loading-card">Sending to fal.ai ${modelShort}…</div>`;
-  const ratioMap = { '16:9': { width: 1344, height: 768 }, '4:5': { width: 768, height: 960 }, '9:16': { width: 768, height: 1344 }, '2.39:1': { width: 1344, height: 562 }, '1:1': { width: 1024, height: 1024 }, '4:3': { width: 1024, height: 768 } };
-  const dims = ratioMap[state.ratio] || { width: 1344, height: 768 };
+  els.imageOutput.innerHTML = `<div class="loading-bar"></div><div class="loading-card">Sending to fal.ai ${escHtml(modelShort)}…</div>`;
+  const dims = RATIO_DIMS[state.ratio] || RATIO_DIMS['16:9'];
   try {
     const res = await fetch(`https://fal.run/${state.falModel}`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json', 'Authorization': `Key ${apiKey}` },
-      body: JSON.stringify({ prompt: prompt, image_size: { width: dims.width, height: dims.height }, num_inference_steps: 28, guidance_scale: 3.5, num_images: 1, safety_tolerance: '2' })
+      body: JSON.stringify(buildFalBody(state.falModel, prompt, dims))
     });
-    if (!res.ok) throw new Error(`fal.ai error: ${res.status}`);
+    if (!res.ok) {
+      const errBody = await res.json().catch(() => ({}));
+      throw new Error(errBody.detail || errBody.error?.message || `fal.ai error ${res.status}`);
+    }
     const data = await res.json();
     const imgUrl = data.images?.[0]?.url;
-    if (imgUrl) {
-      els.imageOutput.innerHTML = `<div class="image-result"><img src="${imgUrl}" alt="Generated image" /><div class="image-result-bar"><span class="image-result-meta">${state.style} · ${state.ratio} · ${modelShort}</span><a href="${imgUrl}" download class="btn btn-ghost" style="text-decoration:none">↓ download</a></div></div>`;
-      showToast('Image generated', 'success');
-    } else { throw new Error('No image returned'); }
+    if (!imgUrl) throw new Error('No image returned');
+    renderImageResult(imgUrl, modelShort);
+    showToast('Image generated', 'success');
   } catch (err) {
-    els.imageOutput.innerHTML = `<div class="loading-card" style="color:var(--error)">Image generation failed: ${err.message}</div>`;
+    els.imageOutput.innerHTML = `<div class="loading-card" style="color:var(--error)">Image generation failed: ${escHtml(err.message)}</div>`;
     showToast('Image failed', 'error');
   }
+}
+
+function renderImageResult(imgUrl, modelShort) {
+  els.imageOutput.innerHTML = '';
+  const wrap = document.createElement('div');
+  wrap.className = 'image-result';
+  const img = document.createElement('img');
+  img.alt = 'Generated image';
+  img.src = imgUrl;
+  const bar = document.createElement('div');
+  bar.className = 'image-result-bar';
+  const meta = document.createElement('span');
+  meta.className = 'image-result-meta';
+  meta.textContent = `${state.style} · ${state.ratio} · ${modelShort}`;
+  const dl = document.createElement('button');
+  dl.className = 'btn btn-ghost';
+  dl.textContent = '↓ download';
+  dl.addEventListener('click', () => downloadImage(imgUrl));
+  bar.appendChild(meta); bar.appendChild(dl);
+  wrap.appendChild(img); wrap.appendChild(bar);
+  els.imageOutput.appendChild(wrap);
+}
+
+async function downloadImage(url) {
+  try {
+    const r = await fetch(url);
+    const blob = await r.blob();
+    const objUrl = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = objUrl;
+    a.download = `pb-${state.style}-${Date.now()}.${blob.type.split('/')[1] || 'png'}`;
+    document.body.appendChild(a); a.click(); a.remove();
+    setTimeout(() => URL.revokeObjectURL(objUrl), 1000);
+  } catch {
+    window.open(url, '_blank');
+  }
+}
+
+function persistHistory() {
+  try { localStorage.setItem(HISTORY_KEY, JSON.stringify(state.history)); } catch {}
 }
 
 function renderHistory() {
@@ -550,6 +639,8 @@ function escHtml(str) {
 
 updateInfo();
 updateGenerateBtn();
+updateImageEmptyState();
+renderHistory();
 </script>
 </body>
 </html>
