@@ -902,8 +902,21 @@ document.getElementById('sendRefToFalBtn').addEventListener('click', async () =>
   const params = { ratio: state.ratio, stylize: state.stylize, chaos: state.chaos, raw: state.raw, personalization: state.personalization };
   const built = styleData.build(brief || 'cinematic portrait', params);
 
-  // Prompt per nano-banana-2: istruzione esplicita di editare partendo dalla reference
-  const editPrompt = `Starting from the reference image, reframe and recompose using this camera direction: ${camFrag}. Maintain the subject, lighting style and mood of the original. ${built.prompt}`;
+  // nano-banana-2 tende a interpretare le indicazioni di camera come proprieta del soggetto
+  // se non viene esplicitato che e il fotografo a muoversi.
+  // Decomposiamo ogni asse in una frase fisica separata.
+  const tiltDescEdit = closestLabel(state.camTilt, TILT_LABELS);
+  const panDescEdit = closestLabel(state.camPan, PAN_LABELS);
+  const rollDescEdit = closestLabel(state.camRoll, ROLL_LABELS);
+  const vertDesc = state.camTilt > 0.3 ? 'the camera is elevated above the subject, pointing downward at it'
+    : state.camTilt < -0.3 ? 'the camera is placed low on the ground, pointing upward toward the subject'
+    : 'the camera is at eye level with the subject';
+  const horizDesc = state.camPan > 0.2 ? 'the camera has moved to the right side of the subject, shooting from that angle'
+    : state.camPan < -0.2 ? 'the camera has moved to the left side of the subject, shooting from that angle'
+    : 'the camera is positioned directly in front of the subject';
+  const rollDesc2 = Math.abs(state.camRoll) > 0.3 ? 'the camera is rotated diagonally creating a dutch angle tilt'
+    : 'the camera horizon is straight and level';
+  const editPrompt = `The photographer has physically repositioned the camera around the subject in this reference photo. ${vertDesc}. ${horizDesc}. ${rollDesc2}. The subject itself does not tilt, rotate or move — only the camera viewpoint changes. Recreate the same scene and subject with this new camera position. Same lighting, same environment, same subject. ${built.prompt}`;
 
   state.generating = true;
   updateGenerateBtn();
