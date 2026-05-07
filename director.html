@@ -900,23 +900,67 @@ document.getElementById('sendRefToFalBtn').addEventListener('click', async () =>
   const brief = els.briefInput.value.trim();
   const styleData = styles[state.style];
   const params = { ratio: state.ratio, stylize: state.stylize, chaos: state.chaos, raw: state.raw, personalization: state.personalization };
-  const built = styleData.build(brief || 'cinematic portrait', params);
+  // Costruiamo il descriptor visivo dello stile indipendentemente dal brief:
+  // passiamo sempre un soggetto neutro cosi il prompt dello stile viene generato completo,
+  // poi sostituiamo la parte soggetto con la reference.
+  const built = styleData.build('__SUBJECT__', params);
+  // Estraiamo solo la parte di stile (tutto dopo "__SUBJECT__, ")
+  const styleOnlyPrompt = built.prompt.replace('__SUBJECT__, ', '').replace('__SUBJECT__', '').trim();
 
-  // nano-banana-2 tende a interpretare le indicazioni di camera come proprieta del soggetto
-  // se non viene esplicitato che e il fotografo a muoversi.
-  // Decomposiamo ogni asse in una frase fisica separata.
-  const tiltDescEdit = closestLabel(state.camTilt, TILT_LABELS);
-  const panDescEdit = closestLabel(state.camPan, PAN_LABELS);
-  const rollDescEdit = closestLabel(state.camRoll, ROLL_LABELS);
-  const vertDesc = state.camTilt > 0.3 ? 'the camera is elevated above the subject, pointing downward at it'
-    : state.camTilt < -0.3 ? 'the camera is placed low on the ground, pointing upward toward the subject'
-    : 'the camera is at eye level with the subject';
-  const horizDesc = state.camPan > 0.2 ? 'the camera has moved to the right side of the subject, shooting from that angle'
-    : state.camPan < -0.2 ? 'the camera has moved to the left side of the subject, shooting from that angle'
-    : 'the camera is positioned directly in front of the subject';
-  const rollDesc2 = Math.abs(state.camRoll) > 0.3 ? 'the camera is rotated diagonally creating a dutch angle tilt'
-    : 'the camera horizon is straight and level';
-  const editPrompt = `The photographer has physically repositioned the camera around the subject in this reference photo. ${vertDesc}. ${horizDesc}. ${rollDesc2}. The subject itself does not tilt, rotate or move — only the camera viewpoint changes. Recreate the same scene and subject with this new camera position. Same lighting, same environment, same subject. ${built.prompt}`;
+  // nano-banana-2 prompt engineering per camera direction:
+  // - descrivere l'angolo visivo risultante nell'immagine finale (cosa si VEDE), non il movimento del fotografo
+  // - aggiungere descrittori concreti di cosa appare nel frame: il pavimento visibile, l'angolo del cielo, etc.
+  // - esplicitare cosa NON deve cambiare (soggetti, ambiente, luce)
+  // - usare terminologia fotografica + descrizione visiva del risultato atteso
+
+  // Tilt: descrizione visiva dell'angolo verticale nell'immagine risultante
+  const tiltVisual = state.camTilt > 0.6
+    ? 'The viewpoint is from directly above. The ground fills the lower portion of the frame. The subjects are seen from a top-down perspective. The horizon line is not visible — only rooftops and ground below.'
+    : state.camTilt > 0.25
+    ? 'The viewpoint is from above the subjects. The ground and the tops of the subjects\' heads are clearly visible. The horizon sits high in the frame.'
+    : state.camTilt < -0.6
+    ? 'The camera is inches from the ground. The lens points sharply upward. The subjects tower over the camera. The sky dominates the upper two-thirds of the frame. The ground surface fills the very bottom edge in extreme foreshortening.'
+    : state.camTilt < -0.25
+    ? 'The camera is low, below the subjects\' waist level. The lens tilts slightly upward. The subjects appear larger and more imposing. More sky is visible above them. The ground surface is visible in extreme close-up in the foreground.'
+    : 'The camera is at the subjects\' eye level. The horizon bisects the frame naturally.';
+
+  // Pan: descrizione visiva dell'angolo orizzontale
+  const panVisual = state.camPan > 0.6
+    ? 'The camera is positioned far to the right. The subjects are seen from their left side, almost in profile. The background extends to the left of them.'
+    : state.camPan > 0.2
+    ? 'The camera is slightly to the right of center. The subjects are framed slightly off-axis, their left sides more visible. The composition is asymmetric, weighted left.'
+    : state.camPan < -0.6
+    ? 'The camera is positioned far to the left. The subjects are seen from their right side, almost in profile.'
+    : state.camPan < -0.2
+    ? 'The camera is slightly to the left of center. The subjects are framed slightly off-axis, their right sides more visible. The composition is asymmetric, weighted right.'
+    : 'The camera faces the subjects head-on. Symmetric frontal composition.';
+
+  // Roll: descrizione visiva dell'inclinazione orizzonte
+  const rollVisual = state.camRoll > 0.4
+    ? 'The horizon line is tilted diagonally — high on the right, low on the left. Classic dutch angle.'
+    : state.camRoll < -0.4
+    ? 'The horizon line is tilted diagonally — high on the left, low on the right. Classic dutch angle.'
+    : 'The horizon line is perfectly level and straight across the frame.';
+
+  // Cosa NON cambia — usa il brief se disponibile, altrimenti generico
+  const preserveDesc = brief
+    ? `Preserve all subjects and environment from the reference exactly as they are. The brief context is: ${brief}.`
+    : 'Preserve all subjects, environment, lighting and color palette from the reference image exactly. Only the camera angle changes.';
+
+  // Style descriptor: sempre incluso, indipendente dal brief
+  const styleLabel = styleData.name || state.style;
+  const styleFragment = brief
+    ? `Apply this photographic style: ${styleOnlyPrompt} Brief context: ${brief}.`
+    : `Apply this photographic style to the recomposed image: ${styleOnlyPrompt}`;
+
+  const editPrompt = [
+    'Recompose this scene with a new camera viewpoint. Do not change the subjects or environment.',
+    tiltVisual,
+    panVisual,
+    rollVisual,
+    preserveDesc,
+    styleFragment
+  ].join(' ');
 
   state.generating = true;
   updateGenerateBtn();
