@@ -443,13 +443,7 @@
                 <div class="ref-drop-overlay"><span>change ref</span></div>
               </div>
               <input type="file" id="input-file-ref" accept="image/*">
-              <div class="ref-strength-row slider-row">
-                <div class="slider-header">
-                  <span class="cam-axis-label">ref strength</span>
-                  <span class="cam-axis-val" id="refStrengthVal">0.75</span>
-                </div>
-                <input type="range" id="refStrengthSlider" min="0.1" max="1.0" step="0.05" value="0.75">
-              </div>
+
             </div>
 
             <!-- RIGHT: controls -->
@@ -882,12 +876,20 @@ function loadRefImage(file) {
   reader.readAsDataURL(file);
 }
 
-document.getElementById('refStrengthSlider').addEventListener('input', e => {
-  state.refStrength = parseFloat(e.target.value);
-  document.getElementById('refStrengthVal').textContent = state.refStrength.toFixed(2);
-});
 
-// ─── SEND REF + CAM TO FAL ───────────────────────────────────
+
+// ─── SEND REF + CAM TO FAL (nano-banana-2/edit) ──────────────
+// nano-banana-2/edit accetta image_urls (array di data URI o URL),
+// niente strength — il controllo è tutto nel prompt.
+// sync_mode:true restituisce data URI diretto, evita polling.
+
+const NB2_EDIT_ENDPOINT = 'fal-ai/nano-banana-2/edit';
+
+// Mappa ratio → aspect_ratio string per nano-banana-2
+const NB2_RATIO_MAP = {
+  '16:9': '16:9', '4:5': '4:5', '9:16': '9:16',
+  '2.39:1': '21:9', '1:1': '1:1', '4:3': '4:3'
+};
 
 document.getElementById('sendRefToFalBtn').addEventListener('click', async () => {
   if (!state.refImageDataUrl) { showToast('Load a reference image first', 'error'); return; }
@@ -899,7 +901,9 @@ document.getElementById('sendRefToFalBtn').addEventListener('click', async () =>
   const styleData = styles[state.style];
   const params = { ratio: state.ratio, stylize: state.stylize, chaos: state.chaos, raw: state.raw, personalization: state.personalization };
   const built = styleData.build(brief || 'cinematic portrait', params);
-  const fullPrompt = camFrag + ', ' + built.prompt;
+
+  // Prompt per nano-banana-2: istruzione esplicita di editare partendo dalla reference
+  const editPrompt = `Starting from the reference image, reframe and recompose using this camera direction: ${camFrag}. Maintain the subject, lighting style and mood of the original. ${built.prompt}`;
 
   state.generating = true;
   updateGenerateBtn();
@@ -909,65 +913,43 @@ document.getElementById('sendRefToFalBtn').addEventListener('click', async () =>
   document.getElementById('tabImage').classList.add('active');
   els.imageOutput.style.display = 'block';
   els.imageEmpty.style.display = 'none';
-  const modelShort = state.falModel.split('/').pop();
-  els.imageOutput.innerHTML = `<div class="loading-bar"></div><div class="loading-card">Sending reference + camera direction to fal.ai ${escHtml(modelShort)}…</div>`;
-
-  const dims = RATIO_DIMS[state.ratio] || RATIO_DIMS['16:9'];
+  els.imageOutput.innerHTML = `<div class="loading-bar"></div><div class="loading-card">nano-banana-2/edit · camera: ${escHtml(camFrag)}…</div>`;
 
   try {
-    // Upload the reference image to fal storage first
-    const blob = dataUrlToBlob(state.refImageDataUrl);
-    const uploadedUrl = await uploadToFal(blob, apiKey);
+    const aspectRatio = NB2_RATIO_MAP[state.ratio] || '16:9';
+    const body = {
+      prompt: editPrompt,
+      image_urls: [state.refImageDataUrl],  // accetta data URI direttamente
+      num_images: 1,
+      aspect_ratio: aspectRatio,
+      output_format: 'png',
+      safety_tolerance: '4',
+      resolution: '1K',
+      limit_generations: true,
+      sync_mode: true
+    };
 
-    const body = buildFalBody(state.falModel, fullPrompt, dims, uploadedUrl, state.refStrength);
-    const res = await fetch(`https://fal.run/${state.falModel}`, {
+    const res = await fetch(`https://fal.run/${NB2_EDIT_ENDPOINT}`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json', 'Authorization': `Key ${apiKey}` },
       body: JSON.stringify(body)
     });
     if (!res.ok) {
       const errBody = await res.json().catch(() => ({}));
-      throw new Error(errBody.detail || errBody.error?.message || `fal.ai error ${res.status}`);
+      throw new Error(errBody.detail || errBody.error?.message || `fal.ai ${res.status}`);
     }
     const data = await res.json();
     const imgUrl = data.images?.[0]?.url;
-    if (!imgUrl) throw new Error('No image returned');
-    renderImageResult(imgUrl, modelShort);
-    showToast('Image generated from reference', 'success');
+    if (!imgUrl) throw new Error('No image returned from fal.ai');
+    renderImageResult(imgUrl, 'nb2/edit');
+    showToast('Done — edited from reference', 'success');
   } catch (err) {
     els.imageOutput.innerHTML = `<div class="loading-card" style="color:var(--error)">Error: ${escHtml(err.message)}</div>`;
-    showToast('Generation failed', 'error');
+    showToast('Edit failed', 'error');
   }
   state.generating = false;
   updateGenerateBtn();
 });
-
-function dataUrlToBlob(dataUrl) {
-  const arr = dataUrl.split(',');
-  const mime = arr[0].match(/:(.*?);/)[1];
-  const bstr = atob(arr[1]);
-  let n = bstr.length;
-  const u8arr = new Uint8Array(n);
-  while (n--) u8arr[n] = bstr.charCodeAt(n);
-  return new Blob([u8arr], { type: mime });
-}
-
-async function uploadToFal(blob, apiKey) {
-  // fal.ai storage upload
-  const formData = new FormData();
-  formData.append('file', blob, 'reference.jpg');
-  const res = await fetch('https://fal.run/fal-ai/storage/upload', {
-    method: 'POST',
-    headers: { 'Authorization': `Key ${apiKey}` },
-    body: formData
-  });
-  if (!res.ok) {
-    // fallback: try direct url injection as base64 data URI for models that accept it
-    return null;
-  }
-  const data = await res.json();
-  return data.url || data.access_url;
-}
 
 // ─── COPY CAM PROMPT ─────────────────────────────────────────
 
