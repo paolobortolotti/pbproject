@@ -907,60 +907,16 @@ document.getElementById('sendRefToFalBtn').addEventListener('click', async () =>
   // Estraiamo solo la parte di stile (tutto dopo "__SUBJECT__, ")
   const styleOnlyPrompt = built.prompt.replace('__SUBJECT__, ', '').replace('__SUBJECT__', '').trim();
 
-  // nano-banana-2 prompt engineering per camera direction:
-  // - descrivere l'angolo visivo risultante nell'immagine finale (cosa si VEDE), non il movimento del fotografo
-  // - aggiungere descrittori concreti di cosa appare nel frame: il pavimento visibile, l'angolo del cielo, etc.
-  // - esplicitare cosa NON deve cambiare (soggetti, ambiente, luce)
-  // - usare terminologia fotografica + descrizione visiva del risultato atteso
-
-  // Tilt: descrizione visiva dell'angolo verticale nell'immagine risultante
-  const tiltVisual = state.camTilt > 0.6
-    ? 'The viewpoint is from directly above. The ground fills the lower portion of the frame. The subjects are seen from a top-down perspective. The horizon line is not visible — only rooftops and ground below.'
-    : state.camTilt > 0.25
-    ? 'The viewpoint is from above the subjects. The ground and the tops of the subjects\' heads are clearly visible. The horizon sits high in the frame.'
-    : state.camTilt < -0.6
-    ? 'The camera is inches from the ground. The lens points sharply upward. The subjects tower over the camera. The sky dominates the upper two-thirds of the frame. The ground surface fills the very bottom edge in extreme foreshortening.'
-    : state.camTilt < -0.25
-    ? 'The camera is low, below the subjects\' waist level. The lens tilts slightly upward. The subjects appear larger and more imposing. More sky is visible above them. The ground surface is visible in extreme close-up in the foreground.'
-    : 'The camera is at the subjects\' eye level. The horizon bisects the frame naturally.';
-
-  // Pan: descrizione visiva dell'angolo orizzontale
-  const panVisual = state.camPan > 0.6
-    ? 'The camera is positioned far to the right. The subjects are seen from their left side, almost in profile. The background extends to the left of them.'
-    : state.camPan > 0.2
-    ? 'The camera is slightly to the right of center. The subjects are framed slightly off-axis, their left sides more visible. The composition is asymmetric, weighted left.'
-    : state.camPan < -0.6
-    ? 'The camera is positioned far to the left. The subjects are seen from their right side, almost in profile.'
-    : state.camPan < -0.2
-    ? 'The camera is slightly to the left of center. The subjects are framed slightly off-axis, their right sides more visible. The composition is asymmetric, weighted right.'
-    : 'The camera faces the subjects head-on. Symmetric frontal composition.';
-
-  // Roll: descrizione visiva dell'inclinazione orizzonte
-  const rollVisual = state.camRoll > 0.4
-    ? 'The horizon line is tilted diagonally — high on the right, low on the left. Classic dutch angle.'
-    : state.camRoll < -0.4
-    ? 'The horizon line is tilted diagonally — high on the left, low on the right. Classic dutch angle.'
-    : 'The horizon line is perfectly level and straight across the frame.';
-
-  // Cosa NON cambia — usa il brief se disponibile, altrimenti generico
-  const preserveDesc = brief
-    ? `Preserve all subjects and environment from the reference exactly as they are. The brief context is: ${brief}.`
-    : 'Preserve all subjects, environment, lighting and color palette from the reference image exactly. Only the camera angle changes.';
-
-  // Style descriptor: sempre incluso, indipendente dal brief
-  const styleLabel = styleData.name || state.style;
-  const styleFragment = brief
-    ? `Apply this photographic style: ${styleOnlyPrompt} Brief context: ${brief}.`
-    : `Apply this photographic style to the recomposed image: ${styleOnlyPrompt}`;
-
+  // Prompt minimalista: terminologia fotografica diretta.
+  // Nano-banana-2 capisce i termini tecnici senza spiegazioni verbose.
+  // Struttura: camera terms, style descriptor, brief opzionale
   const editPrompt = [
-    'Recompose this scene with a new camera viewpoint. Do not change the subjects or environment.',
-    tiltVisual,
-    panVisual,
-    rollVisual,
-    preserveDesc,
-    styleFragment
-  ].join(' ');
+    buildCamPrompt(),
+    'keep all subjects, scene elements, lighting and atmosphere exactly as in the reference image',
+    styleOnlyPrompt,
+    brief || ''
+  ].filter(Boolean).join(', ');
+
 
   state.generating = true;
   updateGenerateBtn();
