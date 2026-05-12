@@ -638,6 +638,7 @@ async function callFAL(prompt, imageUrl) {
       endpoint = 'openai/gpt-image-2/edit';
       body = { prompt, image_urls: [imageUrl], image_size: { width: r.w, height: r.h }, num_images: 1, output_format: 'jpeg', quality };
     } else {
+      endpoint = 'fal-ai/gpt-image-2';
       body = { prompt, image_size: { width: r.w, height: r.h }, num_images: 1, output_format: 'jpeg', quality };
     }
   } else {
