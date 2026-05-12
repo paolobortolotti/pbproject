@@ -230,7 +230,7 @@ select option { background: #fff; }
               <span class="model-name">Nano Banana</span>
               <span class="model-price">$0.08 / img</span>
             </div>
-            <div class="model-tab" data-model="fal-ai/gpt-image-2">
+            <div class="model-tab" data-model="openai/gpt-image-2">
               <span class="model-name">GPT Image 2</span>
               <span class="model-price">$0.05–0.21 / img</span>
             </div>
@@ -423,7 +423,7 @@ function init() {
     state.model = tab.dataset.model;
     document.querySelectorAll('.model-tab').forEach(t => t.classList.toggle('active', t.dataset.model === state.model));
     const gptRow = document.getElementById('gptQualityRow');
-    if (gptRow) gptRow.style.display = state.model === 'fal-ai/gpt-image-2' ? '' : 'none';
+    if (gptRow) gptRow.style.display = state.model === 'openai/gpt-image-2' ? '' : 'none';
     renderPromptPreviews();
   });
 
@@ -629,13 +629,13 @@ function setError(msg) {
 
 async function callFAL(prompt, imageUrl) {
   const r = RATIOS[state.ratio] || RATIOS['4:5'];
-  const isGPT = state.model === 'fal-ai/gpt-image-2';
+  const isGPT = state.model === 'openai/gpt-image-2';
   const quality = document.getElementById('gptQuality')?.value || 'medium';
   let body;
   let endpoint = state.model;
   if (isGPT) {
     if (imageUrl) {
-      endpoint = 'fal-ai/gpt-image-2/image-to-image';
+      endpoint = 'openai/gpt-image-2/edit';
       body = { prompt, image_urls: [imageUrl], image_size: { width: r.w, height: r.h }, num_images: 1, output_format: 'jpeg', quality };
     } else {
       body = { prompt, image_size: { width: r.w, height: r.h }, num_images: 1, output_format: 'jpeg', quality };
