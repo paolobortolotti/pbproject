@@ -211,7 +211,7 @@ select option { background: #fff; }
               <div class="token-dot" id="tokenDot"></div>
               <span class="token-text" id="tokenText">No key set</span>
             </div>
-            <div class="key-hint">Saved in localStorage Â· never logged to console</div>
+            <div class="key-hint">Saved in localStorage · never logged to console</div>
           </div>
         </div>
 
@@ -232,7 +232,7 @@ select option { background: #fff; }
             </div>
             <div class="model-tab" data-model="fal-ai/gpt-image-2">
               <span class="model-name">GPT Image 2</span>
-              <span class="model-price">$0.05â0.21 / img</span>
+              <span class="model-price">$0.05–0.21 / img</span>
             </div>
           </div>
           <div id="gptQualityRow" style="display:none;margin-top:8px;">
@@ -262,16 +262,16 @@ select option { background: #fff; }
             <label class="lbl">Logo (PNG / SVG)</label>
             <div id="logoZone" class="drop-zone">
               <input type="file" accept=".png,.svg,.jpg,.jpeg" id="logoInput" />
-              <span class="drop-icon">â</span>
-              <div class="drop-label">Logo file Â· Drag & drop or click</div>
+              <span class="drop-icon">⊕</span>
+              <div class="drop-label">Logo file · Drag & drop or click</div>
             </div>
           </div>
           <div class="field">
             <label class="lbl">Product Image (JPG / PNG)</label>
             <div id="productZone" class="drop-zone">
               <input type="file" accept=".jpg,.jpeg,.png,.webp" id="productInput" />
-              <span class="drop-icon">â</span>
-              <div class="drop-label">Product photo Â· Drag & drop or click</div>
+              <span class="drop-icon">⊕</span>
+              <div class="drop-label">Product photo · Drag & drop or click</div>
             </div>
           </div>
         </div>
@@ -318,7 +318,7 @@ select option { background: #fff; }
       <div class="tab-panel" id="tab-saved">
         <div class="saved-toolbar">
           <span class="saved-count" id="savedCount">0 images</span>
-          <button class="btn-act" id="btnDownloadAll" style="padding:5px 10px;font-size:11px;">â ZIP All</button>
+          <button class="btn-act" id="btnDownloadAll" style="padding:5px 10px;font-size:11px;">↓ ZIP All</button>
         </div>
         <div id="savedGrid" class="saved-grid"></div>
         <div class="saved-empty" id="savedEmpty">No images saved yet.<br>Generate an image and click "Save".</div>
@@ -340,14 +340,14 @@ select option { background: #fff; }
       <div id="errorBox" class="error-box" style="display:none"></div>
       <div class="out-canvas" id="outCanvas">
         <div class="placeholder">
-          <div class="placeholder-icon">â¬¡</div>
-          <div class="placeholder-text">Configure brief and hit Generate<br><small>FAL.ai Â· Professional Ad Production</small></div>
+          <div class="placeholder-icon">⬡</div>
+          <div class="placeholder-text">Configure brief and hit Generate<br><small>FAL.ai · Professional Ad Production</small></div>
         </div>
       </div>
       <div class="out-actions">
-        <button class="btn-act primary" id="btnDownload" disabled>â Download</button>
-        <button class="btn-act" id="btnSave" disabled>â Save</button>
-        <button class="btn-act" id="btnRegen" disabled>â» Rigenera</button>
+        <button class="btn-act primary" id="btnDownload" disabled>↓ Download</button>
+        <button class="btn-act" id="btnSave" disabled>⊕ Save</button>
+        <button class="btn-act" id="btnRegen" disabled>↻ Rigenera</button>
         <span class="img-counter" id="imgCounter"></span>
       </div>
     </main>
@@ -370,7 +370,7 @@ const FORMATS = [
   { id:'expert', label:'Expert Endorsement', desc:'Figura autorevole con credenziale visibile', snippet:'expert authority figure endorsement, professional credential badge visible, trust-building editorial portrait composition' },
   { id:'priceanchor', label:'Price Anchor', desc:'Prezzo barrato + nuovo prezzo, valore percepito', snippet:'price comparison layout, original price crossed out, new price prominently displayed, value proposition focus, deal-highlight design' },
   { id:'aspirational', label:'Aspirational Outcome', desc:'Chi diventi usando il prodotto, non il prodotto', snippet:'aspirational lifestyle outcome, transformed person in aspirational environment, emotional benefit visualization, aspirational identity advertising' },
-  { id:'limitededition', label:'Limited Edition', desc:'Visual scarsitÃ , numerazione, packaging speciale', snippet:'limited edition scarcity visual, numbered edition badge, exclusive packaging detail shot, collectible premium aesthetic, urgency composition' },
+  { id:'limitededition', label:'Limited Edition', desc:'Visual scarsità, numerazione, packaging speciale', snippet:'limited edition scarcity visual, numbered edition badge, exclusive packaging detail shot, collectible premium aesthetic, urgency composition' },
 ];
 
 const TONE_SNIPPETS = {
@@ -508,7 +508,7 @@ function setupDropZone(zoneId, inputId, assetKey) {
         <div class="asset-preview">
           <img src="${asset.data}" alt="${asset.name}" />
           <span class="asset-name">${asset.name}</span>
-          <button class="btn-rm" data-rm="${assetKey}">Ã</button>
+          <button class="btn-rm" data-rm="${assetKey}">×</button>
         </div>`;
       zone.querySelector('[data-rm]').addEventListener('click', e => {
         e.stopPropagation();
@@ -541,7 +541,7 @@ function setupDropZone(zoneId, inputId, assetKey) {
 function rebuildDropZone(zoneId, inputId, assetKey) {
   const zone = document.getElementById(zoneId);
   const labels = { logo:'Logo file', product:'Product photo' };
-  zone.innerHTML = `<input type="file" accept="${assetKey==='logo'?'.png,.svg,.jpg,.jpeg':'.jpg,.jpeg,.png,.webp'}" id="${inputId}" /><span class="drop-icon">â</span><div class="drop-label">${labels[assetKey]} Â· Drag & drop or click</div>`;
+  zone.innerHTML = `<input type="file" accept="${assetKey==='logo'?'.png,.svg,.jpg,.jpeg':'.jpg,.jpeg,.png,.webp'}" id="${inputId}" /><span class="drop-icon">⊕</span><div class="drop-label">${labels[assetKey]} · Drag & drop or click</div>`;
   setupDropZone(zoneId, inputId, assetKey);
 }
 
@@ -556,7 +556,7 @@ function buildPrompt(fid) {
   const tone = TONE_SNIPPETS[state.tone];
   if (tone) parts.push(tone);
   if (state.notes) parts.push(state.notes);
-  const noImageRef = state.model === 'fal-ai/nano-banana-2' || state.model === 'fal-ai/gpt-image-2';
+  const noImageRef = state.model === 'fal-ai/nano-banana-2';
   if (state.product && !noImageRef) parts.push('featuring the product from the provided reference image');
   parts.push('professional advertising photography, high-end commercial quality, print-ready');
   return parts.join(', ');
@@ -576,7 +576,7 @@ function renderPromptPreviews() {
       const f = FORMATS.find(x => x.id === fid);
       html += `<div class="prompt-format-label">${f ? f.label : fid}</div><div class="prompt-box">${escHtml(buildPrompt(fid))}</div>`;
     });
-    html += `<div class="prompt-meta">Size: ${r.w}Ã${r.h}px Â· Model: ${state.model.split('/')[1]}</div>`;
+    html += `<div class="prompt-meta">Size: ${r.w}×${r.h}px · Model: ${state.model.split('/')[1]}</div>`;
     el.innerHTML = html;
   });
 }
@@ -606,7 +606,7 @@ function updateGenButtons() {
     btn.disabled = !canGen;
     const count = state.formats.length;
     btn.textContent = state.loading ? 'Generating...' : (count > 1 ? `Generate ${count} Images` : 'Generate Image');
-    if (note) { note.style.display = count > 1 ? '' : 'none'; if(count>1) note.textContent = `â¡ ${count} formats â ${count} images generated sequentially`; }
+    if (note) { note.style.display = count > 1 ? '' : 'none'; if(count>1) note.textContent = `⚡ ${count} formats → ${count} images generated sequentially`; }
     if (hint) {
       if (!state.falKey || state.falKey.length < 6) { hint.style.display=''; hint.textContent='Set FAL API key in Config tab'; }
       else if (state.formats.length === 0) { hint.style.display=''; hint.textContent='Select at least one format in Brief tab'; }
@@ -618,7 +618,7 @@ function updateGenButtons() {
 function updateOutMeta() {
   const r = RATIOS[state.ratio] || RATIOS['4:5'];
   const img = state.outputImages[state.currentIdx];
-  document.getElementById('outMeta').textContent = img ? `${r.w}Ã${r.h} Â· ${state.model.split('/')[1]}` : '';
+  document.getElementById('outMeta').textContent = img ? `${r.w}×${r.h} · ${state.model.split('/')[1]}` : '';
 }
 
 function setError(msg) {
@@ -630,20 +630,21 @@ function setError(msg) {
 async function callFAL(prompt, imageUrl) {
   const r = RATIOS[state.ratio] || RATIOS['4:5'];
   const isGPT = state.model === 'fal-ai/gpt-image-2';
+  const quality = document.getElementById('gptQuality')?.value || 'medium';
   let body;
+  let endpoint = state.model;
   if (isGPT) {
-    body = {
-      prompt,
-      image_size: { width: r.w, height: r.h },
-      num_images: 1,
-      output_format: 'jpeg',
-      quality: document.getElementById('gptQuality')?.value || 'medium',
-    };
+    if (imageUrl) {
+      endpoint = 'fal-ai/gpt-image-2/image-to-image';
+      body = { prompt, image_urls: [imageUrl], image_size: { width: r.w, height: r.h }, num_images: 1, output_format: 'jpeg', quality };
+    } else {
+      body = { prompt, image_size: { width: r.w, height: r.h }, num_images: 1, output_format: 'jpeg', quality };
+    }
   } else {
     body = { prompt, image_size:{ width:r.w, height:r.h }, num_inference_steps:28, guidance_scale:3.5, num_images:1, enable_safety_checker:true };
     if (imageUrl && state.model !== 'fal-ai/nano-banana-2') body.image_url = imageUrl;
   }
-  const res = await fetch(`https://fal.run/${state.model}`, {
+  const res = await fetch(`https://fal.run/${endpoint}`, {
     method:'POST',
     headers:{ 'Authorization':`Key ${state.falKey}`, 'Content-Type':'application/json' },
     body: JSON.stringify(body),
@@ -733,7 +734,7 @@ function renderOutputImages() {
   }
 
   if (state.outputImages.length === 0) {
-    canvas.innerHTML = `<div class="placeholder"><div class="placeholder-icon">â¬¡</div><div class="placeholder-text">Configure brief and hit Generate<br><small>FAL.ai Â· Professional Ad Production</small></div></div>`;
+    canvas.innerHTML = `<div class="placeholder"><div class="placeholder-icon">⬡</div><div class="placeholder-text">Configure brief and hit Generate<br><small>FAL.ai · Professional Ad Production</small></div></div>`;
     tabsEl.innerHTML = '';
     counterEl.textContent = '';
     updateActionButtons();
@@ -810,8 +811,8 @@ function renderSaved() {
       <div class="saved-overlay">
         <div class="saved-overlay-text">${escHtml(item.brand)}<br>${escHtml(item.format)}</div>
         <div class="saved-actions">
-          <button class="btn-saved" data-dl="${item.id}">â</button>
-          <button class="btn-saved" data-rm="${item.id}">Ã</button>
+          <button class="btn-saved" data-dl="${item.id}">↓</button>
+          <button class="btn-saved" data-rm="${item.id}">×</button>
         </div>
       </div>
     </div>`).join('');
