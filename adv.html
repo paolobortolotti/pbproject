@@ -1,0 +1,865 @@
+<!DOCTYPE html>
+<script type="application/json" id="cowork-artifact-meta">
+{
+  "name": "Fal Adv Studio",
+  "schemaVersion": 1,
+  "description": "FAL ADV Studio - tool React per produzione campagne pubblicitarie AI via fal.ai. Config API key, selezione modello/ratio, upload asset, brief brand, 10 formati ADV, generazione multi-immagine, salvataggio sessione, download ZIP."
+}
+</script>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>FAL ADV Studio</title>
+<style>
+:root {
+  color-scheme: light;
+  --bg: #f5f5f8;
+  --surface: #ffffff;
+  --surface2: #f0f0f5;
+  --border: #e0e0ea;
+  --accent: #5b21b6;
+  --accent-light: rgba(91,33,182,0.08);
+  --accent-border: rgba(91,33,182,0.25);
+  --text: #111118;
+  --text2: #44445a;
+  --text3: #9090aa;
+  --error: #dc2626;
+  --error-bg: rgba(220,38,38,0.07);
+  --success: #059669;
+  --radius: 8px;
+}
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body { font-family: -apple-system, 'Segoe UI', sans-serif; background: var(--bg); color: var(--text); font-size: 13px; }
+
+/* LAYOUT */
+.app { display: flex; flex-direction: column; height: 100vh; overflow: hidden; }
+.app-header { background: var(--surface); border-bottom: 1px solid var(--border); padding: 10px 18px; display: flex; align-items: center; gap: 12px; flex-shrink: 0; }
+.logo { background: var(--accent); color: #fff; font-size: 10px; font-weight: 700; letter-spacing: 0.12em; padding: 3px 9px; border-radius: 4px; }
+.app-title { font-size: 14px; font-weight: 600; color: var(--text); }
+.key-status { margin-left: auto; display: flex; align-items: center; gap: 6px; font-size: 11px; color: var(--text3); }
+.dot { width: 6px; height: 6px; border-radius: 50%; background: var(--text3); }
+.dot.on { background: var(--success); box-shadow: 0 0 6px var(--success); }
+
+.body { display: flex; flex: 1; overflow: hidden; }
+.sidebar { width: 340px; flex-shrink: 0; background: var(--surface); border-right: 1px solid var(--border); display: flex; flex-direction: column; overflow: hidden; }
+.output { flex: 1; display: flex; flex-direction: column; overflow: hidden; }
+
+/* TABS */
+.tab-bar { display: flex; border-bottom: 1px solid var(--border); flex-shrink: 0; }
+.tab-btn { flex: 1; padding: 10px 6px; background: none; border: none; border-bottom: 2px solid transparent; font-size: 11px; font-weight: 600; letter-spacing: 0.06em; text-transform: uppercase; color: var(--text3); cursor: pointer; transition: all 0.15s; }
+.tab-btn:hover { color: var(--text2); }
+.tab-btn.active { color: var(--accent); border-bottom-color: var(--accent); }
+.badge { display: inline-flex; align-items: center; justify-content: center; width: 15px; height: 15px; border-radius: 50%; background: var(--accent); color: #fff; font-size: 8px; font-weight: 700; margin-left: 4px; vertical-align: middle; }
+
+.tab-panel { display: none; flex: 1; overflow-y: auto; }
+.tab-panel.active { display: block; }
+
+/* SECTIONS */
+.section { padding: 16px; border-bottom: 1px solid var(--border); }
+.section-label { font-size: 10px; font-weight: 700; letter-spacing: 0.14em; text-transform: uppercase; color: var(--text3); margin-bottom: 12px; display: flex; align-items: center; gap: 8px; }
+.section-label::after { content: ''; flex: 1; height: 1px; background: var(--border); }
+.field { margin-bottom: 10px; }
+.field:last-child { margin-bottom: 0; }
+label.lbl { display: block; font-size: 11px; font-weight: 500; color: var(--text2); margin-bottom: 5px; }
+
+/* INPUTS */
+input[type=text], input[type=password], textarea, select {
+  width: 100%; background: var(--surface2); border: 1px solid var(--border); color: var(--text);
+  font-family: inherit; font-size: 13px; padding: 8px 11px; border-radius: var(--radius); outline: none; transition: border-color 0.15s;
+}
+input:focus, textarea:focus, select:focus { border-color: var(--accent); }
+textarea { resize: vertical; min-height: 72px; line-height: 1.5; }
+select { appearance: none; background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='6'%3E%3Cpath d='M0 0l5 6 5-6z' fill='%239090aa'/%3E%3C/svg%3E"); background-repeat: no-repeat; background-position: right 11px center; padding-right: 30px; cursor: pointer; }
+select option { background: #fff; }
+
+/* MODEL TABS */
+.model-tabs { display: flex; gap: 6px; }
+.model-tab { flex: 1; padding: 8px 6px; background: var(--surface2); border: 1px solid var(--border); border-radius: var(--radius); cursor: pointer; text-align: center; transition: all 0.15s; }
+.model-tab:hover { border-color: var(--text3); }
+.model-tab.active { background: var(--accent-light); border-color: var(--accent); }
+.model-name { font-size: 11px; font-weight: 600; color: var(--text); display: block; margin-bottom: 2px; }
+.model-price { font-size: 10px; color: var(--text3); font-family: monospace; }
+.model-tab.active .model-price { color: var(--accent); }
+
+/* RATIO PILLS */
+.ratio-pills { display: flex; gap: 5px; flex-wrap: wrap; }
+.ratio-pill { padding: 5px 11px; background: var(--surface2); border: 1px solid var(--border); border-radius: 20px; font-size: 11px; font-weight: 500; color: var(--text2); cursor: pointer; transition: all 0.15s; white-space: nowrap; }
+.ratio-pill:hover { border-color: var(--text3); }
+.ratio-pill.active { background: var(--accent-light); border-color: var(--accent); color: var(--accent); font-weight: 600; }
+
+/* DROP ZONE */
+.drop-zone { border: 1.5px dashed var(--border); border-radius: var(--radius); padding: 16px; text-align: center; cursor: pointer; transition: all 0.15s; position: relative; overflow: hidden; }
+.drop-zone:hover, .drop-zone.drag-over { border-color: var(--accent); background: var(--accent-light); }
+.drop-zone input[type=file] { position: absolute; inset: 0; opacity: 0; cursor: pointer; width: 100%; height: 100%; }
+.drop-icon { font-size: 20px; display: block; margin-bottom: 4px; opacity: 0.5; }
+.drop-label { font-size: 11px; color: var(--text3); }
+
+.asset-preview { display: flex; align-items: center; gap: 10px; padding: 8px 10px; background: var(--surface2); border: 1px solid var(--border); border-radius: var(--radius); }
+.asset-preview img { width: 36px; height: 36px; object-fit: contain; border-radius: 4px; background: #fff; }
+.asset-name { font-size: 11px; color: var(--text2); flex: 1; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.btn-rm { background: none; border: none; color: var(--text3); cursor: pointer; font-size: 18px; line-height: 1; padding: 0 2px; transition: color 0.15s; }
+.btn-rm:hover { color: var(--error); }
+
+/* FORMATS */
+.formats-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 5px; }
+.format-item { display: flex; align-items: flex-start; gap: 7px; padding: 8px 9px; background: var(--surface2); border: 1px solid var(--border); border-radius: var(--radius); cursor: pointer; transition: all 0.15s; user-select: none; }
+.format-item:hover { border-color: var(--text3); }
+.format-item.checked { background: var(--accent-light); border-color: var(--accent-border); }
+.format-item input[type=checkbox] { width: 13px; height: 13px; margin-top: 1px; accent-color: var(--accent); flex-shrink: 0; cursor: pointer; }
+.format-lbl { font-size: 11px; color: var(--text2); line-height: 1.3; cursor: pointer; font-weight: 500; }
+.format-item.checked .format-lbl { color: var(--text); font-weight: 600; }
+.format-desc { font-size: 10px; color: var(--text3); line-height: 1.3; margin-top: 2px; display: block; }
+.format-text { display: flex; flex-direction: column; }
+.format-hint { font-size: 10px; color: var(--text3); margin-bottom: 8px; }
+
+/* PROMPT PREVIEW */
+.prompt-box { background: var(--surface2); border: 1px solid var(--border); border-radius: var(--radius); padding: 12px; font-size: 11px; line-height: 1.6; color: var(--text2); font-family: monospace; min-height: 72px; white-space: pre-wrap; word-break: break-word; }
+.prompt-empty { color: var(--text3); font-style: italic; font-family: inherit; }
+.prompt-meta { font-size: 10px; color: var(--text3); margin-top: 6px; font-family: monospace; }
+.prompt-format-label { font-size: 10px; color: var(--text3); font-weight: 600; letter-spacing: 0.08em; text-transform: uppercase; margin-bottom: 4px; margin-top: 8px; }
+
+/* GENERATE BTN */
+.btn-gen { width: 100%; padding: 13px; background: var(--accent); color: #fff; border: none; border-radius: var(--radius); font-family: inherit; font-size: 13px; font-weight: 700; letter-spacing: 0.04em; cursor: pointer; transition: all 0.15s; text-transform: uppercase; }
+.btn-gen:hover:not(:disabled) { background: #4c1d95; transform: translateY(-1px); }
+.btn-gen:disabled { background: var(--border); color: var(--text3); cursor: not-allowed; transform: none; }
+.gen-hint { font-size: 11px; color: var(--error); margin-top: 7px; }
+.multi-note { font-size: 10px; color: var(--accent); background: var(--accent-light); border: 1px solid var(--accent-border); border-radius: 4px; padding: 6px 10px; margin-bottom: 10px; }
+
+/* OUTPUT PANEL */
+.out-header { background: var(--surface); border-bottom: 1px solid var(--border); padding: 12px 20px; display: flex; align-items: center; gap: 8px; flex-shrink: 0; }
+.out-title { font-size: 11px; font-weight: 600; letter-spacing: 0.1em; text-transform: uppercase; color: var(--text3); }
+.out-meta { margin-left: auto; font-size: 10px; color: var(--text3); font-family: monospace; }
+.img-tab { padding: 4px 10px; font-size: 10px; background: var(--surface2); border: 1px solid var(--border); border-radius: 4px; color: var(--text3); cursor: pointer; font-family: inherit; font-weight: 500; transition: all 0.15s; }
+.img-tab.active { background: var(--accent-light); border-color: var(--accent-border); color: var(--accent); }
+
+.queue-bar-wrap { background: var(--surface); border-bottom: 1px solid var(--border); padding: 8px 20px; display: flex; align-items: center; gap: 10px; font-size: 11px; color: var(--text2); flex-shrink: 0; }
+.queue-track { flex: 1; height: 2px; background: var(--border); border-radius: 2px; overflow: hidden; }
+.queue-fill { height: 100%; background: var(--accent); border-radius: 2px; transition: width 0.4s ease; }
+
+.out-canvas { flex: 1; display: flex; align-items: center; justify-content: center; padding: 28px; overflow: hidden; background: var(--bg); }
+.placeholder { display: flex; flex-direction: column; align-items: center; gap: 10px; opacity: 0.35; text-align: center; }
+.placeholder-icon { font-size: 40px; }
+.placeholder-text { font-size: 12px; color: var(--text3); line-height: 1.5; }
+.out-img { max-width: 100%; max-height: 100%; object-fit: contain; border-radius: var(--radius); box-shadow: 0 4px 24px rgba(0,0,0,0.1); display: block; }
+
+.spinner-wrap { display: flex; flex-direction: column; align-items: center; gap: 14px; }
+.spinner { width: 32px; height: 32px; border: 2px solid var(--border); border-top-color: var(--accent); border-radius: 50%; animation: spin 0.75s linear infinite; }
+@keyframes spin { to { transform: rotate(360deg); } }
+.spinner-msg { font-size: 12px; color: var(--text2); animation: pulse 2s ease-in-out infinite; }
+@keyframes pulse { 0%,100%{opacity:1}50%{opacity:0.4} }
+
+.out-actions { background: var(--surface); border-top: 1px solid var(--border); padding: 12px 20px; display: flex; gap: 7px; align-items: center; flex-shrink: 0; }
+.btn-act { padding: 7px 14px; background: var(--surface2); border: 1px solid var(--border); color: var(--text2); border-radius: var(--radius); font-family: inherit; font-size: 12px; font-weight: 500; cursor: pointer; transition: all 0.15s; }
+.btn-act:hover:not(:disabled) { border-color: var(--text3); color: var(--text); }
+.btn-act:disabled { opacity: 0.4; cursor: not-allowed; }
+.btn-act.primary { background: var(--accent-light); border-color: var(--accent-border); color: var(--accent); }
+.btn-act.primary:hover:not(:disabled) { background: rgba(91,33,182,0.14); }
+.img-counter { margin-left: auto; font-size: 11px; color: var(--text3); }
+
+.error-box { margin: 14px 20px; background: var(--error-bg); border: 1px solid rgba(220,38,38,0.2); border-radius: var(--radius); padding: 11px 14px; font-size: 12px; color: #b91c1c; line-height: 1.5; flex-shrink: 0; }
+
+/* SAVED GRID */
+.saved-toolbar { padding: 10px 14px; border-bottom: 1px solid var(--border); display: flex; align-items: center; justify-content: space-between; }
+.saved-count { font-size: 11px; color: var(--text3); }
+.saved-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(110px, 1fr)); gap: 7px; padding: 14px; }
+.saved-item { position: relative; aspect-ratio: 1; border-radius: var(--radius); overflow: hidden; background: var(--surface2); border: 1px solid var(--border); }
+.saved-item img { width: 100%; height: 100%; object-fit: cover; display: block; }
+.saved-overlay { position: absolute; inset: 0; background: rgba(0,0,0,0.75); display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 6px; opacity: 0; transition: opacity 0.2s; padding: 8px; }
+.saved-item:hover .saved-overlay { opacity: 1; }
+.saved-overlay-text { font-size: 10px; color: #fff; text-align: center; line-height: 1.3; font-weight: 500; }
+.saved-actions { display: flex; gap: 5px; }
+.btn-saved { background: rgba(255,255,255,0.15); border: 1px solid rgba(255,255,255,0.25); border-radius: 4px; color: #fff; font-size: 10px; padding: 3px 7px; cursor: pointer; transition: all 0.15s; }
+.btn-saved:hover { background: rgba(255,255,255,0.3); }
+.saved-empty { padding: 36px 16px; text-align: center; color: var(--text3); font-size: 12px; line-height: 1.6; }
+
+.key-hint { font-size: 10px; color: var(--text3); margin-top: 5px; font-family: monospace; }
+.token-row { display: flex; align-items: center; gap: 6px; padding: 7px 10px; background: var(--surface2); border: 1px solid var(--border); border-radius: var(--radius); margin-top: 7px; }
+.token-dot { width: 6px; height: 6px; border-radius: 50%; background: var(--text3); }
+.token-dot.valid { background: var(--success); }
+.token-text { font-size: 11px; color: var(--text3); font-family: monospace; }
+</style>
+</head>
+<body>
+<div class="app">
+  <header class="app-header">
+    <span class="logo">FAL ADV</span>
+    <span class="app-title">Studio</span>
+    <div class="key-status">
+      <div class="dot" id="keyDot"></div>
+      <span id="keyLabel">No API Key</span>
+    </div>
+  </header>
+
+  <div class="body">
+    <!-- SIDEBAR -->
+    <aside class="sidebar">
+      <div class="tab-bar">
+        <button class="tab-btn active" data-tab="config">Config</button>
+        <button class="tab-btn" data-tab="brief">Brief</button>
+        <button class="tab-btn" data-tab="saved">Saved<span class="badge" id="savedBadge" style="display:none">0</span></button>
+      </div>
+
+      <!-- CONFIG TAB -->
+      <div class="tab-panel active" id="tab-config">
+        <div class="section">
+          <div class="section-label">API Key</div>
+          <div class="field">
+            <label class="lbl">FAL API Key</label>
+            <input type="password" id="falKey" placeholder="fal-xxxxxxxxxxxxxxxx" autocomplete="off" />
+            <div class="token-row">
+              <div class="token-dot" id="tokenDot"></div>
+              <span class="token-text" id="tokenText">No key set</span>
+            </div>
+            <div class="key-hint">Saved in localStorage Â· never logged to console</div>
+          </div>
+        </div>
+
+        <div class="section">
+          <div class="section-label">Model</div>
+          <div class="model-tabs" id="modelTabs" style="flex-wrap:wrap;">
+            <div class="model-tab active" data-model="fal-ai/flux-pro">
+              <span class="model-name">Flux Pro</span>
+              <span class="model-price">$0.05 / img</span>
+            </div>
+            <div class="model-tab" data-model="fal-ai/flux-dev">
+              <span class="model-name">Flux Dev</span>
+              <span class="model-price">$0.025 / img</span>
+            </div>
+            <div class="model-tab" data-model="fal-ai/nano-banana-2">
+              <span class="model-name">Nano Banana</span>
+              <span class="model-price">$0.08 / img</span>
+            </div>
+            <div class="model-tab" data-model="fal-ai/gpt-image-2">
+              <span class="model-name">GPT Image 2</span>
+              <span class="model-price">$0.05â0.21 / img</span>
+            </div>
+          </div>
+          <div id="gptQualityRow" style="display:none;margin-top:8px;">
+            <label class="lbl">Quality (GPT Image 2)</label>
+            <select id="gptQuality">
+              <option value="medium">Medium</option>
+              <option value="low">Low (cheaper)</option>
+              <option value="high">High (best, costoso)</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="section">
+          <div class="section-label">Aspect Ratio</div>
+          <div class="ratio-pills" id="ratioPills">
+            <div class="ratio-pill active" data-ratio="4:5" data-w="1024" data-h="1280">4:5 <small>Post</small></div>
+            <div class="ratio-pill" data-ratio="9:16" data-w="768" data-h="1368">9:16 <small>Story</small></div>
+            <div class="ratio-pill" data-ratio="1:1" data-w="1024" data-h="1024">1:1</div>
+            <div class="ratio-pill" data-ratio="16:9" data-w="1368" data-h="768">16:9 <small>YT</small></div>
+            <div class="ratio-pill" data-ratio="3:2" data-w="1280" data-h="853">3:2</div>
+          </div>
+        </div>
+
+        <div class="section">
+          <div class="section-label">Assets</div>
+          <div class="field">
+            <label class="lbl">Logo (PNG / SVG)</label>
+            <div id="logoZone" class="drop-zone">
+              <input type="file" accept=".png,.svg,.jpg,.jpeg" id="logoInput" />
+              <span class="drop-icon">â</span>
+              <div class="drop-label">Logo file Â· Drag & drop or click</div>
+            </div>
+          </div>
+          <div class="field">
+            <label class="lbl">Product Image (JPG / PNG)</label>
+            <div id="productZone" class="drop-zone">
+              <input type="file" accept=".jpg,.jpeg,.png,.webp" id="productInput" />
+              <span class="drop-icon">â</span>
+              <div class="drop-label">Product photo Â· Drag & drop or click</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="section" id="promptPreviewConfig"></div>
+        <div class="section" id="generateSectionConfig"></div>
+      </div>
+
+      <!-- BRIEF TAB -->
+      <div class="tab-panel" id="tab-brief">
+        <div class="section">
+          <div class="section-label">Brand & Product</div>
+          <div class="field"><label class="lbl">Brand Name</label><input type="text" id="brandName" placeholder="e.g. NORDA" /></div>
+          <div class="field"><label class="lbl">Product Name</label><input type="text" id="productName" placeholder="e.g. Trail Runner 001" /></div>
+          <div class="field"><label class="lbl">Payoff / Claim</label><input type="text" id="payoff" placeholder="e.g. Run beyond limits" /></div>
+          <div class="field"><label class="lbl">Target Audience</label><input type="text" id="target" placeholder="e.g. trail runners 25-45" /></div>
+        </div>
+        <div class="section">
+          <div class="section-label">Tone</div>
+          <div class="field">
+            <select id="tone">
+              <option value="premium">Premium / Luxury</option>
+              <option value="friendly">Friendly / Warm</option>
+              <option value="bold">Bold / Energetic</option>
+              <option value="minimal">Minimal / Clean</option>
+              <option value="authentic">Authentic / Raw</option>
+            </select>
+          </div>
+        </div>
+        <div class="section">
+          <div class="section-label">Notes</div>
+          <div class="field"><textarea id="notes" placeholder="Brand colors, mood, elements to avoid, specific props..."></textarea></div>
+        </div>
+        <div class="section">
+          <div class="section-label">Ad Format</div>
+          <div class="format-hint">Select one or more (each = one image)</div>
+          <div class="formats-grid" id="formatsGrid"></div>
+        </div>
+        <div class="section" id="promptPreviewBrief"></div>
+        <div class="section" id="generateSectionBrief"></div>
+      </div>
+
+      <!-- SAVED TAB -->
+      <div class="tab-panel" id="tab-saved">
+        <div class="saved-toolbar">
+          <span class="saved-count" id="savedCount">0 images</span>
+          <button class="btn-act" id="btnDownloadAll" style="padding:5px 10px;font-size:11px;">â ZIP All</button>
+        </div>
+        <div id="savedGrid" class="saved-grid"></div>
+        <div class="saved-empty" id="savedEmpty">No images saved yet.<br>Generate an image and click "Save".</div>
+      </div>
+    </aside>
+
+    <!-- OUTPUT -->
+    <main class="output">
+      <div class="out-header">
+        <span class="out-title">Output</span>
+        <div id="imgTabs" style="display:flex;gap:5px;"></div>
+        <span class="out-meta" id="outMeta"></span>
+      </div>
+      <div id="queueBarWrap" class="queue-bar-wrap" style="display:none">
+        <span id="queueMsg">Generating...</span>
+        <div class="queue-track"><div class="queue-fill" id="queueFill" style="width:0%"></div></div>
+        <span id="queuePct">0%</span>
+      </div>
+      <div id="errorBox" class="error-box" style="display:none"></div>
+      <div class="out-canvas" id="outCanvas">
+        <div class="placeholder">
+          <div class="placeholder-icon">â¬¡</div>
+          <div class="placeholder-text">Configure brief and hit Generate<br><small>FAL.ai Â· Professional Ad Production</small></div>
+        </div>
+      </div>
+      <div class="out-actions">
+        <button class="btn-act primary" id="btnDownload" disabled>â Download</button>
+        <button class="btn-act" id="btnSave" disabled>â Save</button>
+        <button class="btn-act" id="btnRegen" disabled>â» Rigenera</button>
+        <span class="img-counter" id="imgCounter"></span>
+      </div>
+    </main>
+  </div>
+</div>
+
+<script>
+const FORMATS = [
+  { id:'headline', label:'Headline Ad', desc:'Bold headline sopra prodotto o lifestyle', snippet:'bold advertising headline text prominently overlaid on product, strong typographic layout, high contrast' },
+  { id:'testimonial', label:'Testimonial Ad', desc:'Quote cliente con 5 stelle, social proof visivo', snippet:'customer testimonial layout, quote card with 5 gold stars, social proof visual, clean editorial design' },
+  { id:'features', label:'Feature Benefits', desc:'3 benefici chiave attorno al prodotto', snippet:'three key product benefits displayed around the product, icon badges, feature highlight advertising layout' },
+  { id:'beforeafter', label:'Before/After', desc:'Split-screen problema vs soluzione', snippet:'split-screen composition, left side showing problem or pain point, right side showing product as solution' },
+  { id:'vsthem', label:'Us vs Them', desc:'Confronto side-by-side vs competitor', snippet:'side-by-side comparison layout, checklist format showing advantages over competitor, clean infographic style' },
+  { id:'socialproof', label:'Social Proof Stats', desc:'Un numero grande e impressionante come hero', snippet:'single large hero statistic, bold oversized number, data-driven minimal advertising, clean background' },
+  { id:'lifestyle', label:'Lifestyle', desc:'Prodotto in contesto quotidiano naturale', snippet:'product integrated in natural everyday lifestyle scene, candid authentic moment, real environment' },
+  { id:'minimalist', label:'Minimalist', desc:'Clean Apple-style, singolo prodotto su sfondo puro', snippet:'ultra-clean minimalist product photography, Apple-style composition, pure background, luxury negative space' },
+  { id:'problemagit', label:'Problem Agitation', desc:'Pain point chiamato out, prodotto come soluzione', snippet:'pain point visually represented with frustration, product shown as immediate relief and solution' },
+  { id:'ugc', label:'UGC Style', desc:'Estetica raw iPhone, autentico e non patinato', snippet:'raw authentic user-generated content aesthetic, iPhone handheld feel, organic unpolished natural look' },
+  { id:'howitworks', label:'How It Works', desc:'3 step visivi che spiegano il processo', snippet:'three-step visual process diagram, numbered steps with icons, clean instructional advertising layout, clear flow from left to right' },
+  { id:'expert', label:'Expert Endorsement', desc:'Figura autorevole con credenziale visibile', snippet:'expert authority figure endorsement, professional credential badge visible, trust-building editorial portrait composition' },
+  { id:'priceanchor', label:'Price Anchor', desc:'Prezzo barrato + nuovo prezzo, valore percepito', snippet:'price comparison layout, original price crossed out, new price prominently displayed, value proposition focus, deal-highlight design' },
+  { id:'aspirational', label:'Aspirational Outcome', desc:'Chi diventi usando il prodotto, non il prodotto', snippet:'aspirational lifestyle outcome, transformed person in aspirational environment, emotional benefit visualization, aspirational identity advertising' },
+  { id:'limitededition', label:'Limited Edition', desc:'Visual scarsitÃ , numerazione, packaging speciale', snippet:'limited edition scarcity visual, numbered edition badge, exclusive packaging detail shot, collectible premium aesthetic, urgency composition' },
+];
+
+const TONE_SNIPPETS = {
+  premium: 'luxury premium aesthetic, sophisticated lighting, high-end refined color palette',
+  friendly: 'warm friendly mood, approachable composition, soft natural colors, human connection',
+  bold: 'bold energetic composition, high contrast, dynamic angles, strong graphic impact',
+  minimal: 'ultra clean minimalist, generous white space, calm restrained palette',
+  authentic: 'authentic raw aesthetic, real unposed feel, natural available light, no studio look',
+};
+
+const RATIOS = { '4:5':{w:1024,h:1280},'9:16':{w:768,h:1368},'1:1':{w:1024,h:1024},'16:9':{w:1368,h:768},'3:2':{w:1280,h:853} };
+
+// STATE
+const state = {
+  falKey: '',
+  model: 'fal-ai/flux-pro',
+  ratio: '4:5',
+  logo: null,
+  product: null,
+  brandName: '', productName: '', payoff: '', target: '', tone: 'premium', notes: '',
+  formats: [],
+  outputImages: [],
+  currentIdx: 0,
+  savedImages: [],
+  loading: false,
+  lastPrompts: [],
+};
+
+// Load from localStorage
+try { state.falKey = localStorage.getItem('fal_adv_key') || ''; } catch(e){}
+
+// INIT
+function init() {
+  // FAL key
+  const keyEl = document.getElementById('falKey');
+  keyEl.value = state.falKey;
+  keyEl.addEventListener('input', e => {
+    state.falKey = e.target.value;
+    try { localStorage.setItem('fal_adv_key', state.falKey); } catch(err){}
+    updateKeyStatus();
+    renderPromptPreviews();
+    updateGenButtons();
+  });
+  updateKeyStatus();
+
+  // Model tabs
+  document.getElementById('modelTabs').addEventListener('click', e => {
+    const tab = e.target.closest('[data-model]');
+    if (!tab) return;
+    state.model = tab.dataset.model;
+    document.querySelectorAll('.model-tab').forEach(t => t.classList.toggle('active', t.dataset.model === state.model));
+    const gptRow = document.getElementById('gptQualityRow');
+    if (gptRow) gptRow.style.display = state.model === 'fal-ai/gpt-image-2' ? '' : 'none';
+    renderPromptPreviews();
+  });
+
+  // Ratio pills
+  document.getElementById('ratioPills').addEventListener('click', e => {
+    const pill = e.target.closest('[data-ratio]');
+    if (!pill) return;
+    state.ratio = pill.dataset.ratio;
+    document.querySelectorAll('.ratio-pill').forEach(p => p.classList.toggle('active', p.dataset.ratio === state.ratio));
+    renderPromptPreviews();
+    updateOutMeta();
+  });
+
+  // Drop zones
+  setupDropZone('logoZone', 'logoInput', 'logo');
+  setupDropZone('productZone', 'productInput', 'product');
+
+  // Brief inputs
+  ['brandName','productName','payoff','target','notes'].forEach(id => {
+    document.getElementById(id).addEventListener('input', e => {
+      state[id] = e.target.value;
+      renderPromptPreviews();
+    });
+  });
+  document.getElementById('tone').addEventListener('change', e => {
+    state.tone = e.target.value;
+    renderPromptPreviews();
+  });
+
+  // Formats grid
+  const grid = document.getElementById('formatsGrid');
+  FORMATS.forEach(f => {
+    const item = document.createElement('label');
+    item.className = 'format-item';
+    item.innerHTML = `<input type="checkbox" value="${f.id}" /><span class="format-text"><span class="format-lbl">${f.label}</span>${f.desc ? `<span class="format-desc">${f.desc}</span>` : ''}</span>`;
+    item.querySelector('input').addEventListener('change', e => {
+      if (e.target.checked) state.formats.push(f.id);
+      else state.formats = state.formats.filter(x => x !== f.id);
+      item.classList.toggle('checked', e.target.checked);
+      renderPromptPreviews();
+      updateGenButtons();
+    });
+    grid.appendChild(item);
+  });
+
+  // Tab switching
+  document.querySelectorAll('.tab-btn').forEach(btn => {
+    btn.addEventListener('click', () => {
+      const tab = btn.dataset.tab;
+      document.querySelectorAll('.tab-btn').forEach(b => b.classList.toggle('active', b.dataset.tab === tab));
+      document.querySelectorAll('.tab-panel').forEach(p => p.classList.toggle('active', p.id === 'tab-' + tab));
+    });
+  });
+
+  // Action buttons
+  document.getElementById('btnDownload').addEventListener('click', handleDownload);
+  document.getElementById('btnSave').addEventListener('click', handleSave);
+  document.getElementById('btnRegen').addEventListener('click', handleRegen);
+  document.getElementById('btnDownloadAll').addEventListener('click', handleDownloadAll);
+
+  // Render generate sections in both tabs
+  renderGenerateSections();
+  renderPromptPreviews();
+}
+
+function updateKeyStatus() {
+  const valid = state.falKey.length > 10;
+  document.getElementById('keyDot').classList.toggle('on', valid);
+  document.getElementById('keyLabel').textContent = valid ? `Key Connected` : 'No API Key';
+  document.getElementById('tokenDot').classList.toggle('valid', valid);
+  document.getElementById('tokenText').textContent = valid ? `Key set (${state.falKey.length} chars)` : 'No key set';
+}
+
+function setupDropZone(zoneId, inputId, assetKey) {
+  const zone = document.getElementById(zoneId);
+  const input = document.getElementById(inputId);
+
+  const renderPreview = () => {
+    const asset = state[assetKey];
+    if (asset) {
+      zone.innerHTML = `
+        <div class="asset-preview">
+          <img src="${asset.data}" alt="${asset.name}" />
+          <span class="asset-name">${asset.name}</span>
+          <button class="btn-rm" data-rm="${assetKey}">Ã</button>
+        </div>`;
+      zone.querySelector('[data-rm]').addEventListener('click', e => {
+        e.stopPropagation();
+        state[assetKey] = null;
+        rebuildDropZone(zoneId, inputId, assetKey);
+        renderPromptPreviews();
+      });
+    }
+  };
+
+  const handleFile = async file => {
+    const reader = new FileReader();
+    reader.onload = e => {
+      state[assetKey] = { data: e.target.result, name: file.name };
+      renderPreview();
+      renderPromptPreviews();
+    };
+    reader.readAsDataURL(file);
+  };
+
+  input.addEventListener('change', e => { if(e.target.files[0]) handleFile(e.target.files[0]); });
+  zone.addEventListener('dragover', e => { e.preventDefault(); zone.classList.add('drag-over'); });
+  zone.addEventListener('dragleave', () => zone.classList.remove('drag-over'));
+  zone.addEventListener('drop', e => {
+    e.preventDefault(); zone.classList.remove('drag-over');
+    if(e.dataTransfer.files[0]) handleFile(e.dataTransfer.files[0]);
+  });
+}
+
+function rebuildDropZone(zoneId, inputId, assetKey) {
+  const zone = document.getElementById(zoneId);
+  const labels = { logo:'Logo file', product:'Product photo' };
+  zone.innerHTML = `<input type="file" accept="${assetKey==='logo'?'.png,.svg,.jpg,.jpeg':'.jpg,.jpeg,.png,.webp'}" id="${inputId}" /><span class="drop-icon">â</span><div class="drop-label">${labels[assetKey]} Â· Drag & drop or click</div>`;
+  setupDropZone(zoneId, inputId, assetKey);
+}
+
+function buildPrompt(fid) {
+  const f = FORMATS.find(x => x.id === fid);
+  const parts = [];
+  if (state.brandName) parts.push(`${state.brandName} brand advertisement`);
+  if (state.productName) parts.push(`featuring ${state.productName}`);
+  if (state.payoff) parts.push(`with tagline "${state.payoff}"`);
+  if (state.target) parts.push(`targeting ${state.target}`);
+  if (f) parts.push(f.snippet);
+  const tone = TONE_SNIPPETS[state.tone];
+  if (tone) parts.push(tone);
+  if (state.notes) parts.push(state.notes);
+  const noImageRef = state.model === 'fal-ai/nano-banana-2' || state.model === 'fal-ai/gpt-image-2';
+  if (state.product && !noImageRef) parts.push('featuring the product from the provided reference image');
+  parts.push('professional advertising photography, high-end commercial quality, print-ready');
+  return parts.join(', ');
+}
+
+function renderPromptPreviews() {
+  ['Config','Brief'].forEach(suffix => {
+    const el = document.getElementById('promptPreview' + suffix);
+    if (!el) return;
+    if (state.formats.length === 0) {
+      el.innerHTML = `<div class="section-label">Prompt Preview</div><div class="prompt-box"><span class="prompt-empty">Select at least one format to see the prompt.</span></div>`;
+      return;
+    }
+    const r = RATIOS[state.ratio] || RATIOS['4:5'];
+    let html = `<div class="section-label">Prompt Preview</div>`;
+    state.formats.forEach(fid => {
+      const f = FORMATS.find(x => x.id === fid);
+      html += `<div class="prompt-format-label">${f ? f.label : fid}</div><div class="prompt-box">${escHtml(buildPrompt(fid))}</div>`;
+    });
+    html += `<div class="prompt-meta">Size: ${r.w}Ã${r.h}px Â· Model: ${state.model.split('/')[1]}</div>`;
+    el.innerHTML = html;
+  });
+}
+
+function escHtml(s) { return s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;'); }
+
+function renderGenerateSections() {
+  ['Config','Brief'].forEach(suffix => {
+    const el = document.getElementById('generateSection' + suffix);
+    if (!el) return;
+    el.innerHTML = `
+      <div class="multi-note" id="multiNote${suffix}" style="display:none"></div>
+      <button class="btn-gen" id="btnGen${suffix}">Generate</button>
+      <div class="gen-hint" id="genHint${suffix}" style="display:none"></div>`;
+    document.getElementById('btnGen' + suffix).addEventListener('click', handleGenerate);
+  });
+  updateGenButtons();
+}
+
+function updateGenButtons() {
+  ['Config','Brief'].forEach(suffix => {
+    const btn = document.getElementById('btnGen' + suffix);
+    const hint = document.getElementById('genHint' + suffix);
+    const note = document.getElementById('multiNote' + suffix);
+    if (!btn) return;
+    const canGen = state.falKey.length > 5 && state.formats.length > 0 && !state.loading;
+    btn.disabled = !canGen;
+    const count = state.formats.length;
+    btn.textContent = state.loading ? 'Generating...' : (count > 1 ? `Generate ${count} Images` : 'Generate Image');
+    if (note) { note.style.display = count > 1 ? '' : 'none'; if(count>1) note.textContent = `â¡ ${count} formats â ${count} images generated sequentially`; }
+    if (hint) {
+      if (!state.falKey || state.falKey.length < 6) { hint.style.display=''; hint.textContent='Set FAL API key in Config tab'; }
+      else if (state.formats.length === 0) { hint.style.display=''; hint.textContent='Select at least one format in Brief tab'; }
+      else { hint.style.display='none'; }
+    }
+  });
+}
+
+function updateOutMeta() {
+  const r = RATIOS[state.ratio] || RATIOS['4:5'];
+  const img = state.outputImages[state.currentIdx];
+  document.getElementById('outMeta').textContent = img ? `${r.w}Ã${r.h} Â· ${state.model.split('/')[1]}` : '';
+}
+
+function setError(msg) {
+  const el = document.getElementById('errorBox');
+  if (msg) { el.style.display=''; el.innerHTML = `<strong>Error:</strong> ${escHtml(msg)}`; }
+  else { el.style.display='none'; el.textContent=''; }
+}
+
+async function callFAL(prompt, imageUrl) {
+  const r = RATIOS[state.ratio] || RATIOS['4:5'];
+  const isGPT = state.model === 'fal-ai/gpt-image-2';
+  let body;
+  if (isGPT) {
+    body = {
+      prompt,
+      image_size: { width: r.w, height: r.h },
+      num_images: 1,
+      output_format: 'jpeg',
+      quality: document.getElementById('gptQuality')?.value || 'medium',
+    };
+  } else {
+    body = { prompt, image_size:{ width:r.w, height:r.h }, num_inference_steps:28, guidance_scale:3.5, num_images:1, enable_safety_checker:true };
+    if (imageUrl && state.model !== 'fal-ai/nano-banana-2') body.image_url = imageUrl;
+  }
+  const res = await fetch(`https://fal.run/${state.model}`, {
+    method:'POST',
+    headers:{ 'Authorization':`Key ${state.falKey}`, 'Content-Type':'application/json' },
+    body: JSON.stringify(body),
+  });
+  if (!res.ok) {
+    let msg = ''; try { const j=await res.json(); msg=j.detail||j.message||JSON.stringify(j); } catch(e){ msg=await res.text(); }
+    throw new Error(`FAL API ${res.status}: ${msg}`);
+  }
+  const data = await res.json();
+  if (data.images && data.images[0]) return data.images[0].url || data.images[0];
+  if (data.image) return data.image.url || data.image;
+  throw new Error('No image in response: ' + JSON.stringify(data).slice(0,200));
+}
+
+function setLoading(loading) {
+  state.loading = loading;
+  updateGenButtons();
+  document.getElementById('queueBarWrap').style.display = loading ? '' : 'none';
+}
+
+function setQueueProgress(msg, pct) {
+  document.getElementById('queueMsg').textContent = msg;
+  document.getElementById('queueFill').style.width = pct + '%';
+  document.getElementById('queuePct').textContent = pct + '%';
+}
+
+async function handleGenerate() {
+  setError(null);
+  state.outputImages = [];
+  state.currentIdx = 0;
+  state.lastPrompts = [];
+  renderOutputImages();
+  setLoading(true);
+
+  const formats = [...state.formats];
+  const prompts = formats.map(fid => ({ fid, label: (FORMATS.find(f=>f.id===fid)||{}).label||fid, prompt: buildPrompt(fid) }));
+  state.lastPrompts = prompts;
+
+  try {
+    for (let i=0; i<prompts.length; i++) {
+      const p = prompts[i];
+      const pct = Math.round(i/prompts.length*100);
+      setQueueProgress(`Generating: ${p.label} (${i+1}/${prompts.length})`, pct);
+      const url = await callFAL(p.prompt, state.product?.data || null);
+      state.outputImages.push({ url, label:p.label, fid:p.fid });
+      state.currentIdx = state.outputImages.length - 1;
+      renderOutputImages();
+      setQueueProgress(`Done: ${p.label}`, Math.round((i+1)/prompts.length*100));
+    }
+  } catch(err) {
+    let msg = err.message;
+    if (msg.toLowerCase().includes('cors') || msg.toLowerCase().includes('failed to fetch')) {
+      msg = 'CORS/network error: FAL request blocked. Use Claude Code / Cowork for server-side generation, or verify your FAL key.\n\nOriginal: ' + msg;
+    }
+    setError(msg);
+  } finally {
+    setLoading(false);
+  }
+}
+
+async function handleRegen() {
+  const img = state.outputImages[state.currentIdx];
+  if (!img) return;
+  setError(null);
+  setLoading(true);
+  const p = state.lastPrompts.find(x=>x.fid===img.fid) || state.lastPrompts[0];
+  if (!p) { setLoading(false); return; }
+  setQueueProgress(`Regenerating: ${img.label}`, 50);
+  try {
+    const url = await callFAL(p.prompt + `, unique_seed:${Math.floor(Math.random()*99999)}`, state.product?.data||null);
+    state.outputImages[state.currentIdx] = { ...img, url };
+    renderOutputImages();
+  } catch(err) { setError(err.message); }
+  finally { setLoading(false); }
+}
+
+function renderOutputImages() {
+  const canvas = document.getElementById('outCanvas');
+  const tabsEl = document.getElementById('imgTabs');
+  const counterEl = document.getElementById('imgCounter');
+
+  if (state.loading && state.outputImages.length === 0) {
+    canvas.innerHTML = `<div class="spinner-wrap"><div class="spinner"></div><span class="spinner-msg">Contacting FAL...</span></div>`;
+    tabsEl.innerHTML = '';
+    counterEl.textContent = '';
+    return;
+  }
+
+  if (state.outputImages.length === 0) {
+    canvas.innerHTML = `<div class="placeholder"><div class="placeholder-icon">â¬¡</div><div class="placeholder-text">Configure brief and hit Generate<br><small>FAL.ai Â· Professional Ad Production</small></div></div>`;
+    tabsEl.innerHTML = '';
+    counterEl.textContent = '';
+    updateActionButtons();
+    return;
+  }
+
+  const img = state.outputImages[state.currentIdx];
+  canvas.innerHTML = `<img class="out-img" src="${img.url}" alt="${escHtml(img.label)}" />`;
+
+  // Image tabs
+  if (state.outputImages.length > 1) {
+    tabsEl.innerHTML = state.outputImages.map((im,i) =>
+      `<button class="img-tab${i===state.currentIdx?' active':''}" data-idx="${i}">${escHtml(im.label)}</button>`
+    ).join('');
+    tabsEl.querySelectorAll('.img-tab').forEach(btn => {
+      btn.addEventListener('click', () => {
+        state.currentIdx = parseInt(btn.dataset.idx);
+        renderOutputImages();
+      });
+    });
+    counterEl.textContent = `${state.currentIdx+1} / ${state.outputImages.length}`;
+  } else {
+    tabsEl.innerHTML = '';
+    counterEl.textContent = '';
+  }
+
+  updateActionButtons();
+  updateOutMeta();
+}
+
+function updateActionButtons() {
+  const hasImg = state.outputImages.length > 0 && !!state.outputImages[state.currentIdx];
+  document.getElementById('btnDownload').disabled = !hasImg;
+  document.getElementById('btnSave').disabled = !hasImg;
+  document.getElementById('btnRegen').disabled = !hasImg || state.loading;
+}
+
+function handleDownload() {
+  const img = state.outputImages[state.currentIdx];
+  if (!img) return;
+  const a = document.createElement('a');
+  a.href = img.url;
+  const ts = new Date().toISOString().replace(/[:.]/g,'-').slice(0,16);
+  a.download = `${(state.brandName||'adv').replace(/\s+/g,'_')}_${img.fid}_${ts}.jpg`;
+  a.click();
+}
+
+function handleSave() {
+  const img = state.outputImages[state.currentIdx];
+  if (!img) return;
+  const ts = new Date().toISOString().replace(/[:.]/g,'-').slice(0,16);
+  state.savedImages.unshift({
+    id: Date.now(),
+    url: img.url,
+    filename: `${(state.brandName||'adv').replace(/\s+/g,'_')}_${img.fid}_${ts}.jpg`,
+    brand: state.brandName || 'Untitled',
+    format: img.label,
+  });
+  renderSaved();
+}
+
+function renderSaved() {
+  const count = state.savedImages.length;
+  const badge = document.getElementById('savedBadge');
+  badge.textContent = count;
+  badge.style.display = count ? '' : 'none';
+  document.getElementById('savedCount').textContent = `${count} image${count!==1?'s':''}`;
+  document.getElementById('savedEmpty').style.display = count ? 'none' : '';
+
+  const grid = document.getElementById('savedGrid');
+  grid.innerHTML = state.savedImages.map(item => `
+    <div class="saved-item" data-id="${item.id}">
+      <img src="${item.url}" alt="${escHtml(item.format)}" />
+      <div class="saved-overlay">
+        <div class="saved-overlay-text">${escHtml(item.brand)}<br>${escHtml(item.format)}</div>
+        <div class="saved-actions">
+          <button class="btn-saved" data-dl="${item.id}">â</button>
+          <button class="btn-saved" data-rm="${item.id}">Ã</button>
+        </div>
+      </div>
+    </div>`).join('');
+
+  grid.querySelectorAll('[data-dl]').forEach(btn => {
+    btn.addEventListener('click', e => {
+      e.stopPropagation();
+      const item = state.savedImages.find(x=>x.id===parseInt(btn.dataset.dl));
+      if (!item) return;
+      const a = document.createElement('a'); a.href=item.url; a.download=item.filename; a.click();
+    });
+  });
+  grid.querySelectorAll('[data-rm]').forEach(btn => {
+    btn.addEventListener('click', e => {
+      e.stopPropagation();
+      state.savedImages = state.savedImages.filter(x=>x.id!==parseInt(btn.dataset.rm));
+      renderSaved();
+    });
+  });
+}
+
+async function handleDownloadAll() {
+  if (state.savedImages.length === 0) return;
+  try {
+    if (!window.JSZip) {
+      await new Promise((res,rej) => {
+        const s=document.createElement('script');
+        s.src='https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js';
+        s.onload=res; s.onerror=rej; document.head.appendChild(s);
+      });
+    }
+    const zip = new JSZip();
+    for (const item of state.savedImages) {
+      const r = await fetch(item.url);
+      const blob = await r.blob();
+      zip.file(item.filename, blob);
+    }
+    const content = await zip.generateAsync({ type:'blob' });
+    const a = document.createElement('a');
+    a.href = URL.createObjectURL(content);
+    a.download = `fal_adv_studio_${Date.now()}.zip`;
+    a.click();
+  } catch(err) { setError('ZIP error: ' + err.message); }
+}
+
+// Boot
+init();
+renderSaved();
+</script>
+</body>
+</html>
