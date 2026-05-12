@@ -1,646 +1,865 @@
 <!DOCTYPE html>
+<script type="application/json" id="cowork-artifact-meta">
+{
+  "name": "Fal Adv Studio",
+  "schemaVersion": 1,
+  "description": "FAL ADV Studio - tool React per produzione campagne pubblicitarie AI via fal.ai. Config API key, selezione modello/ratio, upload asset, brief brand, 10 formati ADV, generazione multi-immagine, salvataggio sessione, download ZIP."
+}
+</script>
 <html lang="en">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Visual Prompt Director</title>
-<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=DM+Mono:wght@300;400;500&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+<title>FAL ADV Studio</title>
 <style>
-  :root {
-    --black: #0a0a0a;
-    --surface: #111111;
-    --surface2: #1a1a1a;
-    --surface3: #222222;
-    --border: #2a2a2a;
-    --border2: #333333;
-    --accent: #c8a96e;
-    --accent2: #e8c98e;
-    --text: #e8e4dc;
-    --muted: #777777;
-    --muted2: #999999;
-    --cyan: #5cc8d4;
-    --error: #e05555;
-    --success: #5db87a;
-    --60: var(--black);
-    --30: var(--surface);
-    --10: var(--accent);
-  }
- 
-  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
- 
-  body {
-    background: var(--60);
-    color: var(--text);
-    font-family: 'DM Sans', sans-serif;
-    font-weight: 300;
-    min-height: 100vh;
-    overflow-x: hidden;
-  }
- 
-  .app {
-    display: grid;
-    grid-template-columns: 300px 1fr;
-    grid-template-rows: auto 1fr;
-    min-height: 100vh;
-  }
- 
-  header {
-    grid-column: 1 / -1;
-    background: var(--surface);
-    border-bottom: 1px solid var(--border);
-    padding: 0 2rem;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    height: 68px;
-  }
- 
-  .logo { display: flex; align-items: baseline; gap: 0.5rem; }
-  .logo-title { font-family: 'Playfair Display', serif; font-size: 1.25rem; color: var(--text); letter-spacing: 0.02em; }
-  .logo-sub { font-family: 'DM Mono', monospace; font-size: 0.72rem; color: var(--accent); letter-spacing: 0.15em; text-transform: uppercase; }
-  .header-right { display: flex; align-items: center; gap: 1rem; }
-  .status-dot { width: 6px; height: 6px; border-radius: 50%; background: var(--success); animation: pulse 2s infinite; }
-  @keyframes pulse { 0%, 100% { opacity: 1; } 50% { opacity: 0.4; } }
-  .status-label { font-family: 'DM Mono', monospace; font-size: 0.76rem; color: var(--muted2); letter-spacing: 0.1em; text-transform: uppercase; }
- 
-  aside { background: var(--surface); border-right: 1px solid var(--border); padding: 1.75rem; overflow-y: auto; }
-  .sidebar-section { margin-bottom: 2rem; }
-  .sidebar-label { font-family: 'DM Mono', monospace; font-size: 0.72rem; color: var(--muted); letter-spacing: 0.15em; text-transform: uppercase; margin-bottom: 1rem; display: block; }
-  .style-grid { display: flex; flex-direction: column; gap: 0.4rem; }
-  .style-card { background: var(--surface2); border: 1px solid var(--border); border-radius: 4px; padding: 0.85rem 1.1rem; cursor: pointer; transition: all 0.15s ease; position: relative; }
-  .style-card:hover { border-color: var(--border2); background: var(--surface3); }
-  .style-card.active { border-color: var(--accent); background: rgba(200, 169, 110, 0.06); }
-  .style-card.active::before { content: ''; position: absolute; left: 0; top: 0; bottom: 0; width: 2px; background: var(--accent); border-radius: 4px 0 0 4px; }
-  .style-name { font-family: 'DM Mono', monospace; font-size: 0.82rem; color: var(--accent); letter-spacing: 0.08em; text-transform: uppercase; margin-bottom: 0.25rem; }
-  .style-desc { font-size: 0.8rem; color: var(--muted2); line-height: 1.5; }
-  .ratio-group { display: grid; grid-template-columns: repeat(3, 1fr); gap: 0.35rem; }
-  .ratio-btn { background: var(--surface2); border: 1px solid var(--border); border-radius: 3px; padding: 0.5rem; cursor: pointer; font-family: 'DM Mono', monospace; font-size: 0.72rem; color: var(--muted2); text-align: center; transition: all 0.15s; }
-  .ratio-btn:hover { border-color: var(--border2); color: var(--text); }
-  .ratio-btn.active { border-color: var(--accent); color: var(--accent); background: rgba(200,169,110,0.06); }
-  .slider-group { display: flex; flex-direction: column; gap: 0.75rem; }
-  .slider-row { display: flex; flex-direction: column; gap: 0.35rem; }
-  .slider-header { display: flex; justify-content: space-between; align-items: center; }
-  .slider-name { font-family: 'DM Mono', monospace; font-size: 0.76rem; color: var(--muted2); letter-spacing: 0.08em; }
-  .slider-val { font-family: 'DM Mono', monospace; font-size: 0.76rem; color: var(--accent); }
-  input[type="range"] { width: 100%; -webkit-appearance: none; height: 2px; background: var(--border2); border-radius: 1px; outline: none; }
-  input[type="range"]::-webkit-slider-thumb { -webkit-appearance: none; width: 12px; height: 12px; border-radius: 50%; background: var(--accent); cursor: pointer; }
-  .toggle-group { display: flex; flex-direction: column; gap: 0.5rem; }
-  .toggle-row { display: flex; justify-content: space-between; align-items: center; }
-  .toggle-name { font-family: 'DM Mono', monospace; font-size: 0.76rem; color: var(--muted2); letter-spacing: 0.08em; }
-  .toggle { width: 32px; height: 16px; background: var(--border2); border-radius: 8px; cursor: pointer; position: relative; transition: background 0.2s; }
-  .toggle.on { background: var(--accent); }
-  .toggle::after { content: ''; position: absolute; width: 12px; height: 12px; border-radius: 50%; background: white; top: 2px; left: 2px; transition: transform 0.2s; }
-  .toggle.on::after { transform: translateX(16px); }
-  main { background: var(--black); display: flex; flex-direction: column; overflow: hidden; }
-  .brief-section { padding: 1.75rem 2rem; border-bottom: 1px solid var(--border); background: var(--surface); }
-  .brief-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.85rem; }
-  .brief-label { font-family: 'DM Mono', monospace; font-size: 0.72rem; color: var(--muted); letter-spacing: 0.15em; text-transform: uppercase; }
-  .brief-actions { display: flex; gap: 0.5rem; align-items: center; }
-  textarea { width: 100%; background: var(--surface2); border: 1px solid var(--border); border-radius: 4px; padding: 1rem; color: var(--text); font-family: 'DM Sans', sans-serif; font-size: 1rem; font-weight: 300; line-height: 1.6; resize: none; height: 100px; outline: none; transition: border-color 0.15s; }
-  textarea:focus { border-color: var(--border2); }
-  textarea::placeholder { color: var(--muted); }
-  .btn { display: inline-flex; align-items: center; gap: 0.4rem; padding: 0.55rem 1.25rem; border: none; border-radius: 3px; cursor: pointer; font-family: 'DM Mono', monospace; font-size: 0.72rem; letter-spacing: 0.1em; text-transform: uppercase; transition: all 0.15s; }
-  .btn-primary { background: var(--accent); color: var(--black); font-weight: 500; }
-  .btn-primary:hover { background: var(--accent2); }
-  .btn-primary:disabled { opacity: 0.4; cursor: not-allowed; }
-  .btn-ghost { background: transparent; color: var(--muted2); border: 1px solid var(--border); }
-  .btn-ghost:hover { color: var(--text); border-color: var(--border2); }
-  .btn-icon { background: transparent; border: none; color: var(--muted); cursor: pointer; padding: 0.3rem; border-radius: 3px; transition: color 0.15s; font-size: 0.8rem; }
-  .btn-icon:hover { color: var(--text); }
-  .output-section { flex: 1; overflow-y: auto; padding: 1.75rem 2rem; }
-  .prompt-card { background: var(--surface); border: 1px solid var(--border); border-radius: 6px; margin-bottom: 1rem; overflow: hidden; animation: fadeUp 0.3s ease both; }
-  @keyframes fadeUp { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: translateY(0); } }
-  .prompt-card-header { padding: 0.85rem 1.1rem; border-bottom: 1px solid var(--border); display: flex; justify-content: space-between; align-items: center; background: var(--surface2); }
-  .prompt-style-tag { font-family: 'DM Mono', monospace; font-size: 0.76rem; color: var(--accent); letter-spacing: 0.1em; text-transform: uppercase; }
-  .prompt-card-actions { display: flex; gap: 0.25rem; }
-  .prompt-body { padding: 1.25rem; }
-  .prompt-text { font-family: 'DM Mono', monospace; font-size: 0.88rem; color: var(--text); line-height: 1.75; word-break: break-word; white-space: pre-wrap; }
-  .prompt-params { margin-top: 0.6rem; font-family: 'DM Mono', monospace; font-size: 0.82rem; color: var(--cyan); }
-  .prompt-rationale { margin-top: 0.85rem; padding-top: 0.85rem; border-top: 1px solid var(--border); font-size: 0.86rem; color: var(--muted2); line-height: 1.65; font-style: italic; }
-  .image-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: 0.75rem; margin-top: 1rem; }
-  .image-thumb { aspect-ratio: 16/9; background: var(--surface2); border: 1px solid var(--border); border-radius: 4px; overflow: hidden; position: relative; }
-  .image-thumb img { width: 100%; height: 100%; object-fit: cover; }
-  .image-thumb-label { position: absolute; bottom: 0; left: 0; right: 0; background: linear-gradient(transparent, rgba(0,0,0,0.8)); padding: 1rem 0.5rem 0.4rem; font-family: 'DM Mono', monospace; font-size: 0.55rem; color: var(--accent); letter-spacing: 0.08em; text-transform: uppercase; }
-  .loading-bar { height: 1px; background: linear-gradient(90deg, transparent, var(--accent), transparent); background-size: 200% 100%; animation: shimmer 1.5s infinite; margin-bottom: 1rem; }
-  @keyframes shimmer { 0% { background-position: -200% 0; } 100% { background-position: 200% 0; } }
-  .loading-card { background: var(--surface); border: 1px solid var(--border); border-radius: 6px; padding: 1.5rem; text-align: center; color: var(--muted); font-family: 'DM Mono', monospace; font-size: 0.8rem; letter-spacing: 0.1em; }
-  .empty-state { flex: 1; display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: center; padding: 3rem; gap: 0.75rem; }
-  .empty-glyph { font-family: 'Playfair Display', serif; font-size: 3.5rem; color: var(--border2); line-height: 1; font-style: italic; }
-  .empty-title { font-family: 'Playfair Display', serif; font-size: 1.25rem; color: var(--muted2); font-style: italic; }
-  .empty-sub { font-family: 'DM Mono', monospace; font-size: 0.76rem; color: var(--muted); letter-spacing: 0.1em; text-transform: uppercase; }
-  .api-key-row { display: flex; gap: 0.5rem; align-items: center; }
-  input[type="password"], input[type="text"] { flex: 1; background: var(--surface2); border: 1px solid var(--border); border-radius: 3px; padding: 0.5rem 0.85rem; color: var(--text); font-family: 'DM Mono', monospace; font-size: 0.76rem; outline: none; transition: border-color 0.15s; }
-  input:focus { border-color: var(--border2); }
-  input::placeholder { color: var(--muted); }
-  .toast { position: fixed; bottom: 1.5rem; right: 1.5rem; background: var(--surface2); border: 1px solid var(--border2); border-radius: 4px; padding: 0.85rem 1.1rem; font-family: 'DM Mono', monospace; font-size: 0.76rem; color: var(--text); letter-spacing: 0.08em; z-index: 100; animation: slideIn 0.2s ease; display: flex; align-items: center; gap: 0.5rem; }
-  @keyframes slideIn { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: translateY(0); } }
-  .toast.success { border-color: var(--success); }
-  .toast.error { border-color: var(--error); }
-  .divider { height: 1px; background: var(--border); margin: 1rem 0; }
-  ::-webkit-scrollbar { width: 4px; }
-  ::-webkit-scrollbar-track { background: transparent; }
-  ::-webkit-scrollbar-thumb { background: var(--border2); border-radius: 2px; }
-  .generate-bar { padding: 1.25rem 2rem; background: var(--surface); border-top: 1px solid var(--border); display: flex; gap: 0.75rem; align-items: center; }
-  .generate-info { flex: 1; font-family: 'DM Mono', monospace; font-size: 0.72rem; color: var(--muted); letter-spacing: 0.08em; }
-  .image-result { margin-top: 1rem; border: 1px solid var(--border); border-radius: 6px; overflow: hidden; }
-  .image-result img { width: 100%; height: auto; display: block; }
-  .image-result-bar { background: var(--surface2); border-top: 1px solid var(--border); padding: 0.5rem 1rem; display: flex; justify-content: space-between; align-items: center; }
-  .image-result-meta { font-family: 'DM Mono', monospace; font-size: 0.72rem; color: var(--muted); letter-spacing: 0.08em; }
-  .tab-bar { display: flex; gap: 0; border-bottom: 1px solid var(--border); background: var(--surface); }
-  .tab { padding: 0.85rem 1.4rem; font-family: 'DM Mono', monospace; font-size: 0.72rem; color: var(--muted); letter-spacing: 0.1em; text-transform: uppercase; cursor: pointer; border-bottom: 2px solid transparent; transition: all 0.15s; margin-bottom: -1px; }
-  .tab:hover { color: var(--text); }
-  .tab.active { color: var(--accent); border-bottom-color: var(--accent); }
-  .tab-content { display: none; }
-  .tab-content.active { display: block; }
-  .copied-flash { color: var(--success) !important; transition: color 0.3s; }
-  @media (max-width: 768px) {
-    .app { grid-template-columns: 1fr; }
-    aside { border-right: none; border-bottom: 1px solid var(--border); max-height: 50vh; }
-    header { padding: 0 1rem; }
-    .brief-section, .output-section, .generate-bar { padding-left: 1rem; padding-right: 1rem; }
-    .generate-bar { flex-wrap: wrap; }
-  }
+:root {
+  color-scheme: light;
+  --bg: #f5f5f8;
+  --surface: #ffffff;
+  --surface2: #f0f0f5;
+  --border: #e0e0ea;
+  --accent: #5b21b6;
+  --accent-light: rgba(91,33,182,0.08);
+  --accent-border: rgba(91,33,182,0.25);
+  --text: #111118;
+  --text2: #44445a;
+  --text3: #9090aa;
+  --error: #dc2626;
+  --error-bg: rgba(220,38,38,0.07);
+  --success: #059669;
+  --radius: 8px;
+}
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body { font-family: -apple-system, 'Segoe UI', sans-serif; background: var(--bg); color: var(--text); font-size: 13px; }
+
+/* LAYOUT */
+.app { display: flex; flex-direction: column; height: 100vh; overflow: hidden; }
+.app-header { background: var(--surface); border-bottom: 1px solid var(--border); padding: 10px 18px; display: flex; align-items: center; gap: 12px; flex-shrink: 0; }
+.logo { background: var(--accent); color: #fff; font-size: 10px; font-weight: 700; letter-spacing: 0.12em; padding: 3px 9px; border-radius: 4px; }
+.app-title { font-size: 14px; font-weight: 600; color: var(--text); }
+.key-status { margin-left: auto; display: flex; align-items: center; gap: 6px; font-size: 11px; color: var(--text3); }
+.dot { width: 6px; height: 6px; border-radius: 50%; background: var(--text3); }
+.dot.on { background: var(--success); box-shadow: 0 0 6px var(--success); }
+
+.body { display: flex; flex: 1; overflow: hidden; }
+.sidebar { width: 340px; flex-shrink: 0; background: var(--surface); border-right: 1px solid var(--border); display: flex; flex-direction: column; overflow: hidden; }
+.output { flex: 1; display: flex; flex-direction: column; overflow: hidden; }
+
+/* TABS */
+.tab-bar { display: flex; border-bottom: 1px solid var(--border); flex-shrink: 0; }
+.tab-btn { flex: 1; padding: 10px 6px; background: none; border: none; border-bottom: 2px solid transparent; font-size: 11px; font-weight: 600; letter-spacing: 0.06em; text-transform: uppercase; color: var(--text3); cursor: pointer; transition: all 0.15s; }
+.tab-btn:hover { color: var(--text2); }
+.tab-btn.active { color: var(--accent); border-bottom-color: var(--accent); }
+.badge { display: inline-flex; align-items: center; justify-content: center; width: 15px; height: 15px; border-radius: 50%; background: var(--accent); color: #fff; font-size: 8px; font-weight: 700; margin-left: 4px; vertical-align: middle; }
+
+.tab-panel { display: none; flex: 1; overflow-y: auto; }
+.tab-panel.active { display: block; }
+
+/* SECTIONS */
+.section { padding: 16px; border-bottom: 1px solid var(--border); }
+.section-label { font-size: 10px; font-weight: 700; letter-spacing: 0.14em; text-transform: uppercase; color: var(--text3); margin-bottom: 12px; display: flex; align-items: center; gap: 8px; }
+.section-label::after { content: ''; flex: 1; height: 1px; background: var(--border); }
+.field { margin-bottom: 10px; }
+.field:last-child { margin-bottom: 0; }
+label.lbl { display: block; font-size: 11px; font-weight: 500; color: var(--text2); margin-bottom: 5px; }
+
+/* INPUTS */
+input[type=text], input[type=password], textarea, select {
+  width: 100%; background: var(--surface2); border: 1px solid var(--border); color: var(--text);
+  font-family: inherit; font-size: 13px; padding: 8px 11px; border-radius: var(--radius); outline: none; transition: border-color 0.15s;
+}
+input:focus, textarea:focus, select:focus { border-color: var(--accent); }
+textarea { resize: vertical; min-height: 72px; line-height: 1.5; }
+select { appearance: none; background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='6'%3E%3Cpath d='M0 0l5 6 5-6z' fill='%239090aa'/%3E%3C/svg%3E"); background-repeat: no-repeat; background-position: right 11px center; padding-right: 30px; cursor: pointer; }
+select option { background: #fff; }
+
+/* MODEL TABS */
+.model-tabs { display: flex; gap: 6px; }
+.model-tab { flex: 1; padding: 8px 6px; background: var(--surface2); border: 1px solid var(--border); border-radius: var(--radius); cursor: pointer; text-align: center; transition: all 0.15s; }
+.model-tab:hover { border-color: var(--text3); }
+.model-tab.active { background: var(--accent-light); border-color: var(--accent); }
+.model-name { font-size: 11px; font-weight: 600; color: var(--text); display: block; margin-bottom: 2px; }
+.model-price { font-size: 10px; color: var(--text3); font-family: monospace; }
+.model-tab.active .model-price { color: var(--accent); }
+
+/* RATIO PILLS */
+.ratio-pills { display: flex; gap: 5px; flex-wrap: wrap; }
+.ratio-pill { padding: 5px 11px; background: var(--surface2); border: 1px solid var(--border); border-radius: 20px; font-size: 11px; font-weight: 500; color: var(--text2); cursor: pointer; transition: all 0.15s; white-space: nowrap; }
+.ratio-pill:hover { border-color: var(--text3); }
+.ratio-pill.active { background: var(--accent-light); border-color: var(--accent); color: var(--accent); font-weight: 600; }
+
+/* DROP ZONE */
+.drop-zone { border: 1.5px dashed var(--border); border-radius: var(--radius); padding: 16px; text-align: center; cursor: pointer; transition: all 0.15s; position: relative; overflow: hidden; }
+.drop-zone:hover, .drop-zone.drag-over { border-color: var(--accent); background: var(--accent-light); }
+.drop-zone input[type=file] { position: absolute; inset: 0; opacity: 0; cursor: pointer; width: 100%; height: 100%; }
+.drop-icon { font-size: 20px; display: block; margin-bottom: 4px; opacity: 0.5; }
+.drop-label { font-size: 11px; color: var(--text3); }
+
+.asset-preview { display: flex; align-items: center; gap: 10px; padding: 8px 10px; background: var(--surface2); border: 1px solid var(--border); border-radius: var(--radius); }
+.asset-preview img { width: 36px; height: 36px; object-fit: contain; border-radius: 4px; background: #fff; }
+.asset-name { font-size: 11px; color: var(--text2); flex: 1; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.btn-rm { background: none; border: none; color: var(--text3); cursor: pointer; font-size: 18px; line-height: 1; padding: 0 2px; transition: color 0.15s; }
+.btn-rm:hover { color: var(--error); }
+
+/* FORMATS */
+.formats-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 5px; }
+.format-item { display: flex; align-items: flex-start; gap: 7px; padding: 8px 9px; background: var(--surface2); border: 1px solid var(--border); border-radius: var(--radius); cursor: pointer; transition: all 0.15s; user-select: none; }
+.format-item:hover { border-color: var(--text3); }
+.format-item.checked { background: var(--accent-light); border-color: var(--accent-border); }
+.format-item input[type=checkbox] { width: 13px; height: 13px; margin-top: 1px; accent-color: var(--accent); flex-shrink: 0; cursor: pointer; }
+.format-lbl { font-size: 11px; color: var(--text2); line-height: 1.3; cursor: pointer; font-weight: 500; }
+.format-item.checked .format-lbl { color: var(--text); font-weight: 600; }
+.format-desc { font-size: 10px; color: var(--text3); line-height: 1.3; margin-top: 2px; display: block; }
+.format-text { display: flex; flex-direction: column; }
+.format-hint { font-size: 10px; color: var(--text3); margin-bottom: 8px; }
+
+/* PROMPT PREVIEW */
+.prompt-box { background: var(--surface2); border: 1px solid var(--border); border-radius: var(--radius); padding: 12px; font-size: 11px; line-height: 1.6; color: var(--text2); font-family: monospace; min-height: 72px; white-space: pre-wrap; word-break: break-word; }
+.prompt-empty { color: var(--text3); font-style: italic; font-family: inherit; }
+.prompt-meta { font-size: 10px; color: var(--text3); margin-top: 6px; font-family: monospace; }
+.prompt-format-label { font-size: 10px; color: var(--text3); font-weight: 600; letter-spacing: 0.08em; text-transform: uppercase; margin-bottom: 4px; margin-top: 8px; }
+
+/* GENERATE BTN */
+.btn-gen { width: 100%; padding: 13px; background: var(--accent); color: #fff; border: none; border-radius: var(--radius); font-family: inherit; font-size: 13px; font-weight: 700; letter-spacing: 0.04em; cursor: pointer; transition: all 0.15s; text-transform: uppercase; }
+.btn-gen:hover:not(:disabled) { background: #4c1d95; transform: translateY(-1px); }
+.btn-gen:disabled { background: var(--border); color: var(--text3); cursor: not-allowed; transform: none; }
+.gen-hint { font-size: 11px; color: var(--error); margin-top: 7px; }
+.multi-note { font-size: 10px; color: var(--accent); background: var(--accent-light); border: 1px solid var(--accent-border); border-radius: 4px; padding: 6px 10px; margin-bottom: 10px; }
+
+/* OUTPUT PANEL */
+.out-header { background: var(--surface); border-bottom: 1px solid var(--border); padding: 12px 20px; display: flex; align-items: center; gap: 8px; flex-shrink: 0; }
+.out-title { font-size: 11px; font-weight: 600; letter-spacing: 0.1em; text-transform: uppercase; color: var(--text3); }
+.out-meta { margin-left: auto; font-size: 10px; color: var(--text3); font-family: monospace; }
+.img-tab { padding: 4px 10px; font-size: 10px; background: var(--surface2); border: 1px solid var(--border); border-radius: 4px; color: var(--text3); cursor: pointer; font-family: inherit; font-weight: 500; transition: all 0.15s; }
+.img-tab.active { background: var(--accent-light); border-color: var(--accent-border); color: var(--accent); }
+
+.queue-bar-wrap { background: var(--surface); border-bottom: 1px solid var(--border); padding: 8px 20px; display: flex; align-items: center; gap: 10px; font-size: 11px; color: var(--text2); flex-shrink: 0; }
+.queue-track { flex: 1; height: 2px; background: var(--border); border-radius: 2px; overflow: hidden; }
+.queue-fill { height: 100%; background: var(--accent); border-radius: 2px; transition: width 0.4s ease; }
+
+.out-canvas { flex: 1; display: flex; align-items: center; justify-content: center; padding: 28px; overflow: hidden; background: var(--bg); }
+.placeholder { display: flex; flex-direction: column; align-items: center; gap: 10px; opacity: 0.35; text-align: center; }
+.placeholder-icon { font-size: 40px; }
+.placeholder-text { font-size: 12px; color: var(--text3); line-height: 1.5; }
+.out-img { max-width: 100%; max-height: 100%; object-fit: contain; border-radius: var(--radius); box-shadow: 0 4px 24px rgba(0,0,0,0.1); display: block; }
+
+.spinner-wrap { display: flex; flex-direction: column; align-items: center; gap: 14px; }
+.spinner { width: 32px; height: 32px; border: 2px solid var(--border); border-top-color: var(--accent); border-radius: 50%; animation: spin 0.75s linear infinite; }
+@keyframes spin { to { transform: rotate(360deg); } }
+.spinner-msg { font-size: 12px; color: var(--text2); animation: pulse 2s ease-in-out infinite; }
+@keyframes pulse { 0%,100%{opacity:1}50%{opacity:0.4} }
+
+.out-actions { background: var(--surface); border-top: 1px solid var(--border); padding: 12px 20px; display: flex; gap: 7px; align-items: center; flex-shrink: 0; }
+.btn-act { padding: 7px 14px; background: var(--surface2); border: 1px solid var(--border); color: var(--text2); border-radius: var(--radius); font-family: inherit; font-size: 12px; font-weight: 500; cursor: pointer; transition: all 0.15s; }
+.btn-act:hover:not(:disabled) { border-color: var(--text3); color: var(--text); }
+.btn-act:disabled { opacity: 0.4; cursor: not-allowed; }
+.btn-act.primary { background: var(--accent-light); border-color: var(--accent-border); color: var(--accent); }
+.btn-act.primary:hover:not(:disabled) { background: rgba(91,33,182,0.14); }
+.img-counter { margin-left: auto; font-size: 11px; color: var(--text3); }
+
+.error-box { margin: 14px 20px; background: var(--error-bg); border: 1px solid rgba(220,38,38,0.2); border-radius: var(--radius); padding: 11px 14px; font-size: 12px; color: #b91c1c; line-height: 1.5; flex-shrink: 0; }
+
+/* SAVED GRID */
+.saved-toolbar { padding: 10px 14px; border-bottom: 1px solid var(--border); display: flex; align-items: center; justify-content: space-between; }
+.saved-count { font-size: 11px; color: var(--text3); }
+.saved-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(110px, 1fr)); gap: 7px; padding: 14px; }
+.saved-item { position: relative; aspect-ratio: 1; border-radius: var(--radius); overflow: hidden; background: var(--surface2); border: 1px solid var(--border); }
+.saved-item img { width: 100%; height: 100%; object-fit: cover; display: block; }
+.saved-overlay { position: absolute; inset: 0; background: rgba(0,0,0,0.75); display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 6px; opacity: 0; transition: opacity 0.2s; padding: 8px; }
+.saved-item:hover .saved-overlay { opacity: 1; }
+.saved-overlay-text { font-size: 10px; color: #fff; text-align: center; line-height: 1.3; font-weight: 500; }
+.saved-actions { display: flex; gap: 5px; }
+.btn-saved { background: rgba(255,255,255,0.15); border: 1px solid rgba(255,255,255,0.25); border-radius: 4px; color: #fff; font-size: 10px; padding: 3px 7px; cursor: pointer; transition: all 0.15s; }
+.btn-saved:hover { background: rgba(255,255,255,0.3); }
+.saved-empty { padding: 36px 16px; text-align: center; color: var(--text3); font-size: 12px; line-height: 1.6; }
+
+.key-hint { font-size: 10px; color: var(--text3); margin-top: 5px; font-family: monospace; }
+.token-row { display: flex; align-items: center; gap: 6px; padding: 7px 10px; background: var(--surface2); border: 1px solid var(--border); border-radius: var(--radius); margin-top: 7px; }
+.token-dot { width: 6px; height: 6px; border-radius: 50%; background: var(--text3); }
+.token-dot.valid { background: var(--success); }
+.token-text { font-size: 11px; color: var(--text3); font-family: monospace; }
 </style>
 </head>
 <body>
-
 <div class="app">
-
-  <header>
-    <div class="logo">
-      <span class="logo-title">Visual Prompt Director</span>
-      <span class="logo-sub">pb style system · v1.0</span>
-    </div>
-    <div class="header-right">
-      <div class="status-dot"></div>
-      <span class="status-label">Ready</span>
+  <header class="app-header">
+    <span class="logo">FAL ADV</span>
+    <span class="app-title">Studio</span>
+    <div class="key-status">
+      <div class="dot" id="keyDot"></div>
+      <span id="keyLabel">No API Key</span>
     </div>
   </header>
 
-  <aside>
-
-    <div class="sidebar-section">
-      <span class="sidebar-label">DeepSeek API Key</span>
-      <div class="api-key-row">
-        <input type="password" id="deepseekApiKey" placeholder="sk-…" autocomplete="off" />
+  <div class="body">
+    <!-- SIDEBAR -->
+    <aside class="sidebar">
+      <div class="tab-bar">
+        <button class="tab-btn active" data-tab="config">Config</button>
+        <button class="tab-btn" data-tab="brief">Brief</button>
+        <button class="tab-btn" data-tab="saved">Saved<span class="badge" id="savedBadge" style="display:none">0</span></button>
       </div>
-    </div>
 
-    <div class="divider"></div>
-
-    <div class="sidebar-section">
-      <span class="sidebar-label">fal.ai API Key</span>
-      <div class="api-key-row">
-        <input type="password" id="falApiKey" placeholder="fal_key_…" autocomplete="off" />
-      </div>
-    </div>
-
-    <div class="divider"></div>
-
-    <div class="sidebar-section">
-      <span class="sidebar-label">fal.ai Model</span>
-      <div class="ratio-group" id="falModelGroup">
-        <div class="ratio-btn active" data-model="fal-ai/flux-pro" title="~$0.05/img — ADV, massima qualità">flux-pro</div>
-        <div class="ratio-btn" data-model="fal-ai/flux/dev" title="~$0.025/img — iterazioni, test">flux-dev</div>
-        <div class="ratio-btn" data-model="fal-ai/nano-banana-2" title="~$0.08/img — testo in immagine, social">nano-banana</div>
-      </div>
-    </div>
-
-    <div class="divider"></div>
-
-    <div class="sidebar-section">
-      <span class="sidebar-label">Style Preset</span>
-      <div class="style-grid" id="styleGrid">
-        <div class="style-card active" data-style="pbcinema"><div class="style-name">pbcinema</div><div class="style-desc">Cinematic ADV. Key light warm, fill cool. Teal shadows, golden highlights.</div></div>
-        <div class="style-card" data-style="pbcinema2"><div class="style-name">pbcinema2</div><div class="style-desc">Theatrical. Specific lenses, architectural geometry, hyperreal texture.</div></div>
-        <div class="style-card" data-style="pbmovie3"><div class="style-name">pbmovie3</div><div class="style-desc">Clean, bright, empathetic. Natural light, neutral-cool temperature.</div></div>
-        <div class="style-card" data-style="pbcinema4"><div class="style-name">pbcinema4</div><div class="style-desc">Kids & family ADV. Bright, peachy skin, fairytale serene mood.</div></div>
-        <div class="style-card" data-style="pbadv"><div class="style-name">pbadv</div><div class="style-desc">Vertical social ADV. Instagram format, symmetric, minimal background.</div></div>
-        <div class="style-card" data-style="pbcinematik"><div class="style-name">pbcinematik</div><div class="style-desc">Perceptual depth. Rim light, cyan oval glow. Hyperreal skin texture.</div></div>
-        <div class="style-card" data-style="experimental"><div class="style-name">experimental</div><div class="style-desc">Critical mix of all styles. Creative freedom, photographic credibility.</div></div>
-        <div class="style-card" data-style="pbglobal"><div class="style-name">pbglobal</div><div class="style-desc">Country signature ADV. Hyper-realistic subject + product + background. Editorial advertising hybrid.</div></div>
-        <div class="style-card" data-style="pbpop"><div class="style-name">pbpop</div><div class="style-desc">Fun studio ADV. Solid color bg, diffused rim halo, hyperreal subject in foreground. Bold and punchy.</div></div>
-      </div>
-    </div>
-
-    <div class="divider"></div>
-
-    <div class="sidebar-section">
-      <span class="sidebar-label">Aspect Ratio</span>
-      <div class="ratio-group" id="ratioGroup">
-        <div class="ratio-btn active" data-ratio="16:9">16:9</div>
-        <div class="ratio-btn" data-ratio="4:5">4:5</div>
-        <div class="ratio-btn" data-ratio="9:16">9:16</div>
-        <div class="ratio-btn" data-ratio="2.39:1">2.39:1</div>
-        <div class="ratio-btn" data-ratio="1:1">1:1</div>
-        <div class="ratio-btn" data-ratio="4:3">4:3</div>
-      </div>
-    </div>
-
-    <div class="divider"></div>
-
-    <div class="sidebar-section">
-      <span class="sidebar-label">Parameters</span>
-      <div class="slider-group">
-        <div class="slider-row">
-          <div class="slider-header"><span class="slider-name">--stylize</span><span class="slider-val" id="stylizeVal">600</span></div>
-          <input type="range" id="stylizeSlider" min="0" max="1000" step="50" value="600">
+      <!-- CONFIG TAB -->
+      <div class="tab-panel active" id="tab-config">
+        <div class="section">
+          <div class="section-label">API Key</div>
+          <div class="field">
+            <label class="lbl">FAL API Key</label>
+            <input type="password" id="falKey" placeholder="fal-xxxxxxxxxxxxxxxx" autocomplete="off" />
+            <div class="token-row">
+              <div class="token-dot" id="tokenDot"></div>
+              <span class="token-text" id="tokenText">No key set</span>
+            </div>
+            <div class="key-hint">Saved in localStorage · never logged to console</div>
+          </div>
         </div>
-        <div class="slider-row">
-          <div class="slider-header"><span class="slider-name">--chaos</span><span class="slider-val" id="chaosVal">0</span></div>
-          <input type="range" id="chaosSlider" min="0" max="100" step="5" value="0">
+
+        <div class="section">
+          <div class="section-label">Model</div>
+          <div class="model-tabs" id="modelTabs" style="flex-wrap:wrap;">
+            <div class="model-tab active" data-model="fal-ai/flux-pro">
+              <span class="model-name">Flux Pro</span>
+              <span class="model-price">$0.05 / img</span>
+            </div>
+            <div class="model-tab" data-model="fal-ai/flux-dev">
+              <span class="model-name">Flux Dev</span>
+              <span class="model-price">$0.025 / img</span>
+            </div>
+            <div class="model-tab" data-model="fal-ai/nano-banana-2">
+              <span class="model-name">Nano Banana</span>
+              <span class="model-price">$0.08 / img</span>
+            </div>
+            <div class="model-tab" data-model="fal-ai/gpt-image-2">
+              <span class="model-name">GPT Image 2</span>
+              <span class="model-price">$0.05–0.21 / img</span>
+            </div>
+          </div>
+          <div id="gptQualityRow" style="display:none;margin-top:8px;">
+            <label class="lbl">Quality (GPT Image 2)</label>
+            <select id="gptQuality">
+              <option value="medium">Medium</option>
+              <option value="low">Low (cheaper)</option>
+              <option value="high">High (best, costoso)</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="section">
+          <div class="section-label">Aspect Ratio</div>
+          <div class="ratio-pills" id="ratioPills">
+            <div class="ratio-pill active" data-ratio="4:5" data-w="1024" data-h="1280">4:5 <small>Post</small></div>
+            <div class="ratio-pill" data-ratio="9:16" data-w="768" data-h="1368">9:16 <small>Story</small></div>
+            <div class="ratio-pill" data-ratio="1:1" data-w="1024" data-h="1024">1:1</div>
+            <div class="ratio-pill" data-ratio="16:9" data-w="1368" data-h="768">16:9 <small>YT</small></div>
+            <div class="ratio-pill" data-ratio="3:2" data-w="1280" data-h="853">3:2</div>
+          </div>
+        </div>
+
+        <div class="section">
+          <div class="section-label">Assets</div>
+          <div class="field">
+            <label class="lbl">Logo (PNG / SVG)</label>
+            <div id="logoZone" class="drop-zone">
+              <input type="file" accept=".png,.svg,.jpg,.jpeg" id="logoInput" />
+              <span class="drop-icon">⊕</span>
+              <div class="drop-label">Logo file · Drag & drop or click</div>
+            </div>
+          </div>
+          <div class="field">
+            <label class="lbl">Product Image (JPG / PNG)</label>
+            <div id="productZone" class="drop-zone">
+              <input type="file" accept=".jpg,.jpeg,.png,.webp" id="productInput" />
+              <span class="drop-icon">⊕</span>
+              <div class="drop-label">Product photo · Drag & drop or click</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="section" id="promptPreviewConfig"></div>
+        <div class="section" id="generateSectionConfig"></div>
+      </div>
+
+      <!-- BRIEF TAB -->
+      <div class="tab-panel" id="tab-brief">
+        <div class="section">
+          <div class="section-label">Brand & Product</div>
+          <div class="field"><label class="lbl">Brand Name</label><input type="text" id="brandName" placeholder="e.g. NORDA" /></div>
+          <div class="field"><label class="lbl">Product Name</label><input type="text" id="productName" placeholder="e.g. Trail Runner 001" /></div>
+          <div class="field"><label class="lbl">Payoff / Claim</label><input type="text" id="payoff" placeholder="e.g. Run beyond limits" /></div>
+          <div class="field"><label class="lbl">Target Audience</label><input type="text" id="target" placeholder="e.g. trail runners 25-45" /></div>
+        </div>
+        <div class="section">
+          <div class="section-label">Tone</div>
+          <div class="field">
+            <select id="tone">
+              <option value="premium">Premium / Luxury</option>
+              <option value="friendly">Friendly / Warm</option>
+              <option value="bold">Bold / Energetic</option>
+              <option value="minimal">Minimal / Clean</option>
+              <option value="authentic">Authentic / Raw</option>
+            </select>
+          </div>
+        </div>
+        <div class="section">
+          <div class="section-label">Notes</div>
+          <div class="field"><textarea id="notes" placeholder="Brand colors, mood, elements to avoid, specific props..."></textarea></div>
+        </div>
+        <div class="section">
+          <div class="section-label">Ad Format</div>
+          <div class="format-hint">Select one or more (each = one image)</div>
+          <div class="formats-grid" id="formatsGrid"></div>
+        </div>
+        <div class="section" id="promptPreviewBrief"></div>
+        <div class="section" id="generateSectionBrief"></div>
+      </div>
+
+      <!-- SAVED TAB -->
+      <div class="tab-panel" id="tab-saved">
+        <div class="saved-toolbar">
+          <span class="saved-count" id="savedCount">0 images</span>
+          <button class="btn-act" id="btnDownloadAll" style="padding:5px 10px;font-size:11px;">↓ ZIP All</button>
+        </div>
+        <div id="savedGrid" class="saved-grid"></div>
+        <div class="saved-empty" id="savedEmpty">No images saved yet.<br>Generate an image and click "Save".</div>
+      </div>
+    </aside>
+
+    <!-- OUTPUT -->
+    <main class="output">
+      <div class="out-header">
+        <span class="out-title">Output</span>
+        <div id="imgTabs" style="display:flex;gap:5px;"></div>
+        <span class="out-meta" id="outMeta"></span>
+      </div>
+      <div id="queueBarWrap" class="queue-bar-wrap" style="display:none">
+        <span id="queueMsg">Generating...</span>
+        <div class="queue-track"><div class="queue-fill" id="queueFill" style="width:0%"></div></div>
+        <span id="queuePct">0%</span>
+      </div>
+      <div id="errorBox" class="error-box" style="display:none"></div>
+      <div class="out-canvas" id="outCanvas">
+        <div class="placeholder">
+          <div class="placeholder-icon">⬡</div>
+          <div class="placeholder-text">Configure brief and hit Generate<br><small>FAL.ai · Professional Ad Production</small></div>
         </div>
       </div>
-    </div>
-
-    <div class="divider"></div>
-
-    <div class="sidebar-section">
-      <span class="sidebar-label">Flags</span>
-      <div class="toggle-group">
-        <div class="toggle-row"><span class="toggle-name">--raw</span><div class="toggle on" id="toggleRaw"></div></div>
-        <div class="toggle-row"><span class="toggle-name">--p (personalization)</span><div class="toggle on" id="toggleP"></div></div>
-        <div class="toggle-row"><span class="toggle-name">generate image via fal.ai</span><div class="toggle" id="toggleFal"></div></div>
+      <div class="out-actions">
+        <button class="btn-act primary" id="btnDownload" disabled>↓ Download</button>
+        <button class="btn-act" id="btnSave" disabled>⊕ Save</button>
+        <button class="btn-act" id="btnRegen" disabled>↻ Rigenera</button>
+        <span class="img-counter" id="imgCounter"></span>
       </div>
-    </div>
-
-  </aside>
-
-  <main>
-
-    <div class="brief-section">
-      <div class="brief-header">
-        <span class="brief-label">Visual Brief</span>
-        <div class="brief-actions"><button class="btn-icon" id="clearBtn" title="Clear">✕</button></div>
-      </div>
-      <textarea id="briefInput" placeholder="Describe the subject, mood, context. E.g.: young woman in a coffee shop, morning light, warm intimate feeling, lifestyle brand…"></textarea>
-    </div>
-
-    <div class="tab-bar">
-      <div class="tab active" data-tab="prompt">Prompt Output</div>
-      <div class="tab" data-tab="image">Image Result</div>
-      <div class="tab" data-tab="history">History</div>
-    </div>
-
-    <div class="output-section">
-      <div class="tab-content active" id="tabPrompt">
-        <div class="empty-state" id="emptyState"><div class="empty-glyph">pb</div><div class="empty-title">Write a brief, select a style</div><div class="empty-sub">then generate</div></div>
-        <div id="promptOutput" style="display:none"></div>
-      </div>
-      <div class="tab-content" id="tabImage">
-        <div class="empty-state" id="imageEmpty"><div class="empty-glyph">◎</div><div class="empty-title" id="imageEmptyTitle">Enable fal.ai generation</div><div class="empty-sub" id="imageEmptySub">toggle in sidebar + add api key</div></div>
-        <div id="imageOutput" style="display:none"></div>
-      </div>
-      <div class="tab-content" id="tabHistory">
-        <div class="empty-state" id="historyEmpty"><div class="empty-glyph">≡</div><div class="empty-title">No history yet</div><div class="empty-sub">generated prompts will appear here</div></div>
-        <div id="historyList" style="display:none"></div>
-      </div>
-    </div>
-
-    <div class="generate-bar">
-      <div class="generate-info" id="generateInfo">Select a style and write a brief</div>
-      <button class="btn btn-ghost" id="promptOnlyBtn">Prompt only</button>
-      <button class="btn btn-ghost" id="imageDirectBtn" disabled title="Send your prompt directly to fal.ai — no DeepSeek">→ Image</button>
-      <button class="btn btn-primary" id="generateBtn" disabled>Generate</button>
-    </div>
-
-  </main>
-
+    </main>
+  </div>
 </div>
 
-<div id="toastContainer"></div>
-
 <script>
-const RATIO_DIMS = {
-  '16:9':   { width: 1344, height: 768 },
-  '4:5':    { width: 768,  height: 960 },
-  '9:16':   { width: 768,  height: 1344 },
-  '2.39:1': { width: 1344, height: 562 },
-  '1:1':    { width: 1024, height: 1024 },
-  '4:3':    { width: 1024, height: 768 }
+const FORMATS = [
+  { id:'headline', label:'Headline Ad', desc:'Bold headline sopra prodotto o lifestyle', snippet:'bold advertising headline text prominently overlaid on product, strong typographic layout, high contrast' },
+  { id:'testimonial', label:'Testimonial Ad', desc:'Quote cliente con 5 stelle, social proof visivo', snippet:'customer testimonial layout, quote card with 5 gold stars, social proof visual, clean editorial design' },
+  { id:'features', label:'Feature Benefits', desc:'3 benefici chiave attorno al prodotto', snippet:'three key product benefits displayed around the product, icon badges, feature highlight advertising layout' },
+  { id:'beforeafter', label:'Before/After', desc:'Split-screen problema vs soluzione', snippet:'split-screen composition, left side showing problem or pain point, right side showing product as solution' },
+  { id:'vsthem', label:'Us vs Them', desc:'Confronto side-by-side vs competitor', snippet:'side-by-side comparison layout, checklist format showing advantages over competitor, clean infographic style' },
+  { id:'socialproof', label:'Social Proof Stats', desc:'Un numero grande e impressionante come hero', snippet:'single large hero statistic, bold oversized number, data-driven minimal advertising, clean background' },
+  { id:'lifestyle', label:'Lifestyle', desc:'Prodotto in contesto quotidiano naturale', snippet:'product integrated in natural everyday lifestyle scene, candid authentic moment, real environment' },
+  { id:'minimalist', label:'Minimalist', desc:'Clean Apple-style, singolo prodotto su sfondo puro', snippet:'ultra-clean minimalist product photography, Apple-style composition, pure background, luxury negative space' },
+  { id:'problemagit', label:'Problem Agitation', desc:'Pain point chiamato out, prodotto come soluzione', snippet:'pain point visually represented with frustration, product shown as immediate relief and solution' },
+  { id:'ugc', label:'UGC Style', desc:'Estetica raw iPhone, autentico e non patinato', snippet:'raw authentic user-generated content aesthetic, iPhone handheld feel, organic unpolished natural look' },
+  { id:'howitworks', label:'How It Works', desc:'3 step visivi che spiegano il processo', snippet:'three-step visual process diagram, numbered steps with icons, clean instructional advertising layout, clear flow from left to right' },
+  { id:'expert', label:'Expert Endorsement', desc:'Figura autorevole con credenziale visibile', snippet:'expert authority figure endorsement, professional credential badge visible, trust-building editorial portrait composition' },
+  { id:'priceanchor', label:'Price Anchor', desc:'Prezzo barrato + nuovo prezzo, valore percepito', snippet:'price comparison layout, original price crossed out, new price prominently displayed, value proposition focus, deal-highlight design' },
+  { id:'aspirational', label:'Aspirational Outcome', desc:'Chi diventi usando il prodotto, non il prodotto', snippet:'aspirational lifestyle outcome, transformed person in aspirational environment, emotional benefit visualization, aspirational identity advertising' },
+  { id:'limitededition', label:'Limited Edition', desc:'Visual scarsità, numerazione, packaging speciale', snippet:'limited edition scarcity visual, numbered edition badge, exclusive packaging detail shot, collectible premium aesthetic, urgency composition' },
+];
+
+const TONE_SNIPPETS = {
+  premium: 'luxury premium aesthetic, sophisticated lighting, high-end refined color palette',
+  friendly: 'warm friendly mood, approachable composition, soft natural colors, human connection',
+  bold: 'bold energetic composition, high contrast, dynamic angles, strong graphic impact',
+  minimal: 'ultra clean minimalist, generous white space, calm restrained palette',
+  authentic: 'authentic raw aesthetic, real unposed feel, natural available light, no studio look',
 };
 
-function buildFalBody(model, prompt, dims) {
-  const base = { prompt, image_size: { width: dims.width, height: dims.height }, num_images: 1 };
-  if (model.includes('flux')) {
-    return { ...base, num_inference_steps: 28, guidance_scale: 3.5, safety_tolerance: 2 };
-  }
-  return base;
-}
+const RATIOS = { '4:5':{w:1024,h:1280},'9:16':{w:768,h:1368},'1:1':{w:1024,h:1024},'16:9':{w:1368,h:768},'3:2':{w:1280,h:853} };
 
-const HISTORY_KEY = 'pb_history_v1';
-const HISTORY_MAX = 50;
-
+// STATE
 const state = {
-  style: 'pbcinema', ratio: '16:9', stylize: 600, chaos: 0,
-  raw: true, personalization: true, falEnabled: false, falModel: 'fal-ai/flux-pro', generating: false,
-  history: JSON.parse(localStorage.getItem(HISTORY_KEY) || '[]')
+  falKey: '',
+  model: 'fal-ai/flux-pro',
+  ratio: '4:5',
+  logo: null,
+  product: null,
+  brandName: '', productName: '', payoff: '', target: '', tone: 'premium', notes: '',
+  formats: [],
+  outputImages: [],
+  currentIdx: 0,
+  savedImages: [],
+  loading: false,
+  lastPrompts: [],
 };
 
-const styles = {
-  pbcinema: { name: 'pbcinema', defaultRatio: '16:9', defaultStylize: 600, build: (brief, params) => ({ prompt: `${brief}, hyperrealistic cinematic photography, central symmetric composition with clear foreground midground background separation, warm key light source with cool fill light, teal blue shadows and golden highlights color grading, peachy warm skin tones, subtle dodge and burn modeling, fine 35mm analog film grain, professional advertising photography, ultra detailed surface textures`, params: buildParams(params), rationale: 'Cinematic advertising look. The warm/cool split and teal-gold grading give it the commercial depth typical of high-end brand campaigns.' }) },
-  pbcinema2: { name: 'pbcinema2', defaultRatio: '2.39:1', defaultStylize: 650, build: (brief, params) => ({ prompt: `${brief}, shot on 65mm T2.0 anamorphic, theatrical cinematic photography, strong central symmetry with marked architectural geometry, warm key light with cool fill, advanced dodge and burn skin modeling, teal blue shadows with golden highlight transitions, soft contrast with hyperrealistic texture detail, cinematic analog film grain`, params: buildParams(params), rationale: 'Theatrical evolution. The anamorphic lens choice and architectural geometry add a cinematic gravitas that feels premium and editorial.' }) },
-  pbmovie3: { name: 'pbmovie3', defaultRatio: '16:9', defaultStylize: 500, build: (brief, params) => ({ prompt: `${brief}, clean cinematic photography with bright natural or believable simulated lighting, neutral to cool color temperature avoiding warm yellow cast, soft gradient transitions, subtle blue shadow accent, low soft contrast, clear natural skin tones without yellow shift, defined textures without harsh rendering, editorial advertising quality, empathetic composed mood`, params: buildParams(params), rationale: 'Bright and empathetic. Works well for lifestyle, wellness, and human-centered campaigns where warmth comes from the subject, not the color grade.' }) },
-  pbcinema4: { name: 'pbcinema4 (kids ADV)', defaultRatio: '4:5', defaultStylize: 500, build: (brief, params) => ({ prompt: `${brief}, very bright family advertising photography with balanced neutral to cool lighting, subtle golden light accents without heavy warmth, luminous peachy pink skin tones explicitly no yellow cast, soft teal touched shadow transitions, clear bright highlight rendering, marked depth of field composition with foreground subject and narrative supporting objects, empathetic fairytale serene mood, child friendly premium accessible aesthetic`, params: buildParams({ ...params, ratio: '4:5' }), rationale: 'Optimized for kids and family campaigns. The luminous quality and soft fairytale mood create trust and warmth without feeling cheap or saccharine.' }) },
-  pbadv: { name: 'pbadv', defaultRatio: '4:5', defaultStylize: 500, build: (brief, params) => ({ prompt: `${brief}, clean vertical social media advertising photography, strong central symmetric subject placement, minimal blurred background with controlled depth, natural neutral cool lighting without color dominance, soft bluish shadow detail, controlled natural color palette, empathetic serene premium accessible mood, optimized for Instagram advertising format`, params: buildParams({ ...params, ratio: params.ratio === '9:16' ? '9:16' : '4:5' }), rationale: 'Built for Instagram and social ADV. The vertical format and minimal background keep focus on the subject across all feed placements.' }) },
-  pbcinematik: { name: 'pbcinematik', defaultRatio: '16:9', defaultStylize: 650, build: (brief, params) => ({ prompt: `${brief}, cinematic photography with strong perceptual depth emphasis, very subtle lateral rim light at low intensity, soft semi-transparent cyan horizontal oval gradient glow positioned behind and slightly above subject head not perfectly centered, no extreme contrast or heavy shadows, hyperrealistic skin texture with clearly visible pores and real cutaneous detail, absolutely no skin smoothing no airbrushing no plastic effect, deep silent cinematic mood with believable photographic credibility`, params: buildParams(params), rationale: 'The signature cyan glow and hyperreal skin texture create a distinctive visual depth. Strong for portrait-driven campaigns where the face is the product.' }) },
-  experimental: { name: 'experimental', defaultRatio: '16:9', defaultStylize: 800, build: (brief, params) => ({ prompt: `${brief}, experimental cinematic photography blending warm key light with cool cinematic fill, perceptual depth with subtle rim definition, soft teal shadow gradient with restrained golden highlight, hyperrealistic texture rendering without skin smoothing, unconventional composition that breaks symmetric convention while maintaining photographic credibility, editorial advertising mood with unexpected spatial tension`, params: buildParams({ ...params, raw: false }), rationale: 'Critical mix of all pb styles. No --raw flag here to let V8 interpret more freely. Best for creative exploration before locking a campaign direction.' }) },
-  pbpop: { name: 'pbpop (fun studio ADV)', defaultRatio: '4:5', defaultStylize: 550, build: (brief, params) => ({ prompt: `${brief}, hyperrealistic commercial advertising photography, subject in close foreground with extreme detail — visible skin texture pores hair strands material micro-details, confident playful expressive energy, bold punchy fun advertising mood, background is a single flat solid color fill completely uniform no gradient no texture no pattern just pure matte color, wide diffused rim backlight halo behind subject creating clean luminous separation from background, soft wrap light on subject face for flatness, studio setup feel with sharp product-level detail on subject, contemporary bold ADV aesthetic, no environmental context no props no distracting elements, color of background is vivid or pastel but always solid, subject fills the frame dominantly`, params: buildParams({ ...params, ratio: params.ratio === '9:16' ? '9:16' : '4:5' }), rationale: 'Studio ADV with pure solid-color background and diffused rim halo. The flat bg + luminous separation creates instant shelf impact. Best for product launches, social campaigns, and anything that needs to pop at thumb size.' }) },
-  pbglobal: { name: 'pbglobal (country signature)', defaultRatio: '4:5', defaultStylize: 600, build: (brief, params) => ({ prompt: `${brief}, single advertising photography panel, hyper-realistic commercial photography, young adult from the represented country with realistic regionally coherent physical traits non-caricatured no exaggerated stereotypes subtle ethnic and cultural cues in skin tone facial structure and hair type, neutral confident slightly cinematic expression, minimal authentic contemporary clothing, subject holds iconic country product toward camera in strong foreground dominance, product is photorealistic with clean minimal label slightly premium positioning, background is an environment tied to country identity with shallow depth of field integrated naturally not postcard-like, bold country name uppercase large at top of frame, product name smaller clean sans-serif below, typography modern slightly condensed high readability matte finish, natural directional light soft cinematic contrast consistent across frame slight rim light for subject separation no overexposed highlights, 35mm or 50mm lens feel slight low angle strong foreground hand and product shallow depth of field, micro textures visible on skin materials and product surfaces realistic imperfections controlled color grading, ultra high resolution editorial advertising hybrid, no AI artifacts no plastic skin no over-saturation no fake reflections no cultural stereotypes exaggerated no cartoonish elements no inconsistent lighting no messy typography`, params: buildParams({ ...params, ratio: '4:5' }), rationale: 'Built for country signature campaigns. Each image works as a standalone advertising poster: credible diversity, premium product, integrated environment. Avoid passing ratio other than 4:5 or 9:16 for best composition.' }) }
-};
+// Load from localStorage
+try { state.falKey = localStorage.getItem('fal_adv_key') || ''; } catch(e){}
 
-function buildParams({ ratio, stylize, chaos, raw, personalization }) {
-  let p = `--ar ${ratio} --s ${stylize}`;
-  if (raw) p += ' --raw';
-  if (personalization) p += ' --p';
-  if (chaos > 0) p += ` --chaos ${chaos}`;
-  p += ' --v 8';
-  return p;
+// INIT
+function init() {
+  // FAL key
+  const keyEl = document.getElementById('falKey');
+  keyEl.value = state.falKey;
+  keyEl.addEventListener('input', e => {
+    state.falKey = e.target.value;
+    try { localStorage.setItem('fal_adv_key', state.falKey); } catch(err){}
+    updateKeyStatus();
+    renderPromptPreviews();
+    updateGenButtons();
+  });
+  updateKeyStatus();
+
+  // Model tabs
+  document.getElementById('modelTabs').addEventListener('click', e => {
+    const tab = e.target.closest('[data-model]');
+    if (!tab) return;
+    state.model = tab.dataset.model;
+    document.querySelectorAll('.model-tab').forEach(t => t.classList.toggle('active', t.dataset.model === state.model));
+    const gptRow = document.getElementById('gptQualityRow');
+    if (gptRow) gptRow.style.display = state.model === 'fal-ai/gpt-image-2' ? '' : 'none';
+    renderPromptPreviews();
+  });
+
+  // Ratio pills
+  document.getElementById('ratioPills').addEventListener('click', e => {
+    const pill = e.target.closest('[data-ratio]');
+    if (!pill) return;
+    state.ratio = pill.dataset.ratio;
+    document.querySelectorAll('.ratio-pill').forEach(p => p.classList.toggle('active', p.dataset.ratio === state.ratio));
+    renderPromptPreviews();
+    updateOutMeta();
+  });
+
+  // Drop zones
+  setupDropZone('logoZone', 'logoInput', 'logo');
+  setupDropZone('productZone', 'productInput', 'product');
+
+  // Brief inputs
+  ['brandName','productName','payoff','target','notes'].forEach(id => {
+    document.getElementById(id).addEventListener('input', e => {
+      state[id] = e.target.value;
+      renderPromptPreviews();
+    });
+  });
+  document.getElementById('tone').addEventListener('change', e => {
+    state.tone = e.target.value;
+    renderPromptPreviews();
+  });
+
+  // Formats grid
+  const grid = document.getElementById('formatsGrid');
+  FORMATS.forEach(f => {
+    const item = document.createElement('label');
+    item.className = 'format-item';
+    item.innerHTML = `<input type="checkbox" value="${f.id}" /><span class="format-text"><span class="format-lbl">${f.label}</span>${f.desc ? `<span class="format-desc">${f.desc}</span>` : ''}</span>`;
+    item.querySelector('input').addEventListener('change', e => {
+      if (e.target.checked) state.formats.push(f.id);
+      else state.formats = state.formats.filter(x => x !== f.id);
+      item.classList.toggle('checked', e.target.checked);
+      renderPromptPreviews();
+      updateGenButtons();
+    });
+    grid.appendChild(item);
+  });
+
+  // Tab switching
+  document.querySelectorAll('.tab-btn').forEach(btn => {
+    btn.addEventListener('click', () => {
+      const tab = btn.dataset.tab;
+      document.querySelectorAll('.tab-btn').forEach(b => b.classList.toggle('active', b.dataset.tab === tab));
+      document.querySelectorAll('.tab-panel').forEach(p => p.classList.toggle('active', p.id === 'tab-' + tab));
+    });
+  });
+
+  // Action buttons
+  document.getElementById('btnDownload').addEventListener('click', handleDownload);
+  document.getElementById('btnSave').addEventListener('click', handleSave);
+  document.getElementById('btnRegen').addEventListener('click', handleRegen);
+  document.getElementById('btnDownloadAll').addEventListener('click', handleDownloadAll);
+
+  // Render generate sections in both tabs
+  renderGenerateSections();
+  renderPromptPreviews();
 }
 
-const els = {
-  briefInput: document.getElementById('briefInput'),
-  generateBtn: document.getElementById('generateBtn'),
-  promptOnlyBtn: document.getElementById('promptOnlyBtn'),
-  imageDirectBtn: document.getElementById('imageDirectBtn'),
-  clearBtn: document.getElementById('clearBtn'),
-  emptyState: document.getElementById('emptyState'),
-  promptOutput: document.getElementById('promptOutput'),
-  imageOutput: document.getElementById('imageOutput'),
-  historyList: document.getElementById('historyList'),
-  historyEmpty: document.getElementById('historyEmpty'),
-  generateInfo: document.getElementById('generateInfo'),
-  stylizeSlider: document.getElementById('stylizeSlider'),
-  stylizeVal: document.getElementById('stylizeVal'),
-  chaosSlider: document.getElementById('chaosSlider'),
-  chaosVal: document.getElementById('chaosVal'),
-  toggleRaw: document.getElementById('toggleRaw'),
-  toggleP: document.getElementById('toggleP'),
-  toggleFal: document.getElementById('toggleFal'),
-  falApiKey: document.getElementById('falApiKey'),
-  deepseekApiKey: document.getElementById('deepseekApiKey'),
-  imageEmpty: document.getElementById('imageEmpty'),
-  imageEmptyTitle: document.getElementById('imageEmptyTitle'),
-  imageEmptySub: document.getElementById('imageEmptySub'),
-  toastContainer: document.getElementById('toastContainer'),
-};
+function updateKeyStatus() {
+  const valid = state.falKey.length > 10;
+  document.getElementById('keyDot').classList.toggle('on', valid);
+  document.getElementById('keyLabel').textContent = valid ? `Key Connected` : 'No API Key';
+  document.getElementById('tokenDot').classList.toggle('valid', valid);
+  document.getElementById('tokenText').textContent = valid ? `Key set (${state.falKey.length} chars)` : 'No key set';
+}
 
-function updateImageEmptyState() {
-  const hasKey = !!els.falApiKey.value.trim();
-  if (state.falEnabled && hasKey) {
-    els.imageEmptyTitle.textContent = 'Ready to generate';
-    els.imageEmptySub.textContent = 'press generate to send to fal.ai';
-  } else if (state.falEnabled && !hasKey) {
-    els.imageEmptyTitle.textContent = 'Add your fal.ai API key';
-    els.imageEmptySub.textContent = 'paste it in the sidebar';
+function setupDropZone(zoneId, inputId, assetKey) {
+  const zone = document.getElementById(zoneId);
+  const input = document.getElementById(inputId);
+
+  const renderPreview = () => {
+    const asset = state[assetKey];
+    if (asset) {
+      zone.innerHTML = `
+        <div class="asset-preview">
+          <img src="${asset.data}" alt="${asset.name}" />
+          <span class="asset-name">${asset.name}</span>
+          <button class="btn-rm" data-rm="${assetKey}">×</button>
+        </div>`;
+      zone.querySelector('[data-rm]').addEventListener('click', e => {
+        e.stopPropagation();
+        state[assetKey] = null;
+        rebuildDropZone(zoneId, inputId, assetKey);
+        renderPromptPreviews();
+      });
+    }
+  };
+
+  const handleFile = async file => {
+    const reader = new FileReader();
+    reader.onload = e => {
+      state[assetKey] = { data: e.target.result, name: file.name };
+      renderPreview();
+      renderPromptPreviews();
+    };
+    reader.readAsDataURL(file);
+  };
+
+  input.addEventListener('change', e => { if(e.target.files[0]) handleFile(e.target.files[0]); });
+  zone.addEventListener('dragover', e => { e.preventDefault(); zone.classList.add('drag-over'); });
+  zone.addEventListener('dragleave', () => zone.classList.remove('drag-over'));
+  zone.addEventListener('drop', e => {
+    e.preventDefault(); zone.classList.remove('drag-over');
+    if(e.dataTransfer.files[0]) handleFile(e.dataTransfer.files[0]);
+  });
+}
+
+function rebuildDropZone(zoneId, inputId, assetKey) {
+  const zone = document.getElementById(zoneId);
+  const labels = { logo:'Logo file', product:'Product photo' };
+  zone.innerHTML = `<input type="file" accept="${assetKey==='logo'?'.png,.svg,.jpg,.jpeg':'.jpg,.jpeg,.png,.webp'}" id="${inputId}" /><span class="drop-icon">⊕</span><div class="drop-label">${labels[assetKey]} · Drag & drop or click</div>`;
+  setupDropZone(zoneId, inputId, assetKey);
+}
+
+function buildPrompt(fid) {
+  const f = FORMATS.find(x => x.id === fid);
+  const parts = [];
+  if (state.brandName) parts.push(`${state.brandName} brand advertisement`);
+  if (state.productName) parts.push(`featuring ${state.productName}`);
+  if (state.payoff) parts.push(`with tagline "${state.payoff}"`);
+  if (state.target) parts.push(`targeting ${state.target}`);
+  if (f) parts.push(f.snippet);
+  const tone = TONE_SNIPPETS[state.tone];
+  if (tone) parts.push(tone);
+  if (state.notes) parts.push(state.notes);
+  const noImageRef = state.model === 'fal-ai/nano-banana-2' || state.model === 'fal-ai/gpt-image-2';
+  if (state.product && !noImageRef) parts.push('featuring the product from the provided reference image');
+  parts.push('professional advertising photography, high-end commercial quality, print-ready');
+  return parts.join(', ');
+}
+
+function renderPromptPreviews() {
+  ['Config','Brief'].forEach(suffix => {
+    const el = document.getElementById('promptPreview' + suffix);
+    if (!el) return;
+    if (state.formats.length === 0) {
+      el.innerHTML = `<div class="section-label">Prompt Preview</div><div class="prompt-box"><span class="prompt-empty">Select at least one format to see the prompt.</span></div>`;
+      return;
+    }
+    const r = RATIOS[state.ratio] || RATIOS['4:5'];
+    let html = `<div class="section-label">Prompt Preview</div>`;
+    state.formats.forEach(fid => {
+      const f = FORMATS.find(x => x.id === fid);
+      html += `<div class="prompt-format-label">${f ? f.label : fid}</div><div class="prompt-box">${escHtml(buildPrompt(fid))}</div>`;
+    });
+    html += `<div class="prompt-meta">Size: ${r.w}×${r.h}px · Model: ${state.model.split('/')[1]}</div>`;
+    el.innerHTML = html;
+  });
+}
+
+function escHtml(s) { return s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;'); }
+
+function renderGenerateSections() {
+  ['Config','Brief'].forEach(suffix => {
+    const el = document.getElementById('generateSection' + suffix);
+    if (!el) return;
+    el.innerHTML = `
+      <div class="multi-note" id="multiNote${suffix}" style="display:none"></div>
+      <button class="btn-gen" id="btnGen${suffix}">Generate</button>
+      <div class="gen-hint" id="genHint${suffix}" style="display:none"></div>`;
+    document.getElementById('btnGen' + suffix).addEventListener('click', handleGenerate);
+  });
+  updateGenButtons();
+}
+
+function updateGenButtons() {
+  ['Config','Brief'].forEach(suffix => {
+    const btn = document.getElementById('btnGen' + suffix);
+    const hint = document.getElementById('genHint' + suffix);
+    const note = document.getElementById('multiNote' + suffix);
+    if (!btn) return;
+    const canGen = state.falKey.length > 5 && state.formats.length > 0 && !state.loading;
+    btn.disabled = !canGen;
+    const count = state.formats.length;
+    btn.textContent = state.loading ? 'Generating...' : (count > 1 ? `Generate ${count} Images` : 'Generate Image');
+    if (note) { note.style.display = count > 1 ? '' : 'none'; if(count>1) note.textContent = `⚡ ${count} formats → ${count} images generated sequentially`; }
+    if (hint) {
+      if (!state.falKey || state.falKey.length < 6) { hint.style.display=''; hint.textContent='Set FAL API key in Config tab'; }
+      else if (state.formats.length === 0) { hint.style.display=''; hint.textContent='Select at least one format in Brief tab'; }
+      else { hint.style.display='none'; }
+    }
+  });
+}
+
+function updateOutMeta() {
+  const r = RATIOS[state.ratio] || RATIOS['4:5'];
+  const img = state.outputImages[state.currentIdx];
+  document.getElementById('outMeta').textContent = img ? `${r.w}×${r.h} · ${state.model.split('/')[1]}` : '';
+}
+
+function setError(msg) {
+  const el = document.getElementById('errorBox');
+  if (msg) { el.style.display=''; el.innerHTML = `<strong>Error:</strong> ${escHtml(msg)}`; }
+  else { el.style.display='none'; el.textContent=''; }
+}
+
+async function callFAL(prompt, imageUrl) {
+  const r = RATIOS[state.ratio] || RATIOS['4:5'];
+  const isGPT = state.model === 'fal-ai/gpt-image-2';
+  let body;
+  if (isGPT) {
+    body = {
+      prompt,
+      image_size: { width: r.w, height: r.h },
+      num_images: 1,
+      output_format: 'jpeg',
+      quality: document.getElementById('gptQuality')?.value || 'medium',
+    };
   } else {
-    els.imageEmptyTitle.textContent = 'Enable fal.ai generation';
-    els.imageEmptySub.textContent = 'toggle in sidebar + add api key';
+    body = { prompt, image_size:{ width:r.w, height:r.h }, num_inference_steps:28, guidance_scale:3.5, num_images:1, enable_safety_checker:true };
+    if (imageUrl && state.model !== 'fal-ai/nano-banana-2') body.image_url = imageUrl;
   }
+  const res = await fetch(`https://fal.run/${state.model}`, {
+    method:'POST',
+    headers:{ 'Authorization':`Key ${state.falKey}`, 'Content-Type':'application/json' },
+    body: JSON.stringify(body),
+  });
+  if (!res.ok) {
+    let msg = ''; try { const j=await res.json(); msg=j.detail||j.message||JSON.stringify(j); } catch(e){ msg=await res.text(); }
+    throw new Error(`FAL API ${res.status}: ${msg}`);
+  }
+  const data = await res.json();
+  if (data.images && data.images[0]) return data.images[0].url || data.images[0];
+  if (data.image) return data.image.url || data.image;
+  throw new Error('No image in response: ' + JSON.stringify(data).slice(0,200));
 }
 
-const savedFalKey = localStorage.getItem('fal_api_key');
-if (savedFalKey) els.falApiKey.value = savedFalKey;
-els.falApiKey.addEventListener('input', () => {
-  localStorage.setItem('fal_api_key', els.falApiKey.value);
-  updateImageEmptyState();
-});
+function setLoading(loading) {
+  state.loading = loading;
+  updateGenButtons();
+  document.getElementById('queueBarWrap').style.display = loading ? '' : 'none';
+}
 
-const savedDeepseekKey = localStorage.getItem('deepseek_api_key');
-if (savedDeepseekKey) els.deepseekApiKey.value = savedDeepseekKey;
-els.deepseekApiKey.addEventListener('input', () => {
-  localStorage.setItem('deepseek_api_key', els.deepseekApiKey.value);
-});
+function setQueueProgress(msg, pct) {
+  document.getElementById('queueMsg').textContent = msg;
+  document.getElementById('queueFill').style.width = pct + '%';
+  document.getElementById('queuePct').textContent = pct + '%';
+}
 
+async function handleGenerate() {
+  setError(null);
+  state.outputImages = [];
+  state.currentIdx = 0;
+  state.lastPrompts = [];
+  renderOutputImages();
+  setLoading(true);
 
-document.querySelectorAll('.style-card').forEach(card => {
-  card.addEventListener('click', () => {
-    document.querySelectorAll('.style-card').forEach(c => c.classList.remove('active'));
-    card.classList.add('active');
-    state.style = card.dataset.style;
-    const styleDef = styles[state.style];
-    if (styleDef) { state.stylize = styleDef.defaultStylize; els.stylizeSlider.value = state.stylize; els.stylizeVal.textContent = state.stylize; }
-    updateInfo();
-  });
-});
+  const formats = [...state.formats];
+  const prompts = formats.map(fid => ({ fid, label: (FORMATS.find(f=>f.id===fid)||{}).label||fid, prompt: buildPrompt(fid) }));
+  state.lastPrompts = prompts;
 
-document.querySelectorAll('.ratio-btn').forEach(btn => {
-  btn.addEventListener('click', () => {
-    document.querySelectorAll('#ratioGroup .ratio-btn').forEach(b => b.classList.remove('active'));
-    btn.classList.add('active');
-    state.ratio = btn.dataset.ratio;
-    updateInfo();
-  });
-});
-
-document.querySelectorAll('#falModelGroup .ratio-btn').forEach(btn => {
-  btn.addEventListener('click', () => {
-    document.querySelectorAll('#falModelGroup .ratio-btn').forEach(b => b.classList.remove('active'));
-    btn.classList.add('active');
-    state.falModel = btn.dataset.model;
-    updateInfo();
-  });
-});
-
-els.stylizeSlider.addEventListener('input', e => { state.stylize = parseInt(e.target.value); els.stylizeVal.textContent = state.stylize; });
-els.chaosSlider.addEventListener('input', e => { state.chaos = parseInt(e.target.value); els.chaosVal.textContent = state.chaos; });
-
-[{ el: els.toggleRaw, key: 'raw' }, { el: els.toggleP, key: 'personalization' }, { el: els.toggleFal, key: 'falEnabled' }].forEach(({ el, key }) => {
-  el.addEventListener('click', () => { state[key] = !state[key]; el.classList.toggle('on', state[key]); updateInfo(); updateImageEmptyState(); });
-});
-
-els.briefInput.addEventListener('input', updateGenerateBtn);
-els.clearBtn.addEventListener('click', () => { els.briefInput.value = ''; updateGenerateBtn(); });
-
-document.querySelectorAll('.tab').forEach(tab => {
-  tab.addEventListener('click', () => {
-    document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
-    document.querySelectorAll('.tab-content').forEach(c => c.classList.remove('active'));
-    tab.classList.add('active');
-    document.getElementById('tab' + cap(tab.dataset.tab)).classList.add('active');
-  });
-});
-
-els.promptOnlyBtn.addEventListener('click', () => { if (!els.briefInput.value.trim()) return; generatePrompt(false); });
-els.generateBtn.addEventListener('click', () => { if (!els.briefInput.value.trim()) return; generatePrompt(state.falEnabled); });
-els.imageDirectBtn.addEventListener('click', async () => {
-  const prompt = els.briefInput.value.trim();
-  if (!prompt) return;
-  const apiKey = els.falApiKey?.value.trim() || localStorage.getItem('fal_api_key');
-  if (!apiKey) { showToast('Add your fal.ai API key to generate images', 'error'); return; }
-  state.generating = true;
-  updateGenerateBtn();
-  await generateImage(prompt, {}, apiKey);
-  state.generating = false;
-  updateGenerateBtn();
-});
-
-function cap(s) { return s.charAt(0).toUpperCase() + s.slice(1); }
-function updateGenerateBtn() { const hasText = els.briefInput.value.trim().length > 0; els.generateBtn.disabled = !hasText || state.generating; els.promptOnlyBtn.disabled = !hasText || state.generating; els.imageDirectBtn.disabled = !hasText || state.generating; }
-function updateInfo() { const falNote = state.falEnabled ? ' · fal.ai generation ON' : ''; els.generateInfo.textContent = `${state.style} · ${state.ratio} · s${state.stylize}${falNote}`; }
-
-async function generatePrompt(withImage) {
-  const brief = els.briefInput.value.trim();
-  if (!brief) return;
-  state.generating = true;
-  updateGenerateBtn();
-  const params = { ratio: state.ratio, stylize: state.stylize, chaos: state.chaos, raw: state.raw, personalization: state.personalization };
-  els.emptyState.style.display = 'none';
-  els.promptOutput.style.display = 'block';
-  els.promptOutput.innerHTML = `<div class="loading-bar"></div><div class="loading-card">Generating prompt via DeepSeek…</div>`;
-  document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
-  document.querySelectorAll('.tab-content').forEach(c => c.classList.remove('active'));
-  document.querySelector('[data-tab="prompt"]').classList.add('active');
-  document.getElementById('tabPrompt').classList.add('active');
   try {
-    const styleData = styles[state.style];
-    const builtStyle = styleData.build(brief, params);
-    const systemPrompt = `You are a professional visual prompt engineer specializing in the pb style system for Midjourney V8. Your job is to take a brief and a base prompt structure and return an enriched, production-ready prompt.\n\nRules:\n- Output ONLY a JSON object, no markdown, no extra text\n- The JSON has exactly these fields: "enrichedPrompt" (string), "params" (string), "rationale" (string, max 2 sentences)\n- enrichedPrompt: expand the base prompt with specific visual details (lighting direction, material textures, spatial relationships, camera position) that match the style. 50-90 words.\n- params: the MJ parameters string\n- rationale: why this interpretation works for the brief\n- Never add generic descriptors: beautiful, stunning, amazing, elegant\n- Always maintain photographic and ADV credibility\n- No illustrative or painterly language`;
-    const userMsg = `Brief: "${brief}"\nStyle: ${state.style}\nBase prompt: ${builtStyle.prompt}\nParameters: ${builtStyle.params}\nRationale hint: ${builtStyle.rationale}\n\nEnrich the prompt for Midjourney V8, maintaining the pb style system rules.`;
-    const deepseekKey = els.deepseekApiKey.value.trim();
-    if (!deepseekKey) throw new Error('Add your DeepSeek API key in the sidebar');
-    const response = await fetch('https://api.deepseek.com/chat/completions', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${deepseekKey}` },
-      body: JSON.stringify({ model: 'deepseek-chat', max_tokens: 1000, messages: [{ role: 'system', content: systemPrompt }, { role: 'user', content: userMsg }] })
-    });
-    if (!response.ok) { const err = await response.json().catch(() => ({})); throw new Error(err.error?.message || `API error ${response.status}`); }
-    const data = await response.json();
-    const raw = data.choices[0].message.content;
-    let parsed;
-    try { const clean = raw.replace(/```json|```/g, '').trim(); parsed = JSON.parse(clean); }
-    catch { parsed = { enrichedPrompt: builtStyle.prompt, params: builtStyle.params, rationale: builtStyle.rationale }; }
-    const fullPrompt = parsed.enrichedPrompt + '\n' + parsed.params;
-    const card = renderPromptCard({ style: state.style, prompt: parsed.enrichedPrompt, params: parsed.params, rationale: parsed.rationale, brief });
-    els.promptOutput.innerHTML = '';
-    els.promptOutput.appendChild(card);
-    state.history.unshift({ style: state.style, brief, prompt: fullPrompt, ts: Date.now() });
-    state.history = state.history.slice(0, HISTORY_MAX);
-    persistHistory();
-    renderHistory();
-    if (withImage) {
-      const apiKey = els.falApiKey.value.trim();
-      if (!apiKey) { showToast('Add your fal.ai API key to generate images', 'error'); }
-      else { await generateImage(parsed.enrichedPrompt, parsed.params, apiKey); }
+    for (let i=0; i<prompts.length; i++) {
+      const p = prompts[i];
+      const pct = Math.round(i/prompts.length*100);
+      setQueueProgress(`Generating: ${p.label} (${i+1}/${prompts.length})`, pct);
+      const url = await callFAL(p.prompt, state.product?.data || null);
+      state.outputImages.push({ url, label:p.label, fid:p.fid });
+      state.currentIdx = state.outputImages.length - 1;
+      renderOutputImages();
+      setQueueProgress(`Done: ${p.label}`, Math.round((i+1)/prompts.length*100));
     }
-    showToast('Prompt ready', 'success');
-  } catch (err) {
-    els.promptOutput.innerHTML = `<div class="loading-card" style="color:var(--error)">Error: ${err.message}</div>`;
-    showToast('Generation failed', 'error');
-  }
-  state.generating = false;
-  updateGenerateBtn();
-}
-
-function renderPromptCard({ style, prompt, params, rationale, brief }) {
-  const card = document.createElement('div');
-  card.className = 'prompt-card';
-  const fullPrompt = prompt + '\n' + params;
-  card.innerHTML = `<div class="prompt-card-header"><span class="prompt-style-tag">${style}</span><div class="prompt-card-actions"><button class="btn-icon copy-btn" title="Copy full prompt">⎘ copy</button></div></div><div class="prompt-body"><div class="prompt-text">${escHtml(prompt)}</div><div class="prompt-params">${escHtml(params)}</div><div class="prompt-rationale">${escHtml(rationale)}</div></div>`;
-  card.querySelector('.copy-btn').addEventListener('click', function() {
-    navigator.clipboard.writeText(fullPrompt);
-    this.textContent = '✓ copied';
-    this.classList.add('copied-flash');
-    setTimeout(() => { this.textContent = '⎘ copy'; this.classList.remove('copied-flash'); }, 1500);
-  });
-  return card;
-}
-
-async function generateImage(prompt, params, apiKey) {
-  document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
-  document.querySelectorAll('.tab-content').forEach(c => c.classList.remove('active'));
-  document.querySelector('[data-tab="image"]').classList.add('active');
-  document.getElementById('tabImage').classList.add('active');
-  els.imageOutput.style.display = 'block';
-  els.imageEmpty.style.display = 'none';
-  const modelShort = state.falModel.split('/').pop();
-  els.imageOutput.innerHTML = `<div class="loading-bar"></div><div class="loading-card">Sending to fal.ai ${escHtml(modelShort)}…</div>`;
-  const dims = RATIO_DIMS[state.ratio] || RATIO_DIMS['16:9'];
-  try {
-    const res = await fetch(`https://fal.run/${state.falModel}`, {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json', 'Authorization': `Key ${apiKey}` },
-      body: JSON.stringify(buildFalBody(state.falModel, prompt, dims))
-    });
-    if (!res.ok) {
-      const errBody = await res.json().catch(() => ({}));
-      throw new Error(errBody.detail || errBody.error?.message || `fal.ai error ${res.status}`);
+  } catch(err) {
+    let msg = err.message;
+    if (msg.toLowerCase().includes('cors') || msg.toLowerCase().includes('failed to fetch')) {
+      msg = 'CORS/network error: FAL request blocked. Use Claude Code / Cowork for server-side generation, or verify your FAL key.\n\nOriginal: ' + msg;
     }
-    const data = await res.json();
-    const imgUrl = data.images?.[0]?.url;
-    if (!imgUrl) throw new Error('No image returned');
-    renderImageResult(imgUrl, modelShort);
-    showToast('Image generated', 'success');
-  } catch (err) {
-    els.imageOutput.innerHTML = `<div class="loading-card" style="color:var(--error)">Image generation failed: ${escHtml(err.message)}</div>`;
-    showToast('Image failed', 'error');
+    setError(msg);
+  } finally {
+    setLoading(false);
   }
 }
 
-function renderImageResult(imgUrl, modelShort) {
-  els.imageOutput.innerHTML = '';
-  const wrap = document.createElement('div');
-  wrap.className = 'image-result';
-  const img = document.createElement('img');
-  img.alt = 'Generated image';
-  img.src = imgUrl;
-  const bar = document.createElement('div');
-  bar.className = 'image-result-bar';
-  const meta = document.createElement('span');
-  meta.className = 'image-result-meta';
-  meta.textContent = `${state.style} · ${state.ratio} · ${modelShort}`;
-  const dl = document.createElement('button');
-  dl.className = 'btn btn-ghost';
-  dl.textContent = '↓ download';
-  dl.addEventListener('click', () => downloadImage(imgUrl));
-  bar.appendChild(meta); bar.appendChild(dl);
-  wrap.appendChild(img); wrap.appendChild(bar);
-  els.imageOutput.appendChild(wrap);
+async function handleRegen() {
+  const img = state.outputImages[state.currentIdx];
+  if (!img) return;
+  setError(null);
+  setLoading(true);
+  const p = state.lastPrompts.find(x=>x.fid===img.fid) || state.lastPrompts[0];
+  if (!p) { setLoading(false); return; }
+  setQueueProgress(`Regenerating: ${img.label}`, 50);
+  try {
+    const url = await callFAL(p.prompt + `, unique_seed:${Math.floor(Math.random()*99999)}`, state.product?.data||null);
+    state.outputImages[state.currentIdx] = { ...img, url };
+    renderOutputImages();
+  } catch(err) { setError(err.message); }
+  finally { setLoading(false); }
 }
 
-async function downloadImage(url) {
+function renderOutputImages() {
+  const canvas = document.getElementById('outCanvas');
+  const tabsEl = document.getElementById('imgTabs');
+  const counterEl = document.getElementById('imgCounter');
+
+  if (state.loading && state.outputImages.length === 0) {
+    canvas.innerHTML = `<div class="spinner-wrap"><div class="spinner"></div><span class="spinner-msg">Contacting FAL...</span></div>`;
+    tabsEl.innerHTML = '';
+    counterEl.textContent = '';
+    return;
+  }
+
+  if (state.outputImages.length === 0) {
+    canvas.innerHTML = `<div class="placeholder"><div class="placeholder-icon">⬡</div><div class="placeholder-text">Configure brief and hit Generate<br><small>FAL.ai · Professional Ad Production</small></div></div>`;
+    tabsEl.innerHTML = '';
+    counterEl.textContent = '';
+    updateActionButtons();
+    return;
+  }
+
+  const img = state.outputImages[state.currentIdx];
+  canvas.innerHTML = `<img class="out-img" src="${img.url}" alt="${escHtml(img.label)}" />`;
+
+  // Image tabs
+  if (state.outputImages.length > 1) {
+    tabsEl.innerHTML = state.outputImages.map((im,i) =>
+      `<button class="img-tab${i===state.currentIdx?' active':''}" data-idx="${i}">${escHtml(im.label)}</button>`
+    ).join('');
+    tabsEl.querySelectorAll('.img-tab').forEach(btn => {
+      btn.addEventListener('click', () => {
+        state.currentIdx = parseInt(btn.dataset.idx);
+        renderOutputImages();
+      });
+    });
+    counterEl.textContent = `${state.currentIdx+1} / ${state.outputImages.length}`;
+  } else {
+    tabsEl.innerHTML = '';
+    counterEl.textContent = '';
+  }
+
+  updateActionButtons();
+  updateOutMeta();
+}
+
+function updateActionButtons() {
+  const hasImg = state.outputImages.length > 0 && !!state.outputImages[state.currentIdx];
+  document.getElementById('btnDownload').disabled = !hasImg;
+  document.getElementById('btnSave').disabled = !hasImg;
+  document.getElementById('btnRegen').disabled = !hasImg || state.loading;
+}
+
+function handleDownload() {
+  const img = state.outputImages[state.currentIdx];
+  if (!img) return;
+  const a = document.createElement('a');
+  a.href = img.url;
+  const ts = new Date().toISOString().replace(/[:.]/g,'-').slice(0,16);
+  a.download = `${(state.brandName||'adv').replace(/\s+/g,'_')}_${img.fid}_${ts}.jpg`;
+  a.click();
+}
+
+function handleSave() {
+  const img = state.outputImages[state.currentIdx];
+  if (!img) return;
+  const ts = new Date().toISOString().replace(/[:.]/g,'-').slice(0,16);
+  state.savedImages.unshift({
+    id: Date.now(),
+    url: img.url,
+    filename: `${(state.brandName||'adv').replace(/\s+/g,'_')}_${img.fid}_${ts}.jpg`,
+    brand: state.brandName || 'Untitled',
+    format: img.label,
+  });
+  renderSaved();
+}
+
+function renderSaved() {
+  const count = state.savedImages.length;
+  const badge = document.getElementById('savedBadge');
+  badge.textContent = count;
+  badge.style.display = count ? '' : 'none';
+  document.getElementById('savedCount').textContent = `${count} image${count!==1?'s':''}`;
+  document.getElementById('savedEmpty').style.display = count ? 'none' : '';
+
+  const grid = document.getElementById('savedGrid');
+  grid.innerHTML = state.savedImages.map(item => `
+    <div class="saved-item" data-id="${item.id}">
+      <img src="${item.url}" alt="${escHtml(item.format)}" />
+      <div class="saved-overlay">
+        <div class="saved-overlay-text">${escHtml(item.brand)}<br>${escHtml(item.format)}</div>
+        <div class="saved-actions">
+          <button class="btn-saved" data-dl="${item.id}">↓</button>
+          <button class="btn-saved" data-rm="${item.id}">×</button>
+        </div>
+      </div>
+    </div>`).join('');
+
+  grid.querySelectorAll('[data-dl]').forEach(btn => {
+    btn.addEventListener('click', e => {
+      e.stopPropagation();
+      const item = state.savedImages.find(x=>x.id===parseInt(btn.dataset.dl));
+      if (!item) return;
+      const a = document.createElement('a'); a.href=item.url; a.download=item.filename; a.click();
+    });
+  });
+  grid.querySelectorAll('[data-rm]').forEach(btn => {
+    btn.addEventListener('click', e => {
+      e.stopPropagation();
+      state.savedImages = state.savedImages.filter(x=>x.id!==parseInt(btn.dataset.rm));
+      renderSaved();
+    });
+  });
+}
+
+async function handleDownloadAll() {
+  if (state.savedImages.length === 0) return;
   try {
-    const r = await fetch(url);
-    const blob = await r.blob();
-    const objUrl = URL.createObjectURL(blob);
+    if (!window.JSZip) {
+      await new Promise((res,rej) => {
+        const s=document.createElement('script');
+        s.src='https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js';
+        s.onload=res; s.onerror=rej; document.head.appendChild(s);
+      });
+    }
+    const zip = new JSZip();
+    for (const item of state.savedImages) {
+      const r = await fetch(item.url);
+      const blob = await r.blob();
+      zip.file(item.filename, blob);
+    }
+    const content = await zip.generateAsync({ type:'blob' });
     const a = document.createElement('a');
-    a.href = objUrl;
-    a.download = `pb-${state.style}-${Date.now()}.${blob.type.split('/')[1] || 'png'}`;
-    document.body.appendChild(a); a.click(); a.remove();
-    setTimeout(() => URL.revokeObjectURL(objUrl), 1000);
-  } catch {
-    window.open(url, '_blank');
-  }
+    a.href = URL.createObjectURL(content);
+    a.download = `fal_adv_studio_${Date.now()}.zip`;
+    a.click();
+  } catch(err) { setError('ZIP error: ' + err.message); }
 }
 
-function persistHistory() {
-  try { localStorage.setItem(HISTORY_KEY, JSON.stringify(state.history)); } catch {}
-}
-
-function renderHistory() {
-  if (state.history.length === 0) { els.historyEmpty.style.display = 'flex'; els.historyList.style.display = 'none'; return; }
-  els.historyEmpty.style.display = 'none';
-  els.historyList.style.display = 'block';
-  els.historyList.innerHTML = state.history.map((item, i) => `<div class="prompt-card" style="animation-delay:${i * 0.05}s"><div class="prompt-card-header"><span class="prompt-style-tag">${item.style}</span><span class="image-result-meta">${new Date(item.ts).toLocaleTimeString()}</span></div><div class="prompt-body"><div class="prompt-text" style="font-size:0.68rem;color:var(--muted2);margin-bottom:0.5rem">${escHtml(item.brief)}</div><div class="prompt-text">${escHtml(item.prompt)}</div></div></div>`).join('');
-}
-
-function showToast(msg, type = '') {
-  const toast = document.createElement('div');
-  toast.className = `toast ${type}`;
-  const dot = type === 'success' ? '●' : type === 'error' ? '✕' : '·';
-  toast.innerHTML = `<span style="color:var(--${type === 'success' ? 'success' : type === 'error' ? 'error' : 'muted'})">${dot}</span> ${msg}`;
-  els.toastContainer.appendChild(toast);
-  setTimeout(() => toast.remove(), 3000);
-}
-
-function escHtml(str) {
-  return String(str).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
-}
-
-updateInfo();
-updateGenerateBtn();
-updateImageEmptyState();
-renderHistory();
+// Boot
+init();
+renderSaved();
 </script>
 </body>
 </html>
